@@ -1,0 +1,17 @@
+LICENSE.txt
+MANIFEST.in
+README
+README.md
+requirements-dev.txt
+setup.cfg
+setup.py
+django_tinymce_lite.egg-info/PKG-INFO
+django_tinymce_lite.egg-info/SOURCES.txt
+django_tinymce_lite.egg-info/dependency_links.txt
+django_tinymce_lite.egg-info/not-zip-safe
+django_tinymce_lite.egg-info/requires.txt
+django_tinymce_lite.egg-info/top_level.txt
+tinymce/__init__.py
+tinymce/conf.py
+tinymce/widgets.py
+tinymce/static/django_tinymce/django_tinymce.js

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+   <header class="header_area">
+        <div class="main_menu">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container box_1620">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <a class="navbar-brand logo_h" href="/"><img src="{% static 'img/core-img/logo.png' %}" alt=""></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav menu_nav ml-auto" id="navmenu1">
+                            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/allblogs">Blogs</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../webpages/music.html">Music</a></li>
+                            <li class="nav-item submenu active dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Videos</a>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item"><a class="nav-link" href="/videos">Gaming</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="travel.html">Travel</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="/ourteam">About Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="gap3">
+        <video loop muted autoplay class="video">
+            <source src="{% static 'img/corevideo/cpvideos.mp4' %}" type="video/mp4">
+        </video>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="caption3">
+                        <span class="border">PASSION FOR GAMES</span>
+                    </div>
+                </div>
+                <div class="col-xl-12">
+                    <text>
+                        <span>Hope is what makes us strong. It is why we are here. It is what we fight with when all else is lost.
+                            – God Of War
+                        </span>
+                    </text>
+                </div>
+            </div>
+
+
+
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="card daily-sales" style="margin-top: 350px;">
+                        <div class="card-block" id="card-block">
+                            <iframe class="youtube" src="https://www.youtube.com/embed/live_stream?channel=UCEEpo6aLbozMvNq5dr2Ipgg&autoplay=1" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div id="youtube">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <br>
+
+    <script>
+        $('#youtube').youtube({
+            apiKey: 'AIzaSyAN77bxZAZfORCPZNV1TyaZDI8d_YO3uK8',
+            youTubeChannelURL: "https://www.youtube.com/channel/UCEEpo6aLbozMvNq5dr2Ipgg",
+            youTubePlaylistURL: "https://www.youtube.com/channel/UCEEpo6aLbozMvNq5dr2Ipgg/playlists",
+            youtubeDefaultTab: "UPLOADS",
+            youtubeColumns: 4,
+            showVideoInLightbox: true,
+            maxResults: 20,
+        });
+    </script>
+
+{% endblock content %}
