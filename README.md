@@ -2,18 +2,18 @@
 It is a personal website soon to be hosted.
 It is still under development 
 
-###Completed:
+### Completed:
 1. Home(still need to add latest posts) 
 2. Blog
 3. Teams
 4. Resume
 5. Video
 
-###In progress:
+### In progress:
 1. Gaming 
 2. Music
 
-To Start
+### To Start
 1. Market (ebay clone)
 
 ## Setup
