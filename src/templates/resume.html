@@ -199,40 +199,13 @@
                 <p>You can find my personal projects. Click on <i class="fa fa-github"></i> icon to go through my projects.</p>
             </div>
             <div class="testi_inner">
-                <div class="testi_slider owl-carousel">
-                    <div class="item">
-                        <div class="testi_item card">
-                            <h4>DoctorBag</h4>
-                            <p>It is basically Smart Medical Pill Box which alerts the user to take pill on time and warns the user of empty slots.</p>
-                            <a href="#"><i class="fa fa-github fa-2x"></i></a>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="testi_item card">
-                            <h4>HealingFactor</h4>
-                            <p>This is basically a prototype Chatting Application having Firebase as Database.</p>
-                            <a href="#"><i class="fa fa-github fa-2x"></i></a>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="testi_item card">
-                            <h4>AutoSecureHome</h4>
-                            <p>This is a IoT cum Android project based on Home Automation and Security. This project is done to demonstrate how to implement home-automation and security in your home easily.</p>
-                            <a href="#"><i class="fa fa-github fa-2x"></i></a>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="testi_item card">
-                            <h4>MetaTasker</h4>
-                            <p>It was my first prototype that i ever built as an developer.It is a reminder, task allocating and sharing application.</p>
-                            <a href="#"><i class="fa fa-github fa-2x"></i></a>
-                        </div>
-                    </div>
-                </div>
+                <div id = "userRepos"></div>
             </div>
         </div>
     </section>
+    <script src="{% static 'js/github.js' %}"></script>
+    <script type="text/javascript">
+        my_cool_js_function("{{ member.github_userid}}")
+    </script>
     <!--================End Testimonials Area =================-->
-
-
 {% endblock content %}

@@ -82,6 +82,7 @@ class Team(models.Model):
     git_url = models.URLField()
     facebook_url = models.URLField()
     twiter_url = models.URLField()
+    github_userid = models.CharField(max_length=30)
 
     def __str__(self):
         return self.user.username
@@ -122,3 +123,5 @@ class Experience(models.Model):
 
     def __str__(self):
         return self.institution
+
+

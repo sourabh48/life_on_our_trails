@@ -60,13 +60,7 @@
             $(this).css('animation-duration', anim_dur);
         });
 
-        testimonials.owlCarousel({
-            items: 1,
-            margin: 0,
-            loop: true,
-            dots: false,
-            autoplay: true
-        });
+
 
         albumSlides.owlCarousel({
             items: 5,
