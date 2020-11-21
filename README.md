@@ -2,19 +2,19 @@
 It is a personal website soon to be hosted.
 It is still under development 
 
-Completed:
-Home(still need to add latest posts) 
-Blog
-Teams
-Resume
-Video
+###Completed:
+1. Home(still need to add latest posts) 
+2. Blog
+3. Teams
+4. Resume
+5. Video
 
-In progress:
-Gaming 
-Music
+###In progress:
+1. Gaming 
+2. Music
 
 To Start
-Market (ebay clone)
+1. Market (ebay clone)
 
 ## Setup
 Install python 3.9
@@ -27,6 +27,7 @@ pip install virtualenv
 python -m venv life_on_our_trails
 
 cd src
+
 c:\users\soura\appdata\local\programs\python\python39\python.exe -m pip install --upgrade pip
 
 ..\life_on_our_trails\Scripts\activate
@@ -45,5 +46,7 @@ pip install Pillow
 
 ## Run the file
 cd src
+
 ..\life_on_our_trails\Scripts\activate
+
 python manage.py runserver
