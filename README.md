@@ -1,4 +1,4 @@
-# life_on_our_trails
+# Life on Our Trails
 It is a personal website soon to be hosted.
 It is still under development 
 
