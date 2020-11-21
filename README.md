@@ -1,6 +1,5 @@
 # Life on Our Trails
-It is a personal website soon to be hosted.
-It is still under development 
+It is a personal website soon to be hosted.It is still under development. 
 
 ### Completed:
 1. Home(still need to add latest posts) 
