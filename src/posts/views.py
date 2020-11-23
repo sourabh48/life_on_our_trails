@@ -108,6 +108,9 @@ def singleblog(request, id):
 def videos(request):
     return render(request, 'videos.html', {})
 
+def music(request):
+    return render(request, 'music.html', {})
+
 
 def ourteam(request):
     team_list = Team.objects.all()
