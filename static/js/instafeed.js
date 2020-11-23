@@ -1,6 +1,6 @@
 var feed = new Instafeed({
 
-    accessToken: 'IGQVJYRFNUWFFUOXFWRThKaHRHRThyNUh2NnFKTjExNWxQMXQwUVpyeVdpNzNwV3doOFNnUDQ1MnBSSFV5b2xTUlllNmtKUmRHYU02MHliNE1zSzlLdEk4TVU2QXRMTHVILTU1dWpwc0FiOGczMHNENgZDZD',
+    accessToken: 'IGQVJYVi1wTndObGNqaGJmaWp1UlptOHVCcGszUHBlRmMwWVhXSFA5MG11MG5sRjV1emNTd1ZAyaGFzczFzR25JUDlQOTFzV01XQklPS0xfZA0t4QVI3MGJZAelc2UTZAIYnA2bHNMSVRrYzZALZAktnNVdmYwZDZD,
     template: '<div class="single-instaalbum"><a href="{{link}}"><img src="{{image}}" alt=""/><div class="instaalbum-info"><p>{{caption}}</p></div></a></div>',                 
     target: 'instafeed',
     resolution: 'standard_resolution',
