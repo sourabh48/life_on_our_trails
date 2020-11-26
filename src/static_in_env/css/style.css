@@ -3343,7 +3343,72 @@ html {
   scroll-behavior: smooth;
 }
 
+#hero-image1 {
+    background: url("../img/core-img/CallofDuty.jpg");
+    height: 920px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#hero-image2 {
+    background: url("../img/core-img/GodofWar.jpg");
+    height: 920px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#hero-image3 {
+    background: url("../img/core-img/halo.jpg");
+    height: 920px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
+.hero-marketing-text {
+    max-width: 1200px;
+    margin: -30px auto 0;
+    position: absolute;
+    top: 40%;
+    left: 0;
+    right: 0;
+    padding: 0 20px;
+
+}
+
+.hero-marketing-text h1 {
+    color: #eee;
+    font-size: 3.5em;
+    font-weight: 300;
+    margin: 0.5em 0;
+}
+
+.hero-marketing-text span {
+    color: #FFB320;
+}
+
+.hero-marketing-text h5 {
+    color: #eee;
+    font-size: 0.85em;
+    font-weight: 300;
+    max-width: 500px;
+    line-height: 2;
+    margin-bottom: 2.5em;
+}
+
+.hero-marketing-text button {
+    background-color: #FFB320;
+    color: #131313;
+    border-radius: 25px;
+    padding: 15px 25px;
+    font-size: 0.85em;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+
+/* end: hero styles */
 
 /* End Footer Area css
 ============================================================================================ */
