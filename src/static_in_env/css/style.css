@@ -3407,6 +3407,11 @@ html {
     cursor: pointer;
 }
 
+.game_list_space{
+    background-image: url("../img/core-img/steambackground.jpg");
+    min-height: 650px;
+}
+
 
 /* end: hero styles */
 
