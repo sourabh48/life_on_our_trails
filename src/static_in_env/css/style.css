@@ -2397,12 +2397,12 @@ ul.address li ul.address-text li a {
 }
 
 .flex-container {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
-.posts-list{
-    padding:8px;
+.posts-list {
+    padding: 8px;
 }
 
 .blog_info {
@@ -2418,6 +2418,7 @@ ul.address li ul.address-text li a {
     color: #222222;
     font-weight: bold;
 }
+
 .blog_info .post_tag span {
     font: 380 17px/25px "Roboto", sans-serif;
     color: #222222;
@@ -2438,13 +2439,14 @@ ul.address li ul.address-text li a {
     display: inline-block;
 }
 
-.blog_info .blog_meta .meta{
+.blog_info .blog_meta .meta {
     color: #222222;
     font-size: 15px;
     font-weight: 600;
     padding-left: 15px;
     line-height: 20px;
 }
+
 .blog_info .blog_meta li a:hover {
     color: #766dff;
 }
@@ -2461,6 +2463,7 @@ ul.address li ul.address-text li a {
 .blog_details h2:first-letter {
     text-transform: uppercase;
 }
+
 .blog_details .singlepost h2 {
     margin-left: 20px;
     font-size: 26px;
@@ -2526,17 +2529,28 @@ ul.address li ul.address-text li a {
     z-index: 0;
     background: #766dff;
 }
+
 .blog_right_sidebar .search_widget .input-group .form-control.placeholder {
-      color: #fff; }
-    .blog_right_sidebar .search_widget .input-group .form-control:-moz-placeholder {
-      color: #fff; }
-    .blog_right_sidebar .search_widget .input-group .form-control::-moz-placeholder {
-      color: #fff; }
-    .blog_right_sidebar .search_widget .input-group .form-control::-webkit-input-placeholder {
-      color: #fff; }
-    .blog_right_sidebar .search_widget .input-group .form-control:focus {
-      box-shadow: none; }
-  .blog_right_sidebar .search_widget .input-group .btn-default {
+    color: #fff;
+}
+
+.blog_right_sidebar .search_widget .input-group .form-control:-moz-placeholder {
+    color: #fff;
+}
+
+.blog_right_sidebar .search_widget .input-group .form-control::-moz-placeholder {
+    color: #fff;
+}
+
+.blog_right_sidebar .search_widget .input-group .form-control::-webkit-input-placeholder {
+    color: #fff;
+}
+
+.blog_right_sidebar .search_widget .input-group .form-control:focus {
+    box-shadow: none;
+}
+
+.blog_right_sidebar .search_widget .input-group .btn-default {
     position: absolute;
     right: 20px;
     background: transparent;
@@ -2547,16 +2561,18 @@ ul.address li ul.address-text li a {
     padding: 0px;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 1; }
+    z-index: 1;
+}
+
 .blog_right_sidebar .author_widget {
     text-align: center;
 }
 
-.blog_right_sidebar .author_widget .author-img{
-  border: 1px solid #ddd;
-  border-radius: 50%;
-  padding: 5px;
-  width: 250px;
+.blog_right_sidebar .author_widget .author-img {
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    padding: 5px;
+    width: 250px;
 }
 
 .blog_right_sidebar .author_widget h4 {
@@ -2589,7 +2605,8 @@ ul.address li ul.address-text li a {
 .blog_right_sidebar .author_widget .social_icon a:hover {
     color: #766dff;
 }
-.blog_right_sidebar .popular_post_widget .post_item .image{
+
+.blog_right_sidebar .popular_post_widget .post_item .image {
     max-width: 100px;
     padding-left: 20px;
     margin-bottom: 5px;
@@ -2821,7 +2838,7 @@ ul.address li ul.address-text li a {
     padding-top: 26px;
 }
 
-.single-post-area .blog_details  {
+.single-post-area .blog_details {
     margin-bottom: 10px;
 }
 
@@ -2993,8 +3010,8 @@ ul.address li ul.address-text li a {
     margin-right: 20px;
 }
 
-.comment-list .thumb img{
- width: 50px;
+.comment-list .thumb img {
+    width: 50px;
 }
 
 .comments-area .date {
@@ -3055,7 +3072,7 @@ ul.address li ul.address-text li a {
 
 .comment-form .email {
     padding-right: 0px;
-     margin: 5px;
+    margin: 5px;
 }
 
 @media (max-width: 991px) {
@@ -3340,7 +3357,7 @@ section.featured-posts .post-footer {
 }
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 #hero-image1 {
@@ -3350,6 +3367,7 @@ html {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
 #hero-image2 {
     background: url("../img/core-img/GodofWar.jpg");
     height: 920px;
@@ -3357,6 +3375,7 @@ html {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
 #hero-image3 {
     background: url("../img/core-img/halo.jpg");
     height: 920px;
@@ -3407,11 +3426,166 @@ html {
     cursor: pointer;
 }
 
-.game_list_space{
+.game_list_space {
     background-image: url("../img/core-img/steambackground.jpg");
-    min-height: 650px;
+    position: relative;
+    padding: 20px;
+    width: auto;
 }
 
+.game_list_space .home_section_title {
+    text-align: center;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    padding-top: 30px;
+}
+
+.home_section_title {
+    font-size: 17px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-family: "Motiva Sans", Sans-serif;
+    font-weight: 300;
+    /* light */
+}
+
+.game_list_space .home_section_title h1 {
+    color: #efeff2;
+    font-size: 35px;
+    letter-spacing: 2px;
+    line-height: 1;
+    text-align: center;
+    font-family: Sucrose-BoldTwo, cursive;
+    text-align: center;
+    padding: 20px;
+}
+
+.hero_capsule {
+    width: auto;
+    min-height: 400px;
+    position: relative;
+    overflow: hidden;
+    font-size: 12px;
+    box-shadow: 2.86px 6.67px 16.29px rgba(0, 0, 0, 0.781);
+    margin-left: 15px;
+    margin-bottom: 12px;
+}
+
+.hero_capsule .ds_flag {
+    top: 3px;
+}
+
+@media screen and (max-width: 900px) {
+    .hero_capsule {
+        font-size: 10px;
+    }
+}
+
+@media screen and (max-width: 830px) {
+    .game_list_space .carousel_container .carousel_items .hero_capsule {
+        margin-left: 0;
+        width: auto;
+    }
+
+}
+
+.hero_data {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: linear-gradient(to bottom, #523432 0%, #312827 100%);
+    font-family: "Motiva Sans", Sans-serif;
+    font-weight: normal;
+    color: #ffffff;
+    height: 53.5%;
+    opacity: 0.5;
+    transition: top 0.6s, opacity 0.5s;
+}
+
+.hero_capsule .hover_screenshots {
+    position: absolute;
+    margin: 0;
+    top: 100%;
+    right: 0;
+    width: 100%;
+    height: 46.5%;
+    opacity: 0;
+    pointer-events: none;
+    background: #000000;
+    transition: top 0.6s, opacity 0.5s;
+}
+
+.hero_capsule .hero_video {
+    width: 100%;
+}
+
+
+.hero_capsule.valveindex .hero_data {
+    height: 58.5%
+}
+
+.hero_capsule.valveindex:hover .hero_data {
+    top: 41.5%
+}
+
+
+.hero_capsule:hover .hero_data {
+    top: 46.5%;
+    opacity: 1.0;
+}
+
+.hero_capsule:hover .hover_screenshots {
+    top: 0;
+    opacity: 1.0;
+}
+
+
+.hero_capsule:hover img.hero_capsule_img {
+    opacity: 0.4;
+}
+
+
+.hero_data_content {
+    padding: 6% 9%;
+}
+
+.hero_stat {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.7em;
+    position: relative;
+    z-index: 2;
+}
+
+.hero_name {
+    font-family: "Motiva Sans", Sans-serif;
+    font-weight: bold;
+    /* bold */
+
+    font-size: 2em;
+}
+
+.hero_stat .label {
+    color: #959595;
+    text-transform: uppercase;
+}
+
+
+.hero_capsule:first-child {
+    margin-left: 0;
+}
+
+
+.hero_capsule img .hero_capsule_img {
+    display: block;
+    max-width: 100%;
+    transition: opacity 0.5s;
+    object-fit: fit;
+
+}
 
 /* end: hero styles */
 

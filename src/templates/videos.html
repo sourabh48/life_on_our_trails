@@ -58,7 +58,7 @@
         </div>
     </section>
 
-    <section class="game_list_space">
+    <section class="game_list_space" id = "steamCarousel">
     </section>
 
     <section class="gap3">
@@ -102,7 +102,10 @@
 
     </section>
     <br>
-<script></script>
+    <script src="{% static 'js/steam.js' %}"></script>
+    <script type="text/javascript">
+       steam()
+    </script>
     <script>
         $('#youtube').youtube({
             apiKey: 'AIzaSyAN77bxZAZfORCPZNV1TyaZDI8d_YO3uK8',
