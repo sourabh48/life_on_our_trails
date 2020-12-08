@@ -20,7 +20,7 @@ function steam()
            let home_section_title = document.createElement('div');
            home_section_title.classList.add('home_section_title')
            let h1 = document.createElement('h1');
-           h1.innerHTML = (`Number of Games: ${gamecount}`)
+           h1.innerHTML = (`Number of Games I Own: ${gamecount}`)
            home_section_title.appendChild(h1);
            divid.appendChild(home_section_title);
 
@@ -80,45 +80,22 @@ function steam()
                                             </div>
                                             <div class="mr-grid">
                                                 <span>Developer:</span>
-                                                    <span class="data">
-                                                        <p>${gamefinal.developers}</p>
-                                                </span>
+                                                <span class="data">${gamefinal.developers}</span>
+                                            </div>
+
+                                            <div class="mr-grid">
+                                                <span>Publishers:</span>
+                                                <span class="data">${gamefinal.publishers}</span>
+                                            </div>
+
+                                            <div class="mr-grid">
+                                                <span>Release Date:</span>
+                                                <span class="data">${gamefinal.release_date.date}</span>
                                             </div>
                                         </div>
                                     </div>
                             </div>
-                            <div class="hover_screenshots">
-                                <div  data-background="url( https://steamcdn-a.akamaihd.net/steam/apps/1174180/ss_66b553f4c209476d3e4ce25fa4714002cc914c4f.600x338.jpg?t=1597419522  )" style="background-image: url(&quot;https://steamcdn-a.akamaihd.net/steam/apps/1174180/ss_66b553f4c209476d3e4ce25fa4714002cc914c4f.600x338.jpg?t=1597419522&quot;);">
-                                     <video class="hero_video" onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;" loop autoplay preload="none" muted="muted">
-                                         <source src="https://steamcdn-a.akamaihd.net/steam/apps/256768371/microtrailer.webm?t=1574881352?v=3" type="video/webm">
-                                     </video>
-                                </div>
-                            </div>
-                            <div class="hero_data">
-                                <div class="hero_data_content">
-                                    <div class="hero_name">Red Dead Redemption 2</div>
-                                        <div class="hero_stat">
-                                             <span class="label">Publishers:</span>
-                                             <span class="data">
-                                                <a href="https://store.steampowered.com/developer/rockstargames?snr=1_4_660__629"> ${gamefinal.publishers}</a>
-                                             </span>
-                                          </div>
-                                          <div class="hero_stat">
-                                             <span class="label">Publisher:</span>
-                                             <span class="data">
-                                             <a href="https://store.steampowered.com/publisher/rockstargames?snr=1_4_660__629">Rockstar Games</a> </span>
-                                          </div>
-                                          <div class="hero_stat" data-tooltip-html="81% of the 121,621 user reviews for this game are positive.">
-                                             <span class="label">All Reviews:</span>
-                                             <span class="data">
-                                                <span class="game_review_summary positive">
-                                                   Very Positive </span>
-                                                <span style="color: #AEAEAE; ">(121,621)</span>
-                                             </span>
-                                         </div>
-                                       </div>
-                                    </div>
-                              </div>
+
                         `);
                     }
                 }
@@ -130,7 +107,7 @@ function steam()
             loop: true,
             lazyLoad:true,
             dots: false,
-            autoplay: false,
+            autoplay: true,
             dots: false,
             margin: 5,
             autoplayTimeout: 2500,
