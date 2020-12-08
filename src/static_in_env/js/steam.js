@@ -46,24 +46,61 @@ function steam()
                     {
                        gamefinal =  gamedata["data"]
                        console.log(gamefinal)
+
+                       var description ="";
+                       for (i in gamefinal.genres) {
+                            description +=  gamefinal.genres[i].description + ',  ';
+                        }
+
                        div.innerHTML = (`
                          <div class="hero_capsule">
-                           <a href="https://store.steampowered.com/app/1174180/Red_Dead_Redemption_2/?snr=1_4_660__651" class="hero_click_overlay"></a>
-                                    <img class="hero_capsule_img" src="${gamefinal.header_image}" data-src="${gamefinal.header_image}">
-                                    <div class="hover_screenshots">
-                                       <div  data-background="url( https://steamcdn-a.akamaihd.net/steam/apps/1174180/ss_66b553f4c209476d3e4ce25fa4714002cc914c4f.600x338.jpg?t=1597419522  )" style="background-image: url(&quot;https://steamcdn-a.akamaihd.net/steam/apps/1174180/ss_66b553f4c209476d3e4ce25fa4714002cc914c4f.600x338.jpg?t=1597419522&quot;);">
-                                          <video class="hero_video" onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;" loop autoplay preload="none" muted="muted">
-                                             <source src="https://steamcdn-a.akamaihd.net/steam/apps/256768371/microtrailer.webm?t=1574881352?v=3" type="video/webm">
-                                          </video>
-                                       </div>
+                            <div class="gamecontainer">
+                                   <div class="game">
+                                        <div class="hero_capsule_img">
+                                              <img class="game-img" src="${gamefinal.header_image}" data-src="${gamefinal.header_image}">
+                                        </div>
+                                        <div class="text-game-cont">
+                                            <div class="mr-grid">
+                                                <div class="col1">
+                                                    <h1>${gamefinal.name}</h1>
+                                                    <div class="game-gen">
+                                                        ${description}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mr-grid summary-row">
+                                                <div class="col2">
+                                                    <h5>SUMMARY</h5>
+                                                </div>
+                                            </div>
+                                            <div class="mr-grid">
+                                                <div class="col1">
+                                                    <p class="game-description">${gamefinal.short_description}</p>
+                                                </div>
+                                            </div>
+                                            <div class="mr-grid">
+                                                <span>Developer:</span>
+                                                    <span class="data">
+                                                        <p>${gamefinal.developers}</p>
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="hero_data">
-                                       <div class="hero_data_content">
-                                          <div class="hero_name">Red Dead Redemption 2</div>
-                                          <div class="hero_stat">
-                                             <span class="label">Developer:</span>
+                            </div>
+                            <div class="hover_screenshots">
+                                <div  data-background="url( https://steamcdn-a.akamaihd.net/steam/apps/1174180/ss_66b553f4c209476d3e4ce25fa4714002cc914c4f.600x338.jpg?t=1597419522  )" style="background-image: url(&quot;https://steamcdn-a.akamaihd.net/steam/apps/1174180/ss_66b553f4c209476d3e4ce25fa4714002cc914c4f.600x338.jpg?t=1597419522&quot;);">
+                                     <video class="hero_video" onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;" loop autoplay preload="none" muted="muted">
+                                         <source src="https://steamcdn-a.akamaihd.net/steam/apps/256768371/microtrailer.webm?t=1574881352?v=3" type="video/webm">
+                                     </video>
+                                </div>
+                            </div>
+                            <div class="hero_data">
+                                <div class="hero_data_content">
+                                    <div class="hero_name">Red Dead Redemption 2</div>
+                                        <div class="hero_stat">
+                                             <span class="label">Publishers:</span>
                                              <span class="data">
-                                                <a href="https://store.steampowered.com/developer/rockstargames?snr=1_4_660__629">Rockstar Games</a>
+                                                <a href="https://store.steampowered.com/developer/rockstargames?snr=1_4_660__629"> ${gamefinal.publishers}</a>
                                              </span>
                                           </div>
                                           <div class="hero_stat">
@@ -94,24 +131,24 @@ function steam()
             lazyLoad:true,
             dots: false,
             autoplay: false,
-            dots: true,
+            dots: false,
+            margin: 5,
             autoplayTimeout: 2500,
             smartSpeed: 750,
-            autoHeight:true,
-            responsive: {
+           responsive: {
                 0: {
                     items: 1
                 },
-                480: {
+                620: {
                     items: 2
                 },
-                768: {
+                900: {
                     items: 3
                 },
-                992: {
+                1300: {
                     items: 4
                 },
-                1200: {
+                1600: {
                     items: 5
                 }
             }
