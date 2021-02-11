@@ -108,7 +108,11 @@ def singleblog(request, id):
 
 
 def videos(request):
-    return render(request, 'videos.html', {})
+    gaming = Post.objects.filter(gaming=True)[0:3]
+    context = {
+        'object_list': gaming
+    }
+    return render(request, 'videos.html', context)
 
 def music(request):
     return render(request, 'music.html', {})
