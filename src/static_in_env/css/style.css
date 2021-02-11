@@ -3526,6 +3526,7 @@ html {
 }
 
  .carousel_container .owl-stage-outer .owl-stage .owl-item {
+    width: auto;
     display: flex;
 	flex: 1 0 auto;
 	margin-bottom : 12px;
@@ -3576,6 +3577,7 @@ html {
 
 .hero_capsule:hover  {
      transform: rotateX(17deg) translateY(-10px);
+     background-color: #01204Cff
 }
 
 
@@ -3602,11 +3604,6 @@ html {
     margin-left: 0;
 }
 
-.rectangle {
-  height: 50px;
-  width: 100px;
-  background-color: #555;
-}
 /* end: hero styles */
 
 /* End Footer Area css

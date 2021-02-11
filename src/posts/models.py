@@ -83,6 +83,11 @@ class Team(models.Model):
     facebook_url = models.URLField()
     twiter_url = models.URLField()
     github_userid = models.CharField(max_length=30)
+    main = models.BooleanField(default=False)
+    mainwork = models.CharField(max_length=170, blank=True)
+    mainintro = models.CharField(max_length=570, blank=True)
+    mainlocation = models.CharField(max_length=570, blank=True)
+
 
     def __str__(self):
         return self.user.username

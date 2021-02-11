@@ -43,7 +43,9 @@ def get_category_count():
 def index(request):
     latest = Post.objects.order_by('-timestamp')[0:3]
     featured = Post.objects.filter(featured=True)[0:5]
+    main = Team.objects.filter(main=True)[0:2]
     context = {
+        'mainteam' : main,
         'object_list': featured,
         'latest': latest
     }

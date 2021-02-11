@@ -21,7 +21,7 @@
                         <ul class="nav navbar-nav menu_nav ml-auto" id="navmenu1">
                             <li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="/allblogs">Blogs</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/music">Music</a></li>
+<!--                            <li class="nav-item"><a class="nav-link" href="/music">Music</a></li>-->
                             <li class="nav-item"><a class="nav-link" href="/videos">Gaming</a></li>
                             <li class="nav-item"><a class="nav-link" href="/ourteam">About Us</a></li>
                         </ul>
@@ -41,35 +41,31 @@
     </section>
 
     <!--Content-->
-
+ {% for obj in mainteam %}
     <section class="home_banner_area">
         <div class="parallax1">
             <div class="container box_1620">
                 <div class="banner_inner d-flex align-items-center">
                     <div class="banner_content">
                         <div class="media">
-                            <div class="d-flex"> <img src="{% static 'img/core-img/personal.jpg' %}" alt=""> </div>
+                            <div class="d-flex"> <img src="{% static 'img/core-img/sourabh.jpg' %}" alt=""> </div>
                             <div class="media-body">
                                 <div class="personal_text">
                                     <h6>Hello Everybody, i am</h6>
-                                    <h3>Sourabh Sarkar</h3>
-                                    <h4>IT Professional, Developer, Game Streamer, Travel Blogger. </h4>
-                                    <p>I studied Computer Science in KIIT Deamed to be University, Odissa and I am
-                                        working as an IT Professional, from 2019. In 2020, I decided to start a Gaming
-                                        Blog and Travel Blog that I feel passionate about. And that’s how Our Life on A
-                                        Trail was born. From 2020, I started to release Gaming Videos as ClimbigPoet and
-                                        that’s how most of you know me! </p>
+                                    <h3>{{ obj.full_name }}</h3>
+                                    <h4>{{ obj.mainwork }} </h4>
+                                    <p>{{ obj.mainintro }}</p>
                                     <ul class="list basic_info">
-                                        <li><a href="#"><i class="lnr lnr-calendar-full"></i> 22nd November, 1996</a>
-                                        </li>
-                                        <li><a href="#"><i class="lnr lnr-envelope"></i> poetclimbing@gmail.com</a></li>
+                                        <li><a href="#"><i class="lnr lnr-calendar-full"></i> {{ obj.date_of_birth }}</a></li>
+                                        <li><a href="#"><i class="lnr lnr-envelope"></i> {{ obj.email }}</a></li>
                                         <li><a href="#"><i class="lnr lnr-home"></i> Kolkata,India</a></li>
                                     </ul>
                                     <ul class="list personal_social">
-                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-github"></i></a></li>
+                                        <li><a href="{{ member.get_absolute_url }}"><i class="fa fa-file-pdf-o"></i></a></li>
+                                        <li><a href="{{ member.git_url}}"><i class="fa fa-github"></i></a></li>
+                                        <li> <a href="{{ member.facebook_url}}"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="{{ member.twiter_url}}"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="{{ member.twiter_url}}"><i class="fa fa-linkedin"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -78,53 +74,19 @@
                 </div>
             </div>
         </div>
-    </section>
-    <section class="gap2">
-        <div class="container2">
-            <div class="caption2"> <span class="border">AND</span> </div>
-        </div>
-    </section>
-    
-    
-    <section class="home_banner_area2">
-        <div class="parallax2">
-            <div class="container box_1620">
-                <div class="banner_inner d-flex align-items-center">
-                    <div class="banner_content">
-                        <div class="media">
-                            <div class="d-flex"> <img src="{% static 'img/core-img/personal.jpg' %}" alt=""> </div>
+        </section>
 
-                            <div class="media-body">
-                                <div class="personal_text">
-                                    <h6>Hello Everybody, i am</h6>
-                                    <h3>Sourabh Sarkar</h3>
-                                    <h4>IT Professional, Game Streamer, Travel Blogger </h4>
-                                    <p>I studied Computer Science in KIIT Deamed to be University, Odissa and I am
-                                        working as an IT Professional, from 2019. In 2020, I decided to start a Gaming
-                                        Blog and Travel Blog that I feel passionate about. And that’s how Our Life on A
-                                        Trail was born. From 2020, I started to release Gaming Videos as ClimbigPoet and
-                                        that’s how most of you know me! </p>
-                                    <ul class="list basic_info">
-                                        <li><a href="#"><i class="lnr lnr-calendar-full"></i> 22nd November, 1996</a>
-                                        </li>
-                                        <li><a href="#"><i class="lnr lnr-envelope"></i> poetclimbing@gmail.com</a></li>
-                                        <li><a href="#"><i class="lnr lnr-home"></i> Kolkata,India</a></li>
-                                    </ul>
-                                    <ul class="list personal_social">
-                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                    </ul>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
+        {% if forloop.last %}
+        {% else %}
+            <section class="gap2">
+                <div class="container2">
+                    <div class="caption2"> <span class="border">AND</span> </div>
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
+        {% endif %}
 
+
+{% endfor %}
 
    <section class="featured-posts">
       <div class="container box_1620">

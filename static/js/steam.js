@@ -101,6 +101,21 @@ function steam()
 
                         `);
                     }
+                    else
+                    {
+                       div.innerHTML = (`
+                         <div class="hero_capsule">
+                            <div class="gamecontainer">
+                                   <div class="game">
+                                        <div class="hero_capsule_img">
+                                              <img class="game-img" src="{% static 'img/core-img/steamnoitem.jpg' %}">
+                                        </div>
+                                   </div>
+                            </div>
+                         </div>
+
+                        `);
+                    }
                 }
                 xhr2.send();
                 divcar.appendChild(div);

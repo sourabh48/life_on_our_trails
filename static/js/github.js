@@ -19,6 +19,7 @@ function my_cool_js_function(username)
         let divcar = document.createElement('div');
         divcar.classList.add('testi_slider')
         divcar.classList.add('owl-carousel')
+
         for (let i in data) {
             // Create variable that will create li's to be added to ul
             let div = document.createElement('div');
@@ -61,14 +62,12 @@ function my_cool_js_function(username)
                 </div>
             `);
             }
-
-
             // Append each li to the ul
             divcar.appendChild(div);
         }
        divid.appendChild(divcar);
        $('.owl-carousel').owlCarousel({
-            items: 3,
+            items: 4,
             margin: 4,
             loop: true,
             dots: false,
@@ -77,8 +76,22 @@ function my_cool_js_function(username)
             autoplayTimeout: 2500,
             smartSpeed: 750,
             margin:10,
-            autoHeight:true
-        })
+            autoHeight:true,
+            responsive: {
+               380: {
+                    items: 1
+               },
+               580: {
+                    items: 1
+                },
+                668: {
+                    items: 2
+                },
+                1092: {
+                    items: 3
+                }
+            }
+        });
      }
 
 

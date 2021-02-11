@@ -10,6 +10,11 @@
     font-style: normal
 }
 
+@font-face {
+    font-family: Sucrose-BoldTwo;
+    src: url('../fonts/Sucrose-BoldTwo.ttf');
+}
+
 .fa {
     display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
