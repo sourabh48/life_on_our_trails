@@ -9,6 +9,7 @@
                 <div class="container box_1620">
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <a class="navbar-brand logo_h" href="/"><img src="{% static 'img/core-img/logo.png' %}" alt=""></a>
+                     <p style="color :white">beta</p>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +49,7 @@
                 <div class="banner_inner d-flex align-items-center">
                     <div class="banner_content">
                         <div class="media">
-                            <div class="d-flex"> <img src="{% static 'img/core-img/sourabh.jpg' %}" alt=""> </div>
+                            <div class="d-flex"> <img src="{{ obj.main_profile_picture.url }}" alt=""> </div>
                             <div class="media-body">
                                 <div class="personal_text">
                                     <h6>Hello Everybody, i am</h6>
@@ -61,11 +62,11 @@
                                         <li><a href="#"><i class="lnr lnr-home"></i> Kolkata,India</a></li>
                                     </ul>
                                     <ul class="list personal_social">
-                                        <li><a href="{{ member.get_absolute_url }}"><i class="fa fa-file-pdf-o"></i></a></li>
-                                        <li><a href="{{ member.git_url}}"><i class="fa fa-github"></i></a></li>
-                                        <li> <a href="{{ member.facebook_url}}"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="{{ member.twiter_url}}"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="{{ member.twiter_url}}"><i class="fa fa-linkedin"></i></a></li>
+                                        <li><a href="{{ obj.get_absolute_url }}"><i class="fa fa-file-pdf-o"></i></a></li>
+                                        <li><a href="{{ obj.linkedin_url}}"><i class="fa fa-linkedin"></i></a></li>
+                                        <li><a href="{{ obj.git_url}}"><i class="fa fa-github"></i></a></li>
+                                        <li> <a href="{{ obj.facebook_url}}"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="{{ obj.twiter_url}}"><i class="fa fa-twitter"></i></a></li>
                                     </ul>
                                 </div>
                             </div>

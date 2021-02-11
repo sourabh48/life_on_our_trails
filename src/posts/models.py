@@ -72,6 +72,7 @@ class Team(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField()
     designation = models.CharField(max_length=50)
+    team_position = models.CharField(max_length=50)
     full_name = models.TextField(max_length=70)
     date_of_birth = models.CharField(max_length=11)
     email = models.EmailField()
@@ -87,6 +88,8 @@ class Team(models.Model):
     mainwork = models.CharField(max_length=170, blank=True)
     mainintro = models.CharField(max_length=570, blank=True)
     mainlocation = models.CharField(max_length=570, blank=True)
+    main_profile_picture = models.ImageField(blank=True)
+
 
 
     def __str__(self):

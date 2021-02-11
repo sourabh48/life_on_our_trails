@@ -375,6 +375,7 @@ button:focus {
     vertical-align: middle;
     align-self: center;
     text-align: left;
+    margin-left: 55px;
 }
 
 .home_banner_area .banner_inner .banner_content .media .d-flex {
@@ -641,8 +642,6 @@ h6 {
     background-image: -webkit-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
     background-image: -ms-linear-gradient(0deg, #766dff 0%, #88f3ff 100%);
 }
-
-
 
 /*----------------------------------------------------*/
 /* Footer Area css
@@ -1383,7 +1382,8 @@ instafeed .single-instaalbum .instaalbum-info p {
 }
 
 .ourteams-body {
-    margin: 55px;
+    margin: 0px;
+    padding: 55px;
 }
 
 .ourteams-heading-title {
@@ -1446,7 +1446,7 @@ instafeed .single-instaalbum .instaalbum-info p {
 }
 
 .our-team .team-wrap {
-    padding: 0 40px;
+    padding: 50px;
 }
 
 .our-team .container-fluid {
@@ -3406,9 +3406,9 @@ html {
     color: #FFB320;
 }
 
-.hero-marketing-text h5 {
+.hero-area .hero-marketing-text h5{
     color: #eee;
-    font-size: 0.85em;
+    font-size: 1.85px;
     font-weight: 300;
     max-width: 500px;
     line-height: 2;
@@ -3609,5 +3609,64 @@ html {
 /* End Footer Area css
 ============================================================================================ */
 /*---------------------------------------------------- */
+
+.social {
+  width: 100%;
+  top: 50%;
+  text-align: center;
+}
+
+.social .link {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px dashed white;
+  background-clip: content-box;
+  padding: 10px;
+  transition: .5s;
+  color: #D7D0BE;
+  margin-left: 13px;
+  margin-right: 13px;
+  font-size: 20px;
+}
+
+.social .link span {
+  display: block;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.social .link:hover {
+  padding: 5px;
+  color: white;
+  margin-left: -5px;
+  transform: translateX(10px) rotate(360deg);
+}
+
+.social .link.google-plus {
+  background-color: red;
+  color: white;
+}
+
+.social .link.twitter {
+  background-color: #00ACEE;
+  color: white;
+}
+
+.social .link.facebook {
+  background-color: #3B5998;
+  color: white;
+}
+
+.social .link.twitch {
+  background-color: #6441a5;
+  color: white;
+}
 
 /*# sourceMappingURL=style.css.map */
