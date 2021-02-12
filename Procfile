@@ -1,1 +1,1 @@
-web: gunicorn life-on-our-trails.wsgi
+web: gunicorn blog.wsgi
