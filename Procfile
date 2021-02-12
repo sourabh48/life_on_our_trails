@@ -1,0 +1,1 @@
+web: gunicorn life_on_our_trails.wsgi
