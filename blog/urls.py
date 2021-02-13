@@ -17,8 +17,4 @@ urlpatterns = [
     path('resume/<id>/', resume, name='member-detail'),
     path('tinymce/', include('tinymce.urls')),
     path(r'hitcount/', include('hitcount.urls', namespace='hitcount')),
-]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
