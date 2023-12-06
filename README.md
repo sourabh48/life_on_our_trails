@@ -16,7 +16,7 @@ It is a personal website soon to be hosted. It is still under development.
 1. Market (ebay clone)
 
 ## Setup
-Install python 3.9
+Install python 3.12
 Install pycharm
 
 In terminal of go to the file location and run the following code:
@@ -27,7 +27,7 @@ python -m venv life_on_our_trails
 
 cd src
 
-c:\users\soura\appdata\local\programs\python\python39\python.exe -m pip install --upgrade pip
+C:\Users\soura\AppData\Local\Programs\Python\Python312\python.exe -m pip install --upgrade pip
 
 ..\life_on_our_trails\Scripts\activate
 
