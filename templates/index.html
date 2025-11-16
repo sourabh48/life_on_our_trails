@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!--================Header Menu Area =================-->
+    <header class="header_area">
+        <div class="main_menu">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container box_1620">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <a class="navbar-brand logo_h" href="/"><img src="{% static 'img/core-img/logo.png' %}" alt=""></a>
+                    <p style="color :white">beta</p>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav menu_nav ml-auto" id="navmenu1">
+                            <li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/allblogs">Blogs</a></li>
+                            <!--                            <li class="nav-item"><a class="nav-link" href="/music">Music</a></li>-->
+                            <li class="nav-item"><a class="nav-link" href="/videos">Gaming</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/ourteam">About Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!--================Header Menu Area =================-->
+
+    <section class="gap">
+        <div class="container">
+            <div class="caption">
+                <span class="border">MADE WITH LOVE</span>
+            </div>
+        </div>
+    </section>
+
+    <!--Content-->
+    {% for obj in mainteam %}
+        <section class="home_banner_area">
+            <div class="parallax1">
+                <div class="container box_1620">
+                    <div class="banner_inner d-flex align-items-center">
+                        <div class="banner_content">
+                            <div class="media">
+                                <div class="d-flex"><img src="{{ obj.main_profile_picture.url }}" alt=""></div>
+                                <div class="media-body">
+                                    <div class="personal_text">
+                                        <h6>Hello Everybody, i am</h6>
+                                        <h3>{{ obj.full_name }}</h3>
+                                        <h4>{{ obj.mainwork }} </h4>
+                                        <p>{{ obj.mainintro }}</p>
+                                        <ul class="list basic_info">
+                                            <li><a href="#"><i
+                                                    class="lnr lnr-calendar-full"></i> {{ obj.date_of_birth }}</a></li>
+                                            <li><a href="#"><i class="lnr lnr-envelope"></i> {{ obj.email }}</a></li>
+                                            <li><a href="#"><i class="lnr lnr-home"></i> Kolkata,India</a></li>
+                                        </ul>
+                                        <ul class="list personal_social">
+                                            <li><a href="{{ obj.get_absolute_url }}"><i
+                                                    class="fa fa-file-pdf-o"></i></a></li>
+                                            <li><a href="{{ obj.linkedin_url }}"><i class="fa fa-linkedin"></i></a></li>
+                                            <li><a href="{{ obj.git_url }}"><i class="fa fa-github"></i></a></li>
+                                            <li><a href="{{ obj.facebook_url }}"><i class="fa fa-facebook"></i></a></li>
+                                            <li><a href="{{ obj.twiter_url }}"><i class="fa fa-twitter"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {% if forloop.last %}
+        {% else %}
+            <section class="gap2">
+                <div class="container2">
+                    <div class="caption2"><span class="border">AND</span></div>
+                </div>
+            </section>
+        {% endif %}
+
+
+    {% endfor %}
+
+    <section class="featured-posts">
+        <div class="container box_1620">
+            <div class="row justify-content-center">
+                <div class="post-heading-title">
+                    <h3 class="post-text-uppercase"> Latest From the blog </h3>
+                    <p class="post-half-txt"> Beautiful Description </p>
+                </div>
+            </div>
+            <div class="row justify-content-center ">
+                <!-- post -->
+                {% for obj in latest %}
+                    <div class="post col-md-3 col-sm-6 card">
+                        <div class="post-thumbnail"><a href="#"><img src="{{ obj.thumbnail.url }}" alt="..."
+                                                                     class="img-fluid"></a></div>
+                        <div class="post-details">
+                            <div class="post-meta d-flex justify-content-between">
+                                {% comment %} <div class="date meta-last">20 May | 2016</div> {% endcomment %}
+                                <div class="post_tag">
+                                    {% for cat in obj.categories.all %}
+                                        <a class="active" href="{{ obj.get_absolute_url }}">{{ cat.title }},</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <a href="{{ obj.get_absolute_url }}"><h3 class="h4">{{ obj.title }}</h3></a>
+                            <p class="text-muted">{{ obj.overview | safe | linebreaks | truncatechars:400 }}</p>
+                            <footer class="post-footer d-flex align-items-center">
+                                <a href="#" class="author d-flex align-items-center flex-wrap">
+                                    <div class="avatar"><img src="{{ obj.author.profile_picture.url }}" alt="..."
+                                                             class="img-fluid"></div>
+                                    <div class="title"><span>{{ obj.author.user.username }}</span></div>
+                                </a>
+                                <div class="date"><i class="icon-clock"></i>{{ obj.timestamp }} </div>
+                                <div class="comments meta-last"><i class="icon-comment"></i>{{ obj.comments.count }}
+                                    comments
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-posts no-padding-top">
+        <div class="container">
+            <div class="row">
+                <div class="post-heading-title">
+                    <h3 class="post-text-uppercase"> Featured Posts </h3>
+                    <p class="post-half-txt"></p>
+                </div>
+            </div>
+            <!-- Post-->
+            {% for obj in object_list %}
+                <div class="row justify-content-center">
+                    <div class="text col-lg-7">
+                        <div class="text-inner d-flex align-items-center">
+                            <div class="content">
+                                <header class="post-header">
+                                    <div class="category">
+                                        {% for cat in obj.categories.all %}
+                                            <a href="#">{{ cat }},</a>
+                                        {% endfor %}
+                                    </div>
+                                    <a href="{{ obj.get_absolute_url }}">
+                                        <h2 class="h4 text-uppercase">{{ obj.title }}</h2>
+                                    </a>
+                                </header>
+                                <p>{{ obj.overview|safe|linebreaks|truncatechars:300 }}</p>
+                                <footer class="post-footer d-flex align-items-center"><a href="#"
+                                                                                         class="author d-flex align-items-center flex-wrap">
+                                    <div class="avatar"><img src="{{ obj.author.profile_picture.url }}" alt="..."
+                                                             class="img-fluid"></div>
+                                    <div class="title"><span>{{ obj.author }}</span></div>
+                                </a>
+                                    <div class="date"><i class="icon-clock"></i> {{ obj.timestamp }}</div>
+                                    <div class="comments"><i class="icon-comment"></i>{{ obj.comments.count }} comments
+                                    </div>
+                                </footer>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image col-lg-3"><img src="{{ obj.thumbnail.url }}" alt="..."></div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+{% endblock content %}
+

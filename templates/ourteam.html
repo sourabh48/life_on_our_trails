@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!--================Header Menu Area =================-->
+
+    <header class="header_area">
+        <div class="main_menu">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container box_1620">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <a class="navbar-brand logo_h" href="/"><img src="{% static 'img/core-img/logo.png' %}" alt=""></a>
+                    <p style="color :white">beta</p>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav menu_nav ml-auto" id="navmenu1">
+                            <li class="nav-item "><a class="nav-link" href="/">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/allblogs">Blogs</a></li>
+                            <!--                            <li class="nav-item"><a class="nav-link" href="/music">Music</a></li>-->
+                            <li class="nav-item"><a class="nav-link" href="/videos">Gaming</a></li>
+                            <li class="nav-item active"><a class="nav-link" href="/ourteam">About Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!--================Header Menu Area =================-->
+
+    <section class="ourteam_home_banner_area">
+        <div class="parallax1">
+            <div class="container box_1620">
+                <div class="row">
+                    <div class="ourteams-heading-title">
+                        <h3 class="ourteams-text-uppercase">About Us </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ourteams-body">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="ourteams-heading-title1">
+                        <h3 class="ourteams-text-uppercase1">Our Story</h3>
+                        <p class="text-left"> The Pandemic Lockdown supported new ways on the digital platforms for
+                            everybody. Occasionally somebody would be either looking for data or contributing to a blog
+                            at some point of time.</p>
+                        <p class="text-left"> Seeing this we concocted the plan to make a stage where our users can
+                            discover data on every point given by our Bloggers, All in One Place.</p>
+                        <p class="text-left"> Likewise, this will make a local area of bloggers where they can develop
+                            and uphold one another by sharing their day to day story of their life through various
+                            contents. From this thought, we concocted the name "The Life on The Trails".</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <img src="{% static 'img/core-img/blogging_image.jpg' %}" alt="" class="img-fluid">
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <section class="ourteams-body">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="{% static 'img/core-img/mission.jpg' %}" alt="" class="img-fluid">
+                </div>
+                <div class="col-md-6">
+                    <div class="ourteams-heading-title1">
+                        <h3 class="ourteams-text-uppercase1">Our Mission</h3>
+                        <p class="text-left"> Our main goal is to carry data to our perusers given by our Bloggers and
+                            keep them refreshed on every point.</p>
+
+                        <p class="text-left"> Additionally to make a local area of bloggers, from where they can develop
+                            their compass, worth, and experience just as help and backing one another.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ourteams-body">
+        <div class="container">
+
+            <div class="row">
+                <div class="ourteams-heading-title1">
+                    <h3 class="ourteams-text-uppercase1">Our Teams </h3>
+                    <p class="ourteams-half-txt1">Let Me Introduce to our Teams </p>
+                </div>
+            </div>
+
+            <div class="row team-row">
+                {% for member in team_list %}
+                    <div class="col-md-3 col-sm-6 team-wrap">
+                        <div class="team-member text-center">
+                            <div class="team-img">
+                                <img src="{{ member.profile_picture.url }}" alt="">
+                                <div class="overlay">
+                                    <div class="team-details text-center">
+                                        <p>
+                                            Our web design team will spend time with our digital marketing team.
+                                        </p>
+
+                                        <div class="socials mt-20">
+                                            <a href="{{ member.get_absolute_url }}"><i class="fa fa-file-pdf-o"></i></a>
+                                            <a href="{{ member.git_url }}"><i class="fa fa-github"></i></a>
+                                            <a href="{{ member.facebook_url }}"><i class="fa fa-facebook"></i></a>
+                                            <a href="{{ member.twiter_url }}"><i class="fa fa-twitter"></i></a>
+                                            <a href="mailto:{{ member.email }}"> <i class="fa fa-envelope"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h6 class="team-title">{{ member.full_name }}</h6>
+                                <span>{{ member.team_position }} </span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <!-- end team member -->
+            </div>
+        </div>
+    </section>
+
+    <section class="contact_area p_120">
+        <div class="container">
+            <div class="row">
+                <div class="ourteams-heading-title1">
+                    <h3 class="ourteams-text-uppercase1">Contact Us</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="contact_info">
+                        <div class="info_item">
+                            <i class="lnr lnr-home"></i>
+                            <h6>Kolkata,India</h6>
+                            <p></p>
+                        </div>
+                        <div class="info_item">
+                            <i class="lnr lnr-phone-handset"></i>
+                            <h6><a href="#">+91 7077927159</a></h6>
+                            <p>Mon to Fri 9am to 6 pm</p>
+                        </div>
+                        <div class="info_item">
+                            <i class="lnr lnr-envelope"></i>
+                            <h6><a href="#">sourabh.654321@outlook.com</a></h6>
+                            <p>Send us your query anytime!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <form class="row contact_form" action="contact_process.php" method="post" id="contactForm"
+                          novalidate="novalidate">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="name" name="name"
+                                       placeholder="Enter your name">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" id="email" name="email"
+                                       placeholder="Enter email address">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="subject" name="subject"
+                                       placeholder="Enter Subject">
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" name="message" id="message" rows="1"
+                                          placeholder="Enter Message"></textarea>
+                            </div>
+                            <div class="col-md-12 text-right">
+                                <button type="submit" value="submit" class="btn submit_btn">Send Message</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="{% static 'img/core-img/contact_us.jpg' %}" alt="" class="img-fluid">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}
