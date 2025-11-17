@@ -1,26 +1,35 @@
 from django.urls import path
 from posts import views
+from posts import views as post_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
 
+# AUTH ROUTES
+    path('login/', post_views.custom_login, name='login'),
+    path('signup/', post_views.signup, name='signup'),
+    path('logout/', post_views.custom_logout, name='logout'),
     # HOME PAGE
     path('', views.index, name='index'),
 
-    # BLOG
+    # BLOG LIST
     path('allblogs/', views.allblogs, name='allblogs'),
+
+    # SINGLE BLOG
     path('singleblog/<int:id>/', views.singleblog, name='singleblog'),
 
     # SEARCH
     path('search/', views.search, name='search'),
 
-    # CRUD (new)
+    # CRUD
     path('post/create/', views.create_post, name='create_post'),
     path('post/edit/<int:post_id>/', views.edit_post, name='edit_post'),
     path('post/delete/<int:post_id>/', views.delete_post, name='delete_post'),
 
-    # LEGACY PAGES
+    # STATIC PAGES
     path('videos/', views.videos, name='videos'),
     path('music/', views.music, name='music'),
     path('ourteam/', views.ourteam, name='ourteam'),
     path('resume/<int:id>/', views.resume, name='resume'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
