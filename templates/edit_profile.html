@@ -1,59 +1,77 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block content %}
 
     <link rel="stylesheet" href="{% static 'css/account.css' %}">
+    <section class="profile_container">
+        <div class="account-page page-offset">
 
-    <div class="account-page">
-        <div class="account-layout">
+            <div class="glass-card" style="max-width: 480px; margin: auto; padding: 35px;">
 
-            <!-- LEFT: SUMMARY PREVIEW -->
-            <div class="glass-card account-summary slide-in-left">
-                <img src="{{ profile.avatar.url }}" class="account-avatar">
+                <h2 class="account-panel-title" style="text-align: center; margin-bottom: 20px;">
+                    Edit Profile
+                </h2>
 
-                <div class="account-username">@{{ user.username }}</div>
-                <div class="account-email">{{ user.email }}</div>
-
-                {% if profile.bio %}
-                    <p class="account-bio">{{ profile.bio }}</p>
-                {% endif %}
-
-                <div class="account-buttons">
-                    <a href="{% url 'profile' user.username %}" class="account-btn account-btn-secondary">
-                        Back to Profile
-                    </a>
-                    <a href="{% url 'dashboard' %}" class="account-btn account-btn-primary">
-                        Open Dashboard
-                    </a>
+                <!-- Avatar Preview -->
+                <div style="text-align:center; margin-bottom:20px;">
+                    <img src="{{ profile.avatar.url }}"
+                         style="width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid rgba(255,255,255,0.6);">
                 </div>
-            </div>
 
-            <!-- RIGHT: EDIT FORM -->
-            <div class="glass-card slide-in-right">
-                <h2 class="account-panel-title">Edit Profile</h2>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
 
-                <form method="POST" enctype="multipart/form-data" class="account-form">
-                {% csrf_token %}
+                    <!-- Avatar -->
+                    <label class="account-label">Avatar</label>
+                    <input type="file" name="avatar" class="account-input" accept="image/*">
 
-                    <label>Avatar</label>
-                    <input type="file" name="avatar" class="account-input">
+                    <!-- Full Name -->
+                    <label class="account-label">Full Name</label>
+                    <input type="text" name="full_name" class="account-input"
+                           value="{{ profile.full_name }}">
 
-                    <label>Username</label>
-                    <input type="text" name="username" class="account-input" value="{{ user.username }}">
+                    <!-- Designation -->
+                    <label class="account-label">Designation</label>
+                    <input type="text" name="designation" class="account-input"
+                           value="{{ profile.designation }}">
 
-                    <label>Email</label>
-                    <input type="email" name="email" class="account-input" value="{{ user.email }}">
+                    <!-- Bio -->
+                    <label class="account-label">Bio</label>
+                    <textarea name="bio" class="account-textarea">{{ profile.bio }}</textarea>
 
-                    <label>Bio</label>
-                    <textarea name="bio" class="account-textarea" rows="3">{{ profile.bio }}</textarea>
+                    <!-- LinkedIn -->
+                    <label class="account-label">LinkedIn</label>
+                    <input type="url" name="linkedin_url" class="account-input"
+                           value="{{ profile.linkedin_url }}">
 
-                    <button type="submit" class="account-btn account-btn-primary">
-                        Save Changes
-                    </button>
-            </form>
+                    <!-- GitHub -->
+                    <label class="account-label">GitHub</label>
+                    <input type="url" name="git_url" class="account-input"
+                           value="{{ profile.git_url }}">
+
+                    <!-- Instagram -->
+                    <label class="account-label">Instagram</label>
+                    <input type="url" name="insta_url" class="account-input"
+                           value="{{ profile.insta_url }}">
+
+                    <!-- Buttons -->
+                    <div style="margin-top: 25px; display:flex; flex-direction:column; gap:12px;">
+                        <button type="submit" class="account-btn account-btn-primary">
+                            Save Changes
+                        </button>
+
+                        <a href="{% url 'profile' user.username %}"
+                           class="account-btn account-btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+
+                </form>
+
             </div>
 
         </div>
-    </div>
+    </section>
 
 {% endblock %}

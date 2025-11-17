@@ -1,6 +1,8 @@
 from django import forms
 from tinymce.widgets import TinyMCE
+
 from .models import Post, Comment
+from .models import Profile
 
 
 # TinyMCE (kept from your old config)
@@ -58,3 +60,21 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('name', 'email', 'body')
+
+
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = [
+            'avatar',
+            'full_name',
+            'designation',
+            'bio',
+            'linkedin_url',
+            'git_url',
+            'insta_url',
+        ]
+
+        widgets = {
+            'bio': forms.Textarea(attrs={'rows': 4}),
+        }

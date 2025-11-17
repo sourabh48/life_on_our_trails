@@ -11,11 +11,37 @@ User = get_user_model()
 def avatar_path(instance, filename):
     return f'avatars/{instance.user.username}/{filename}'
 
-
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    avatar = models.ImageField(upload_to=avatar_path, default='avatars/default.png', blank=True)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="profile"
+    )
+
+    # Main avatar
+    avatar = models.ImageField(
+        upload_to=avatar_path,
+        default='avatars/default.png',
+        blank=True
+    )
+
+    # Merged fields from Profile + Author
+    full_name = models.CharField(max_length=70, blank=True, null=True)
+    designation = models.CharField(max_length=50, blank=True, null=True)
+
     bio = models.TextField(blank=True, null=True)
+    about_author = models.TextField(blank=True, null=True)
+
+    linkedin_url = models.URLField(blank=True, null=True)
+    git_url = models.URLField(blank=True, null=True)
+    insta_url = models.URLField(blank=True, null=True)
+
+    # Optional secondary image
+    profile_picture = models.ImageField(
+        upload_to=avatar_path,
+        blank=True,
+        null=True
+    )
 
     def __str__(self):
         return self.user.username
@@ -25,20 +51,6 @@ class Profile(models.Model):
 def create_profile_for_user(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
-
-
-class Author(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_picture = models.ImageField()
-    designation = models.CharField(max_length=50)
-    about_author = models.TextField()
-    linkedin_url = models.URLField()
-    git_url = models.URLField()
-    insta_url = models.URLField()
-    full_name = models.TextField(max_length=70)
-
-    def __str__(self):
-        return self.user.username
 
 
 class Category(models.Model):

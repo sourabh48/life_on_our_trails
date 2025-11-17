@@ -6,101 +6,110 @@
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <script defer src="{% static 'js/login.js' %}"></script>
 
+    {# Django messages for login / signup feedback #}
+    {% if messages %}
+        <div class="auth-messages">
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <div id="container" class="auth-container sign-in">
 
         <div class="row">
 
-        <!-- SIGN UP -->
-        <div class="col align-items-center flex-col sign-up">
-            <div class="form-wrapper align-items-center">
-                <form class="form sign-up" method="POST" action="{% url 'signup' %}">
-                    {% csrf_token %}
+            <!-- SIGN UP -->
+            <div class="col align-items-center flex-col sign-up">
+                <div class="form-wrapper align-items-center">
+                    <form class="form sign-up" method="POST" action="{% url 'signup' %}">
+                        {% csrf_token %}
 
-                    <div class="input-group">
-                        <i class='bx bxs-user'></i>
-                        <input type="text" name="username" placeholder="Username" required>
-                    </div>
+                        <div class="input-group">
+                            <i class='bx bxs-user'></i>
+                            <input type="text" name="username" placeholder="Username" required>
+                        </div>
 
-                    <div class="input-group">
-                        <i class='bx bx-mail-send'></i>
-                        <input type="email" name="email" placeholder="Email" required>
-                    </div>
+                        <div class="input-group">
+                            <i class='bx bx-mail-send'></i>
+                            <input type="email" name="email" placeholder="Email" required>
+                        </div>
 
-                    <div class="input-group">
-                        <i class='bx bxs-lock-alt'></i>
-                        <input type="password" name="password" placeholder="Password" required>
-                    </div>
+                        <div class="input-group">
+                            <i class='bx bxs-lock-alt'></i>
+                            <input type="password" name="password" placeholder="Password" required>
+                        </div>
 
-                    <div class="input-group">
-                        <i class='bx bxs-lock-alt'></i>
-                        <input type="password" name="confirm_password" placeholder="Confirm password" required>
-                    </div>
+                        <div class="input-group">
+                            <i class='bx bxs-lock-alt'></i>
+                            <input type="password" name="confirm_password" placeholder="Confirm password" required>
+                        </div>
 
-                    <button type="submit">Sign up</button>
+                        <button type="submit">Sign up</button>
 
-                    <p>
-                        <span>Already have an account?</span>
-                        <b onclick="toggle()" class="pointer">Sign in here</b>
-                    </p>
-                </form>
+                        <p>
+                            <span>Already have an account?</span>
+                            <b onclick="toggle()" class="pointer">Sign in here</b>
+                        </p>
+                    </form>
+                </div>
             </div>
+
+            <!-- SIGN IN -->
+            <div class="col align-items-center flex-col sign-in">
+                <div class="form-wrapper align-items-center">
+                    <form class="form sign-in" method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+
+                        <div class="input-group">
+                            <i class='bx bxs-user'></i>
+                            <input type="text" name="username" placeholder="Username" required>
+                        </div>
+
+                        <div class="input-group">
+                            <i class='bx bxs-lock-alt'></i>
+                            <input type="password" name="password" placeholder="Password" required>
+                        </div>
+
+                        <button type="submit">Sign in</button>
+
+                        <p><b>Forgot password?</b></p>
+
+                        <p>
+                            <span>Don't have an account?</span>
+                            <b onclick="toggle()" class="pointer">Sign up here</b>
+                        </p>
+                    </form>
+                </div>
+            </div>
+
         </div>
 
-        <!-- SIGN IN -->
-        <div class="col align-items-center flex-col sign-in">
-            <div class="form-wrapper align-items-center">
-                <form class="form sign-in" method="POST" action="{% url 'login' %}">
-                    {% csrf_token %}
+        <!-- CONTENT SECTION -->
+        <div class="row content-row">
 
-                    <div class="input-group">
-                        <i class='bx bxs-user'></i>
-                        <input type="text" name="username" placeholder="Username" required>
-                    </div>
-
-                    <div class="input-group">
-                        <i class='bx bxs-lock-alt'></i>
-                        <input type="password" name="password" placeholder="Password" required>
-                    </div>
-
-                    <button type="submit">Sign in</button>
-
-                    <p><b>Forgot password?</b></p>
-
-                    <p>
-                        <span>Don't have an account?</span>
-                        <b onclick="toggle()" class="pointer">Sign up here</b>
-                    </p>
-                </form>
+            <div class="col align-items-center flex-col">
+                <div class="text sign-in">
+                    <h2>Welcome</h2>
+                    <p>Explore. Share. Create your trails.</p>
+                </div>
+                <div class="img sign-in">
+                    <img src="{% static 'img/core-img/login-welcome.png' %}" alt="">
+                </div>
             </div>
+
+            <div class="col align-items-center flex-col">
+                <div class="img sign-up">
+                    <img src="{% static 'img/core-img/login-join.png' %}" alt="">
+                </div>
+                <div class="text sign-up">
+                    <h2>Join with us</h2>
+                    <p>Your story begins here.</p>
+                </div>
+            </div>
+
         </div>
 
     </div>
-
-    <!-- CONTENT SECTION -->
-        <div class="row content-row">
-
-        <div class="col align-items-center flex-col">
-            <div class="text sign-in">
-                <h2>Welcome</h2>
-                <p>Explore. Share. Create your trails.</p>
-            </div>
-            <div class="img sign-in">
-                <img src="{% static 'img/core-img/login-welcome.png' %}" alt="">
-            </div>
-        </div>
-
-        <div class="col align-items-center flex-col">
-            <div class="img sign-up">
-                <img src="{% static 'img/core-img/login-join.png' %}" alt="">
-            </div>
-            <div class="text sign-up">
-                <h2>Join with us</h2>
-                <p>Your story begins here.</p>
-            </div>
-        </div>
-
-        </div>
-
-</div>
 
 {% endblock %}

@@ -1,10 +1,15 @@
 from django.contrib import admin
+from django.utils.html import format_html
 
 from .models import (
-    Comment, Author, Category, Post, Team,
+    Comment, Category, Post, Team,
     Experience, Education, Skill, Profile
 )
 
+
+# ----------------------------
+# Comment Admin
+# ----------------------------
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
@@ -17,9 +22,63 @@ class CommentAdmin(admin.ModelAdmin):
         queryset.update(active=True)
 
 
-# SIMPLE REGISTRATIONS
-admin.site.register(Profile)
-admin.site.register(Author)
+# ----------------------------
+# Profile Admin (Unified Profile)
+# ----------------------------
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    readonly_fields = ("avatar_preview",)
+
+    fieldsets = (
+        ("User Information", {
+            "fields": (
+                "user",
+                "avatar",
+                "avatar_preview",
+                "full_name",
+                "profile_picture",  # added here so it saves
+            )
+        }),
+        ("Professional Details", {
+            "fields": (
+                "designation",
+                "bio",
+                "about_author",
+            )
+        }),
+        ("Social Links", {
+            "fields": (
+                "linkedin_url",
+                "git_url",
+                "insta_url",
+            )
+        }),
+    )
+
+    list_display = ("user", "full_name", "designation", "avatar_preview_small")
+
+    def avatar_preview(self, obj):
+        if obj.avatar:
+            return format_html(
+                '<img src="{}" width="120" style="border-radius:8px;" />',
+                obj.avatar.url
+            )
+        return "No Avatar"
+
+    def avatar_preview_small(self, obj):
+        if obj.avatar:
+            return format_html(
+                '<img src="{}" width="40" style="border-radius:4px;" />',
+                obj.avatar.url
+            )
+        return "—"
+
+
+# ----------------------------
+# Simple Registrations
+# ----------------------------
+
 admin.site.register(Category)
 admin.site.register(Post)
 admin.site.register(Team)
