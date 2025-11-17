@@ -11,6 +11,7 @@ User = get_user_model()
 def avatar_path(instance, filename):
     return f'avatars/{instance.user.username}/{filename}'
 
+
 class Profile(models.Model):
     user = models.OneToOneField(
         User,
@@ -18,14 +19,12 @@ class Profile(models.Model):
         related_name="profile"
     )
 
-    # Main avatar
     avatar = models.ImageField(
         upload_to=avatar_path,
-        default='avatars/default.png',
+        default='avatars/default.png',  # Make sure: media/avatars/default.png exists
         blank=True
     )
 
-    # Merged fields from Profile + Author
     full_name = models.CharField(max_length=70, blank=True, null=True)
     designation = models.CharField(max_length=50, blank=True, null=True)
 
@@ -36,7 +35,7 @@ class Profile(models.Model):
     git_url = models.URLField(blank=True, null=True)
     insta_url = models.URLField(blank=True, null=True)
 
-    # Optional secondary image
+    # Secondary image
     profile_picture = models.ImageField(
         upload_to=avatar_path,
         blank=True,
@@ -45,6 +44,12 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    @property
+    def avatar_url(self):
+        if self.avatar:
+            return self.avatar.url
+        return "/static/defaults/avatar.png"  # fallback (must exist)
 
 
 @receiver(post_save, sender=User)

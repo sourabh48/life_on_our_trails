@@ -259,6 +259,68 @@ button:focus {
     line-height: 70px;
 }
 
+/* -----------------------------------------------------
+   Enhanced Navbar Avatar (Gradient Ring + Hover Zoom)
+   ----------------------------------------------------- */
+
+.nav-avatar-wrapper {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    padding: 2px;
+
+    background: linear-gradient(135deg,
+    #FF6B6B,
+    #FFD93D,
+    #6BCB77,
+    #4D96FF);
+    background-size: 300% 300%;
+    animation: navAvatarGradient 6s ease infinite;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+
+    /* Smooth transitions */
+    transition: transform 0.3s ease;
+}
+
+.nav-avatar-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Hover Zoom effect */
+.nav-avatar-wrapper:hover .nav-avatar-img {
+    transform: scale(1.12);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.65);
+}
+
+/* Animated Gradient Ring */
+@keyframes navAvatarGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Username text – keeps your original design */
+.username-text {
+    color: #fff !important;
+    font-weight: 500;
+}
+
 .top_menu {
     background: #f9f9ff;
 }

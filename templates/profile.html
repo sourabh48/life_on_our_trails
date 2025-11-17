@@ -38,8 +38,8 @@
                         <span class="stat-pill">Posts: {{ posts|length }}</span>
                         <span class="stat-pill">Comments: {{ comments|length }}</span>
                         <span class="stat-pill">
-                            Member since: {{ user_obj.date_joined|date:"M Y" }}
-                        </span>
+                        Member since: {{ user_obj.date_joined|date:"M Y" }}
+                    </span>
                     </div>
 
                     {% if request.user.username == user_obj.username %}
@@ -52,8 +52,7 @@
                                class="account-btn account-btn-warning">
                                 Change Password
                             </a>
-                            <a href="{% url 'dashboard' %}"
-                               class="account-btn account-btn-secondary">
+                            <a href="{% url 'dashboard' %}" class="account-btn account-btn-secondary">
                                 Open Dashboard
                             </a>
                         </div>

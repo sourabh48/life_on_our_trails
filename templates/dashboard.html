@@ -8,6 +8,15 @@
     <section class="profile_container">
     <div class="account-page">
 
+        {# Messages block #}
+        {% if messages %}
+            <div class="account-messages">
+                {% for message in messages %}
+                    <div class="alert {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         <!-- =========================== -->
         <!--         TOP GRID            -->
         <!-- =========================== -->
@@ -15,7 +24,12 @@
 
             <!-- LEFT: SUMMARY -->
             <div class="glass-card account-summary slide-in-left">
+
+                {% if profile.avatar %}
                 <img src="{{ profile.avatar.url }}" class="account-avatar">
+                {% else %}
+                    <img src="{% static 'img/default-avatar.png' %}" class="account-avatar">
+                {% endif %}
 
                 <div class="account-username">@{{ user.username }}</div>
                 <div class="account-email">{{ user.email }}</div>
@@ -45,7 +59,7 @@
 
                 <div class="timeline-grid">
 
-                {% for post in posts %}
+                    {% for post in posts %}
                     <div class="timeline-card">
                         <h4>📝 {{ post.title }}</h4>
                         <p>{{ post.content|truncatewords:28 }}</p>
@@ -53,9 +67,9 @@
                             Post • {{ post.created_at|date:"d M Y, H:i" }}
                         </div>
                     </div>
-                {% endfor %}
+                    {% endfor %}
 
-                {% for c in comments %}
+                    {% for c in comments %}
                     <div class="timeline-card">
                         <h4>💬 Comment on “{{ c.post.title }}”</h4>
                         <p>{{ c.body|truncatewords:24 }}</p>
@@ -63,13 +77,15 @@
                             Comment • {{ c.created_on|date:"d M Y, H:i" }}
                         </div>
                     </div>
-                {% endfor %}
+                    {% endfor %}
 
                     {% if posts|length == 0 and comments|length == 0 %}
-                        <p class="account-empty">No activity yet. Create a post or join a discussion.</p>
-                {% endif %}
+                        <p class="account-empty">
+                            No activity yet. Create a post or join a discussion.
+                        </p>
+                    {% endif %}
+                </div>
             </div>
-        </div>
 
         </div> <!-- END GRID -->
 
@@ -79,20 +95,23 @@
         <!-- =========================== -->
         <div class="analytics-wrapper fade-in">
 
+            {% with posts|length as posts_count %}
+                {% with comments|length as comments_count %}
+
             <!-- === SUMMARY CARDS === -->
             <div class="analytics-cards">
                 <div class="a-card glass">
-                    <h3>{{ posts|length }}</h3>
+                    <h3>{{ posts_count }}</h3>
                     <p>Total Posts</p>
                 </div>
 
                 <div class="a-card glass">
-                    <h3>{{ comments|length }}</h3>
+                    <h3>{{ comments_count }}</h3>
                     <p>Total Comments</p>
                 </div>
 
                 <div class="a-card glass">
-                    <h3>{{ posts|length|add:comments|length }}</h3>
+                    <h3>{{ posts_count|add:comments_count }}</h3>
                     <p>Total Interactions</p>
                 </div>
             </div>
@@ -105,8 +124,7 @@
                 <div class="bar-row">
                     <span>Posts</span>
                     <div class="bar-track">
-                        <div class="bar-fill posts-bar"
-                             style="width: {{ posts|length|mul:4|cap100 }}%;">
+                        <div class="bar-fill posts-bar" style="width: {{ posts_count|mul:4|cap100 }}%;">
                         </div>
                     </div>
                 </div>
@@ -115,8 +133,7 @@
                 <div class="bar-row">
                     <span>Comments</span>
                     <div class="bar-track">
-                        <div class="bar-fill comments-bar"
-                             style="width: {{ comments|length|mul:4|cap100 }}%;">
+                        <div class="bar-fill comments-bar" style="width: {{ comments_count|mul:4|cap100 }}%;">
                         </div>
                     </div>
                 </div>
@@ -127,9 +144,9 @@
                 <h2>Your Engagement Ratio</h2>
 
                 <div class="radial-group">
-                    <div class="radial" style="--progress: {{ posts|length|add:comments|length }};">
+                    <div class="radial" style="--progress: {{ posts_count|add:comments_count }};">
                         <div class="inner">
-                            <span>{{ posts|length }} + {{ comments|length }}</span>
+                            <span>{{ posts_count }} + {{ comments_count }}</span>
                         </div>
                     </div>
 
@@ -137,14 +154,16 @@
                 </div>
             </div>
 
+                {% endwith %}
+            {% endwith %}
+
             <!-- === HEATMAP === -->
             <div class="heatmap glass">
                 <h2>Activity Heatmap</h2>
 
                 <div class="heatmap-grid">
                     {% for i in "123456789012345678901234" %}
-                        <div class="heat-dot"
-                             style="opacity: {{ i|add:"0"|divisibleby:6|yesno:"1,0.3" }}">
+                        <div class="heat-dot" style="opacity: {{ i|add:" 0"|divisibleby:6|yesno:"1,0.3" }}">
                         </div>
                     {% endfor %}
                 </div>

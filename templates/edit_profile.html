@@ -4,8 +4,18 @@
 {% block content %}
 
     <link rel="stylesheet" href="{% static 'css/account.css' %}">
+
     <section class="profile_container">
         <div class="account-page page-offset">
+
+            {# Messages block #}
+            {% if messages %}
+                <div class="account-messages">
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
 
             <div class="glass-card" style="max-width: 480px; margin: auto; padding: 35px;">
 
@@ -15,12 +25,25 @@
 
                 <!-- Avatar Preview -->
                 <div style="text-align:center; margin-bottom:20px;">
-                    <img src="{{ profile.avatar.url }}"
-                         style="width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid rgba(255,255,255,0.6);">
+                    {% if profile.avatar %}
+                        <img src="{{ profile.avatar.url }}" style="width:120px; height:120px; border-radius:50%;
+                                object-fit:cover; border:3px solid rgba(255,255,255,0.6);">
+                    {% else %}
+                        <img src="{% static 'img/default-avatar.png' %}" style="width:120px; height:120px; border-radius:50%;
+                                object-fit:cover; border:3px solid rgba(255,255,255,0.6);">
+                    {% endif %}
                 </div>
 
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
+
+                    <!-- Username -->
+                    <label class="account-label">Username</label>
+                    <input type="text" name="username" class="account-input" value="{{ user.username }}">
+
+                    <!-- Email -->
+                    <label class="account-label">Email</label>
+                    <input type="email" name="email" class="account-input" value="{{ user.email }}">
 
                     <!-- Avatar -->
                     <label class="account-label">Avatar</label>
@@ -28,13 +51,11 @@
 
                     <!-- Full Name -->
                     <label class="account-label">Full Name</label>
-                    <input type="text" name="full_name" class="account-input"
-                           value="{{ profile.full_name }}">
+                    <input type="text" name="full_name" class="account-input" value="{{ profile.full_name }}">
 
                     <!-- Designation -->
                     <label class="account-label">Designation</label>
-                    <input type="text" name="designation" class="account-input"
-                           value="{{ profile.designation }}">
+                    <input type="text" name="designation" class="account-input" value="{{ profile.designation }}">
 
                     <!-- Bio -->
                     <label class="account-label">Bio</label>
@@ -42,18 +63,15 @@
 
                     <!-- LinkedIn -->
                     <label class="account-label">LinkedIn</label>
-                    <input type="url" name="linkedin_url" class="account-input"
-                           value="{{ profile.linkedin_url }}">
+                    <input type="url" name="linkedin_url" class="account-input" value="{{ profile.linkedin_url }}">
 
                     <!-- GitHub -->
                     <label class="account-label">GitHub</label>
-                    <input type="url" name="git_url" class="account-input"
-                           value="{{ profile.git_url }}">
+                    <input type="url" name="git_url" class="account-input" value="{{ profile.git_url }}">
 
                     <!-- Instagram -->
                     <label class="account-label">Instagram</label>
-                    <input type="url" name="insta_url" class="account-input"
-                           value="{{ profile.insta_url }}">
+                    <input type="url" name="insta_url" class="account-input" value="{{ profile.insta_url }}">
 
                     <!-- Buttons -->
                     <div style="margin-top: 25px; display:flex; flex-direction:column; gap:12px;">
@@ -61,8 +79,7 @@
                             Save Changes
                         </button>
 
-                        <a href="{% url 'profile' user.username %}"
-                           class="account-btn account-btn-secondary">
+                        <a href="{% url 'profile' user.username %}" class="account-btn account-btn-secondary">
                             Cancel
                         </a>
                     </div>

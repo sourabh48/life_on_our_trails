@@ -82,9 +82,42 @@
 
                         {% else %}
 
-                            <!-- Login (when user not logged in) -->
-                            <li class="nav-item login-right {% if '/login' in request.path %}active{% endif %}">
-                                <a class="nav-link" href="{% url 'login' %}">Login</a>
+                            <li class="nav-item dropdown profile-nav-item">
+
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
+                                   role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    <div class="nav-avatar-wrapper">
+                                        {% if request.user.profile.avatar %}
+                                            <img src="{{ request.user.profile.avatar.url }}" class="nav-avatar-img"
+                                                 alt="Avatar">
+                                        {% else %}
+                                            <img src="{% static 'img/default-avatar.png' %}" class="nav-avatar-img"
+                                                 alt="Avatar">
+                                        {% endif %}
+                                    </div>
+
+                                    <span class="username-text">{{ user.username|title }}</span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right animate slideIn"
+                                     aria-labelledby="userDropdown">
+
+                                    <a class="dropdown-item" href="/profile/{{ user.username }}">
+                                        Profile
+                                    </a>
+
+                                    <a class="dropdown-item" href="{% url 'create_post' %}">
+                                        New Post
+                                    </a>
+
+                                    <div class="dropdown-divider"></div>
+
+                                    <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                        Logout
+                                    </a>
+                                </div>
                             </li>
 
                         {% endif %}
