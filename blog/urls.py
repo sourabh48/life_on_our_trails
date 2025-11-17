@@ -6,7 +6,7 @@ from django.urls import path
 from posts import views as post_views
 
 urlpatterns = [
-
+    path('editor/upload/', post_views.editor_image_upload, name='editor_image_upload'),
     # AUTH
     path('login/', post_views.custom_login, name='login'),
     path('signup/', post_views.signup, name='signup'),

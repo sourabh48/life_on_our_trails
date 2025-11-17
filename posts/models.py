@@ -1,16 +1,33 @@
+import math
+import re
+import uuid
+
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.urls import reverse
-from hitcount.models import HitCount
+from django.utils.text import slugify
 
 User = get_user_model()
 
 
+# ==========================
+# PATH HELPERS
+# ==========================
+
 def avatar_path(instance, filename):
     return f'avatars/{instance.user.username}/{filename}'
 
+
+def post_upload_path(instance, filename):
+    ext = filename.split('.')[-1]
+    return f"posts/uploads/{uuid.uuid4()}.{ext}"
+
+
+# ==========================
+# PROFILE MODEL
+# ==========================
 
 class Profile(models.Model):
     user = models.OneToOneField(
@@ -21,7 +38,7 @@ class Profile(models.Model):
 
     avatar = models.ImageField(
         upload_to=avatar_path,
-        default='avatars/default.png',  # Make sure: media/avatars/default.png exists
+        default='avatars/default.png',
         blank=True
     )
 
@@ -35,7 +52,6 @@ class Profile(models.Model):
     git_url = models.URLField(blank=True, null=True)
     insta_url = models.URLField(blank=True, null=True)
 
-    # Secondary image
     profile_picture = models.ImageField(
         upload_to=avatar_path,
         blank=True,
@@ -49,7 +65,7 @@ class Profile(models.Model):
     def avatar_url(self):
         if self.avatar:
             return self.avatar.url
-        return "/static/defaults/avatar.png"  # fallback (must exist)
+        return "/static/defaults/avatar.png"
 
 
 @receiver(post_save, sender=User)
@@ -58,16 +74,91 @@ def create_profile_for_user(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
 
 
+# ==========================
+# CATEGORY + TAG MODELS
+# ==========================
+
 class Category(models.Model):
-    title = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=30, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+# ==========================
+# POST MODEL (UPGRADED)
+# ==========================
+
+class Post(models.Model):
+    STATUS_CHOICES = (
+        ("draft", "Draft"),
+        ("published", "Published"),
+    )
+
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=260, unique=True, blank=True)
+
+    content = models.TextField()  # Quill HTML
+    image = models.ImageField(upload_to='posts/', blank=True, null=True)
+
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    # New fields
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True)
+
+    read_time = models.IntegerField(default=1)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="published")
 
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse("singleblog", kwargs={"id": self.id})
+
+    @property
+    def estimated_read_time(self):
+        return f"{self.read_time} min read"
+
+
+# ==========================
+# AUTO SLUG + READ-TIME GENERATOR
+# ==========================
+
+@receiver(pre_save, sender=Post)
+def auto_generate_post_meta(sender, instance, *args, **kwargs):
+    # Slug generation
+    if not instance.slug:
+        base = slugify(instance.title)
+        slug = base
+        counter = 1
+
+        while Post.objects.filter(slug=slug).exists():
+            slug = f"{base}-{counter}"
+            counter += 1
+
+        instance.slug = slug
+
+    # Calculate read time: remove HTML -> count words -> divide 200 wpm
+    text_only = re.sub("<[^<]+?>", "", instance.content)
+    words = len(text_only.split())
+    instance.read_time = max(1, math.ceil(words / 200))
+
+
+# ==========================
+# COMMENT MODEL
+# ==========================
 
 class Comment(models.Model):
-    post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='comments')
-    # NEW: optional link to registered user, for timeline
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='user_comments')
 
     name = models.CharField(max_length=80)
@@ -80,19 +171,12 @@ class Comment(models.Model):
         ordering = ['created_on']
 
     def __str__(self):
-        return 'Comment {} by {}'.format(self.body, self.name)
+        return f"Comment {self.body} by {self.name}"
 
 
-class Post(models.Model):
-    title = models.CharField(max_length=255)
-    content = models.TextField()
-    image = models.ImageField(upload_to='posts/', blank=True, null=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.title
-
+# ==========================
+# TEAM MODULE (UNCHANGED)
+# ==========================
 
 class Team(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -120,13 +204,15 @@ class Team(models.Model):
         return self.user.username
 
     def get_absolute_url(self):
-        return reverse('member-detail', kwargs={
-            'id': self.id
-        })
+        return reverse('member-detail', kwargs={'id': self.id})
 
+
+# ==========================
+# TEAM DETAILS
+# ==========================
 
 class Skill(models.Model):
-    member = models.ForeignKey('Team', on_delete=models.CASCADE, related_name='skill')
+    member = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='skill')
     skilltopic = models.CharField(max_length=50)
     skillpercentage = models.IntegerField()
 
@@ -135,7 +221,7 @@ class Skill(models.Model):
 
 
 class Education(models.Model):
-    team = models.ForeignKey('Team', on_delete=models.CASCADE, related_name='education')
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='education')
     institution = models.CharField(max_length=36)
     location = models.CharField(max_length=100)
     from_year = models.CharField(max_length=50)
@@ -146,7 +232,7 @@ class Education(models.Model):
 
 
 class Experience(models.Model):
-    team = models.ForeignKey('Team', on_delete=models.CASCADE, related_name='experience')
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='experience')
     institution = models.CharField(max_length=36)
     position = models.CharField(max_length=50)
     location = models.CharField(max_length=100)

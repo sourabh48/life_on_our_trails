@@ -1,19 +1,112 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
-    <h2>Create Post</h2>
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label>Title:</label><br>
-        <input type="text" name="title" required><br><br>
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 
-        <label>Content:</label><br>
-        <textarea name="content" rows="6" required></textarea><br><br>
+    <div class="container mt-5 mb-5">
+        <div class="card shadow-lg p-4" style="border-radius: 12px;">
 
-        <label>Image:</label><br>
-        <input type="file" name="image"><br><br>
+            <h2 class="mb-4 text-center" style="font-weight:700;">Create New Post</h2>
 
-        <button type="submit">Create</button>
-    </form>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Title -->
+                <div class="form-group mb-4">
+                    <label class="font-weight-bold">Title</label>
+                    <input type="text" name="title" class="form-control custom-input" required>
+                </div>
+
+                <!-- Hidden input to store final HTML -->
+                <input type="hidden" name="content" id="content-input">
+
+                <!-- QUILL EDITOR -->
+                <div id="quill-editor" style="height:350px;background:#fff;border-radius:8px;"></div>
+
+                <!-- Image (Featured) -->
+                <div class="form-group mt-4 mb-4">
+                    <label class="font-weight-bold">Featured Image</label>
+                    <input type="file" name="image" class="form-control">
+                </div>
+
+                <!-- Submit -->
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary px-5 py-2" style="font-size:16px;">Create Post</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+    <script>
+        const editor = new Quill("#quill-editor", {
+            theme: "snow",
+            placeholder: "Write your article… You can paste images, embed YouTube, drag & drop files.",
+            modules: {
+                toolbar: {
+                    container: [
+                        [{header: [1, 2, 3, false]}],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{color: []}, {background: []}],
+                        [{list: 'ordered'}, {list: 'bullet'}],
+                        ['link', 'image', 'video'],
+                        ['clean']
+                    ],
+                    handlers: {
+                        image: quillImageHandler
+                    }
+                }
+            }
+        });
+
+        // Custom Image Upload Handler
+        function quillImageHandler() {
+            const input = document.createElement("input");
+            input.setAttribute("type", "file");
+            input.setAttribute("accept", "image/*");
+            input.click();
+
+            input.onchange = async () => {
+                const file = input.files[0];
+                if (!file) return;
+
+                const formData = new FormData();
+                formData.append("image", file);
+
+                const res = await fetch("{% url 'editor_image_upload' %}", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (data.success === 1) {
+                    const range = editor.getSelection();
+                    editor.insertEmbed(range.index, "image", data.url);
+                }
+            };
+        }
+
+        // Auto-sync HTML on submit
+        document.querySelector("form").onsubmit = function () {
+            document.querySelector("#content-input").value = editor.root.innerHTML;
+        };
+    </script>
+
+    <style>
+        .custom-input {
+            border-radius: 8px;
+            height: 45px;
+        }
+
+        .ql-container {
+            border-radius: 8px !important;
+            border-color: #ced4da !important;
+        }
+    </style>
 
 {% endblock %}
