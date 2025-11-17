@@ -1,8 +1,9 @@
-from django.urls import path
-from posts import views
-from posts import views as post_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.urls import path
+
+from posts import views
+from posts import views as post_views
 
 urlpatterns = [
 
@@ -10,6 +11,11 @@ urlpatterns = [
     path('login/', post_views.custom_login, name='login'),
     path('signup/', post_views.signup, name='signup'),
     path('logout/', post_views.custom_logout, name='logout'),
+
+                  path('profile/<str:username>/', views.profile, name='profile'),
+                  path('profile/<str:username>/edit/', views.edit_profile, name='edit_profile'),
+                  path('profile/<str:username>/change-password/', views.change_password, name='change_password'),
+
     # HOME PAGE
     path('', views.index, name='index'),
 

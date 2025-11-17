@@ -1,0 +1,93 @@
+/* Container */
+.profile-container {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 10px;
+}
+
+/* Glass Card */
+.glass {
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 40px;
+    width: 400px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+/* Avatar */
+.avatar-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Text */
+.username {
+    font-size: 1.7rem;
+    font-weight: 600;
+}
+
+.email {
+    color: #ddd;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+}
+
+/* Buttons */
+.btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    margin-top: 10px;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    transition: 0.3s ease;
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.btn.primary {
+    background: #4EA685;
+}
+
+.btn.warning {
+    background: #b94a48;
+}
+
+/* Inputs */
+.input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 15px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    outline: none;
+    font-size: 1rem;
+}
+
+/* Headings */
+h2 {
+    margin-bottom: 20px;
+    color: #fff;
+}

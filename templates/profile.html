@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+
+    <div class="profile-container">
+
+        <div class="profile-card glass">
+
+            <div class="avatar-wrapper">
+                <img src="{% static 'img/core-img/user.png' %}" class="avatar">
+            </div>
+
+            <h2 class="username">@{{ user.username }}</h2>
+            <p class="email">{{ user.email }}</p>
+
+            <div class="profile-actions">
+                {% if request.user.username == user.username %}
+                    <a href="{% url 'edit_profile' user.username %}" class="btn primary">Edit Profile</a>
+                    <a href="{% url 'change_password' user.username %}" class="btn warning">Change Password</a>
+                {% endif %}
+                <a href="{% url 'index' %}" class="btn">Back to Home</a>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}
