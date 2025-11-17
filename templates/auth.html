@@ -1,20 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% load static %}
 
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <title>Login / Sign Up</title>
+{% block content %}
 
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <script defer src="{% static 'js/login.js' %}"></script>
-</head>
 
-<body>
+    <div id="container" class="auth-container sign-in">
 
-<div id="container" class="container">
-
-    <div class="row">
+        <div class="form-row">
 
         <!-- SIGN UP -->
         <div class="col align-items-center flex-col sign-up">
@@ -83,24 +77,28 @@
     </div>
 
     <!-- CONTENT SECTION -->
-    <div class="row content-row">
+        <div class="hero-row">
         <div class="col align-items-center flex-col">
             <div class="text sign-in">
                 <h2>Welcome</h2>
+                <p>Explore. Share. Create your trails.</p>
             </div>
-            <div class="img sign-in"></div>
+            <div class="img sign-in">
+                <img src="{% static 'img/core-img/login-welcome.png' %}" alt="">
+            </div>
         </div>
 
         <div class="col align-items-center flex-col">
-            <div class="img sign-up"></div>
+            <div class="img sign-up">
+                <img src="{% static 'img/core-img/login-join.png' %}" alt="">
+            </div>
             <div class="text sign-up">
                 <h2>Join with us</h2>
+                <p>Your story begins here.</p>
             </div>
         </div>
     </div>
 
 </div>
 
-</body>
-
-</html>
+{% endblock %}

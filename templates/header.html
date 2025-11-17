@@ -1,0 +1,97 @@
+{% load static %}
+
+<header class="header_area">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container box_1620">
+
+                <!-- Brand Logo -->
+                <a class="navbar-brand logo_h" href="/">
+                    <img src="{% static 'img/core-img/logo.png' %}" alt="Life on Our Trails">
+                </a>
+                <p style="color:white; margin: 0 10px;">beta</p>
+
+                <!-- Mobile Menu Toggle -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false"
+                        aria-label="Toggle navigation">
+
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <!-- Navigation Menu -->
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto" id="navmenu1">
+
+                        <!-- Home -->
+                        <li class="nav-item {% if request.path == '/' %}active{% endif %}">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+
+                        <!-- Blogs -->
+                        <li class="nav-item {% if '/allblogs' in request.path %}active{% endif %}">
+                            <a class="nav-link" href="/allblogs">Blogs</a>
+                        </li>
+
+                        <!-- Gaming -->
+                        <li class="nav-item {% if '/videos' in request.path %}active{% endif %}">
+                            <a class="nav-link" href="/videos">Gaming</a>
+                        </li>
+
+                        <!-- About Us -->
+                        <li class="nav-item {% if '/ourteam' in request.path %}active{% endif %}">
+                            <a class="nav-link" href="/ourteam">About Us</a>
+                        </li>
+
+                        {% if user.is_authenticated %}
+
+                            <!-- Profile Dropdown -->
+                            <li class="nav-item dropdown profile-nav-item">
+
+                                <a class="nav-link dropdown-toggle d-flex align-items-center"
+                                   href="#" id="userDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    <img src="{% static 'img/core-img/user.png' %}"
+                                         class="nav-profile-img" alt="User">
+
+                                    <span class="username-text">{{ user.username|title }}</span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right animate slideIn"
+                                     aria-labelledby="userDropdown">
+
+                                    <a class="dropdown-item" href="/profile/{{ user.username }}">
+                                        Profile
+                                    </a>
+
+                                    <a class="dropdown-item" href="{% url 'create_post' %}">
+                                        New Post
+                                    </a>
+
+                                    <div class="dropdown-divider"></div>
+
+                                    <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                        Logout
+                                    </a>
+                                </div>
+                            </li>
+
+                        {% else %}
+
+                            <!-- Login (when user not logged in) -->
+                            <li class="nav-item login-right {% if '/login' in request.path %}active{% endif %}">
+                                <a class="nav-link" href="{% url 'login' %}">Login</a>
+                            </li>
+
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
