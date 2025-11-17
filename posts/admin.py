@@ -1,7 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
-from .models import Author, Category, Post, Comment, Team, Experience, Education, Skill
+from .models import (
+    Comment, Author, Category, Post, Team,
+    Experience, Education, Skill, Profile
+)
 
 
 @admin.register(Comment)
@@ -15,6 +17,8 @@ class CommentAdmin(admin.ModelAdmin):
         queryset.update(active=True)
 
 
+# SIMPLE REGISTRATIONS
+admin.site.register(Profile)
 admin.site.register(Author)
 admin.site.register(Category)
 admin.site.register(Post)

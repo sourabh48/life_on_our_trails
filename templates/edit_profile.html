@@ -4,21 +4,29 @@
 
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 
-    <div class="profile-container">
-        <div class="profile-card glass">
+    <div class="account-page">
+        <div class="account-card slide-in-left">
 
             <h2>Edit Profile</h2>
+
+            <img src="{{ profile.avatar.url }}" class="avatar">
 
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
-                <label>Username</label>
-                <input type="text" name="username" value="{{ user.username }}" class="input">
+                <label class="label-text">Change Avatar</label>
+                <input type="file" name="avatar" class="input">
 
-                <label>Email</label>
-                <input type="email" name="email" value="{{ user.email }}" class="input">
+                <label class="label-text">Username</label>
+                <input type="text" name="username" class="input" value="{{ user.username }}">
 
-                <button type="submit" class="btn primary mt-2">Save Changes</button>
+                <label class="label-text">Email</label>
+                <input type="email" name="email" class="input" value="{{ user.email }}">
+
+                <label class="label-text">Bio</label>
+                <textarea name="bio" class="input" rows="3">{{ profile.bio }}</textarea>
+
+                <button type="submit" class="btn btn-primary">Save Changes</button>
             </form>
 
         </div>

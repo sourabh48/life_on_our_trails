@@ -1,12 +1,30 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse
-from tinymce.models import HTMLField
-from django.contrib.contenttypes.fields import GenericRelation
-
 from hitcount.models import HitCount
 
 User = get_user_model()
+
+
+def avatar_path(instance, filename):
+    return f'avatars/{instance.user.username}/{filename}'
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    avatar = models.ImageField(upload_to=avatar_path, default='avatars/default.png', blank=True)
+    bio = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username
+
+
+@receiver(post_save, sender=User)
+def create_profile_for_user(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
 
 
 class Author(models.Model):
@@ -32,6 +50,9 @@ class Category(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='comments')
+    # NEW: optional link to registered user, for timeline
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='user_comments')
+
     name = models.CharField(max_length=80)
     email = models.EmailField()
     body = models.TextField()
@@ -51,6 +72,9 @@ class Post(models.Model):
     image = models.ImageField(upload_to='posts/', blank=True, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
 
 
 class Team(models.Model):

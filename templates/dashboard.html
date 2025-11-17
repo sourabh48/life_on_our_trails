@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    <div class="account-page">
+
+        <div class="dashboard-container slide-in">
+
+            <!-- Header -->
+            <div class="dashboard-header glass">
+                <img src="{{ profile.avatar.url }}" class="avatar-sm">
+                <div>
+                    <h2>@{{ user.username }}</h2>
+                    <p>{{ user.email }}</p>
+                </div>
+            </div>
+
+            <h3 class="timeline-title">Your Timeline</h3>
+
+            <div class="timeline">
+
+                {% for post in posts %}
+                    <div class="timeline-card glass fade-card">
+                        <h4>{{ post.title }}</h4>
+                        <p>{{ post.content|truncatewords:25 }}</p>
+                        <small>📝 Posted on {{ post.created_at }}</small>
+                    </div>
+                {% endfor %}
+
+                {% for c in comments %}
+                    <div class="timeline-card glass fade-card">
+                        <h4>💬 Commented on "{{ c.post.title }}"</h4>
+                        <p>{{ c.body|truncatewords:25 }}</p>
+                        <small>{{ c.created_on }}</small>
+                    </div>
+                {% endfor %}
+
+                {% if not posts and not comments %}
+                    <p class="no-activity">No activity yet — start posting!</p>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}
