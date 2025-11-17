@@ -2,32 +2,56 @@
 {% load static %}
 {% block content %}
 
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
 
     <div class="account-page">
-        <div class="account-card slide-in-left">
+        <div class="account-layout">
 
-            <h2>Edit Profile</h2>
+            <!-- LEFT: SUMMARY PREVIEW -->
+            <div class="glass-card account-summary slide-in-left">
+                <img src="{{ profile.avatar.url }}" class="account-avatar">
 
-            <img src="{{ profile.avatar.url }}" class="avatar">
+                <div class="account-username">@{{ user.username }}</div>
+                <div class="account-email">{{ user.email }}</div>
 
-            <form method="POST" enctype="multipart/form-data">
+                {% if profile.bio %}
+                    <p class="account-bio">{{ profile.bio }}</p>
+                {% endif %}
+
+                <div class="account-buttons">
+                    <a href="{% url 'profile' user.username %}" class="account-btn account-btn-secondary">
+                        Back to Profile
+                    </a>
+                    <a href="{% url 'dashboard' %}" class="account-btn account-btn-primary">
+                        Open Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <!-- RIGHT: EDIT FORM -->
+            <div class="glass-card slide-in-right">
+                <h2 class="account-panel-title">Edit Profile</h2>
+
+                <form method="POST" enctype="multipart/form-data" class="account-form">
                 {% csrf_token %}
 
-                <label class="label-text">Change Avatar</label>
-                <input type="file" name="avatar" class="input">
+                    <label>Avatar</label>
+                    <input type="file" name="avatar" class="account-input">
 
-                <label class="label-text">Username</label>
-                <input type="text" name="username" class="input" value="{{ user.username }}">
+                    <label>Username</label>
+                    <input type="text" name="username" class="account-input" value="{{ user.username }}">
 
-                <label class="label-text">Email</label>
-                <input type="email" name="email" class="input" value="{{ user.email }}">
+                    <label>Email</label>
+                    <input type="email" name="email" class="account-input" value="{{ user.email }}">
 
-                <label class="label-text">Bio</label>
-                <textarea name="bio" class="input" rows="3">{{ profile.bio }}</textarea>
+                    <label>Bio</label>
+                    <textarea name="bio" class="account-textarea" rows="3">{{ profile.bio }}</textarea>
 
-                <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="submit" class="account-btn account-btn-primary">
+                        Save Changes
+                    </button>
             </form>
+            </div>
 
         </div>
     </div>

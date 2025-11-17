@@ -1,50 +1,157 @@
 {% extends "base.html" %}
 {% load static %}
+{% load math_filters %}
 {% block content %}
 
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
 
     <div class="account-page">
 
-        <div class="dashboard-container slide-in">
+        <!-- =========================== -->
+        <!--         TOP GRID            -->
+        <!-- =========================== -->
+        <div class="account-layout">
 
-            <!-- Header -->
-            <div class="dashboard-header glass">
-                <img src="{{ profile.avatar.url }}" class="avatar-sm">
-                <div>
-                    <h2>@{{ user.username }}</h2>
-                    <p>{{ user.email }}</p>
+            <!-- LEFT: SUMMARY -->
+            <div class="glass-card account-summary slide-in-left">
+                <img src="{{ profile.avatar.url }}" class="account-avatar">
+
+                <div class="account-username">@{{ user.username }}</div>
+                <div class="account-email">{{ user.email }}</div>
+
+                {% if profile.bio %}
+                    <p class="account-bio">{{ profile.bio }}</p>
+                {% endif %}
+
+                <div class="account-stats">
+                    <span class="stat-pill">Total Posts: {{ posts|length }}</span>
+                    <span class="stat-pill">Total Comments: {{ comments|length }}</span>
+                </div>
+
+                <div class="account-buttons">
+                    <a href="{% url 'profile' user.username %}" class="account-btn account-btn-secondary">
+                        View Public Profile
+                    </a>
+                    <a href="{% url 'edit_profile' user.username %}" class="account-btn account-btn-primary">
+                        Edit Profile
+                    </a>
                 </div>
             </div>
 
-            <h3 class="timeline-title">Your Timeline</h3>
+            <!-- RIGHT: TIMELINE -->
+            <div class="glass-card slide-in-right">
+                <h2 class="account-panel-title">Your Timeline</h2>
 
-            <div class="timeline">
+                <div class="timeline-grid">
 
                 {% for post in posts %}
-                    <div class="timeline-card glass fade-card">
-                        <h4>{{ post.title }}</h4>
-                        <p>{{ post.content|truncatewords:25 }}</p>
-                        <small>📝 Posted on {{ post.created_at }}</small>
+                    <div class="timeline-card">
+                        <h4>📝 {{ post.title }}</h4>
+                        <p>{{ post.content|truncatewords:28 }}</p>
+                        <div class="timeline-meta">
+                            Post • {{ post.created_at|date:"d M Y, H:i" }}
+                        </div>
                     </div>
                 {% endfor %}
 
                 {% for c in comments %}
-                    <div class="timeline-card glass fade-card">
-                        <h4>💬 Commented on "{{ c.post.title }}"</h4>
-                        <p>{{ c.body|truncatewords:25 }}</p>
-                        <small>{{ c.created_on }}</small>
+                    <div class="timeline-card">
+                        <h4>💬 Comment on “{{ c.post.title }}”</h4>
+                        <p>{{ c.body|truncatewords:24 }}</p>
+                        <div class="timeline-meta">
+                            Comment • {{ c.created_on|date:"d M Y, H:i" }}
+                        </div>
                     </div>
                 {% endfor %}
 
-                {% if not posts and not comments %}
-                    <p class="no-activity">No activity yet — start posting!</p>
+                    {% if posts|length == 0 and comments|length == 0 %}
+                        <p class="account-empty">No activity yet. Create a post or join a discussion.</p>
                 {% endif %}
+            </div>
+        </div>
 
+        </div> <!-- END GRID -->
+
+
+        <!-- =========================== -->
+        <!--      FULL-WIDTH ANALYTICS   -->
+        <!-- =========================== -->
+        <div class="analytics-wrapper fade-in">
+
+            <!-- === SUMMARY CARDS === -->
+            <div class="analytics-cards">
+                <div class="a-card glass">
+                    <h3>{{ posts|length }}</h3>
+                    <p>Total Posts</p>
+                </div>
+
+                <div class="a-card glass">
+                    <h3>{{ comments|length }}</h3>
+                    <p>Total Comments</p>
+                </div>
+
+                <div class="a-card glass">
+                    <h3>{{ posts|length|add:comments|length }}</h3>
+                    <p>Total Interactions</p>
+                </div>
             </div>
 
-        </div>
+            <!-- === BAR CHART === -->
+            <div class="bar-chart glass">
+                <h2>Engagement Stats</h2>
+
+                <!-- POSTS BAR -->
+                <div class="bar-row">
+                    <span>Posts</span>
+                    <div class="bar-track">
+                        <div class="bar-fill posts-bar"
+                             style="width: {{ posts|length|mul:4|cap100 }}%;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMMENTS BAR -->
+                <div class="bar-row">
+                    <span>Comments</span>
+                    <div class="bar-track">
+                        <div class="bar-fill comments-bar"
+                             style="width: {{ comments|length|mul:4|cap100 }}%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === RADIAL PROGRESS === -->
+            <div class="radial-stats glass">
+                <h2>Your Engagement Ratio</h2>
+
+                <div class="radial-group">
+                    <div class="radial" style="--progress: {{ posts|length|add:comments|length }};">
+                        <div class="inner">
+                            <span>{{ posts|length }} + {{ comments|length }}</span>
+                        </div>
+                    </div>
+
+                    <p>Overall Activity Score</p>
+                </div>
+            </div>
+
+            <!-- === HEATMAP === -->
+            <div class="heatmap glass">
+                <h2>Activity Heatmap</h2>
+
+                <div class="heatmap-grid">
+                    {% for i in "123456789012345678901234" %}
+                        <div class="heat-dot"
+                             style="opacity: {{ i|add:"0"|divisibleby:6|yesno:"1,0.3" }}">
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <p class="heatmap-caption">Your activity over time (GitHub-style)</p>
+            </div>
+
+        </div> <!-- END ANALYTICS -->
 
     </div>
 

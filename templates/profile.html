@@ -2,20 +2,72 @@
 {% load static %}
 {% block content %}
 
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
 
     <div class="account-page">
-        <div class="account-card slide-in">
+        <div class="account-layout">
 
-            <img src="{{ profile.avatar.url }}" class="avatar">
+            <!-- LEFT: PROFILE SUMMARY -->
+            <div class="glass-card account-summary slide-in-left">
+                <img src="{{ profile.avatar.url }}" class="account-avatar">
 
-            <h2>@{{ user_obj.username }}</h2>
-            <p class="email-text">{{ user_obj.email }}</p>
+                <div class="account-username">@{{ user_obj.username }}</div>
+                <div class="account-email">{{ user_obj.email }}</div>
 
-            <div class="btn-group">
-                <a href="{% url 'edit_profile' user_obj.username %}" class="btn btn-primary">Edit Profile</a>
-                <a href="{% url 'change_password' user_obj.username %}" class="btn btn-warning">Change Password</a>
-                <a href="{% url 'dashboard' %}" class="btn btn-secondary">View Dashboard</a>
+                {% if profile.bio %}
+                    <p class="account-bio">{{ profile.bio }}</p>
+                {% endif %}
+
+                <div class="account-stats">
+                    <span class="stat-pill">Posts: {{ posts|length }}</span>
+                    <span class="stat-pill">Comments: {{ comments|length }}</span>
+                    <span class="stat-pill">Member since: {{ user_obj.date_joined|date:"M Y" }}</span>
+                </div>
+
+                {% if request.user.username == user_obj.username %}
+                    <div class="account-buttons">
+                        <a href="{% url 'edit_profile' user_obj.username %}" class="account-btn account-btn-primary">
+                            Edit Profile
+                        </a>
+                        <a href="{% url 'change_password' user_obj.username %}" class="account-btn account-btn-warning">
+                            Change Password
+                        </a>
+                        <a href="{% url 'dashboard' %}" class="account-btn account-btn-secondary">
+                            Open Dashboard
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- RIGHT: TIMELINE PREVIEW -->
+            <div class="glass-card slide-in-right">
+                <h2 class="account-panel-title">Recent Activity</h2>
+
+                <div class="timeline-grid">
+                    {% for post in posts|slice:":3" %}
+                        <div class="timeline-card">
+                            <h4>📝 {{ post.title }}</h4>
+                            <p>{{ post.content|truncatewords:20 }}</p>
+                            <div class="timeline-meta">
+                                Posted on {{ post.created_at|date:"d M Y, H:i" }}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    {% for c in comments|slice:":3" %}
+                        <div class="timeline-card">
+                            <h4>💬 Commented on “{{ c.post.title }}”</h4>
+                            <p>{{ c.body|truncatewords:20 }}</p>
+                            <div class="timeline-meta">
+                                {{ c.created_on|date:"d M Y, H:i" }}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    {% if posts|length == 0 and comments|length == 0 %}
+                        <p class="account-empty">No activity yet. Start by writing your first post!</p>
+                    {% endif %}
+                </div>
             </div>
 
         </div>
