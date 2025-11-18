@@ -1,26 +1,56 @@
-;(function ($) {
-    "use strict"
+(function ($) {
+    "use strict";
 
-
+    var lastScroll = 0;
     var nav_offset_top = $('header').height() + 50;
-    /*-------------------------------------------------------------------------------
-	  Navbar 
-	-------------------------------------------------------------------------------*/
 
-    //* Navbar Fixed
     function navbarFixed() {
         if ($('.header_area').length) {
-            $(window).scroll(function () {
-                var scroll = $(window).scrollTop();
+            $(window).on('scroll', function () {
+
+                let scroll = $(this).scrollTop();
+                let header = $(".header_area");
+
+                /* ============================
+                   1. Your original fixed navbar
+                   ============================ */
                 if (scroll >= nav_offset_top) {
-                    $(".header_area").addClass("navbar_fixed");
+                    header.addClass("navbar_fixed");
                 } else {
-                    $(".header_area").removeClass("navbar_fixed");
+                    header.removeClass("navbar_fixed");
                 }
+
+                /* ============================
+                   2. Transparent when at top
+                   ============================ */
+                if (scroll <= 5) {
+                    header.removeClass("nav-visible nav-hidden");
+                    header.addClass("at-top");
+                    lastScroll = scroll;
+                    return;
+                } else {
+                    header.removeClass("at-top");
+                }
+
+                /* ============================
+                   3. Hide on scroll down
+                   ============================ */
+                if (scroll > lastScroll) {
+                    header.removeClass("nav-visible").addClass("nav-hidden");
+                }
+
+                /* ============================
+                   4. Show on scroll up
+                   ============================ */
+                else {
+                    header.removeClass("nav-hidden").addClass("nav-visible");
+                }
+
+                lastScroll = scroll;
             });
         }
-        ;
-    };
+    }
+
     navbarFixed();
 
 

@@ -17,8 +17,8 @@
                 }
             });
         }
-        ;
-    };
+
+    }
     navbarFixed();
 
     function testimonialSlider() {

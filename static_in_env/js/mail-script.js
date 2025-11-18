@@ -22,7 +22,7 @@ $(document).ready(function () {
                 alert.html(data).fadeIn(); // fade in response data
                 form.trigger('reset'); // reset form
                 submit.attr("style", "display: none !important");
-                ; // reset submit button text
+                // reset submit button text
             },
             error: function (e) {
                 console.log(e)

@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <!--================Header Menu Area =================-->
 
@@ -15,27 +16,27 @@
 
     <!--Content-->
     {% for obj in mainteam %}
-        <section class="home_banner_area">
+        <section class="home_banner_area fade-section">
             <div class="parallax1">
                 <div class="container box_1620">
                     <div class="banner_inner d-flex align-items-center">
                         <div class="banner_content">
                             <div class="media">
-                                <div class="d-flex">
-                                    {{% if obj.profile_picture and obj.profile_picture.name %}
-                                    <img src="{{ obj.profile_picture.url }}" alt=""/>
-                                {% elif obj.avatar and obj.avatar.name %}
-                                    <img src="{{ obj.avatar.url }}" alt=""/>
-                                {% else %}
-                                    <img src="{% static 'img/default-avatar.png' %}" alt=""/>
-                                {% endif %}
+                                <div class="d-flex stagger-item stagger-avatar">
+                                    {% if obj.profile_picture and obj.profile_picture.name %}
+                                        <img src="{{ obj.profile_picture.url }}" alt=""/>
+                                    {% elif obj.avatar and obj.avatar.name %}
+                                        <img src="{{ obj.avatar.url }}" alt=""/>
+                                    {% else %}
+                                        <img src="{% static 'img/default-avatar.png' %}" alt=""/>
+                                    {% endif %}
                                 </div>
-                                <div class="media-body">
+                                <div class="media-body stagger-item stagger-text">
                                     <div class="personal_text">
-                                        <h6>Hello Everybody, i am</h6>
-                                        <h3>{{ obj.full_name }}</h3>
-                                        <h4>{{ obj.mainwork }} </h4>
-                                        <p>{{ obj.mainintro }}</p>
+                                        <div class="stagger-text-line"><h6>Hello Everybody, I am</h6></div>
+                                        <div class="stagger-text-line"><h3>{{ obj.full_name }}</h3></div>
+                                        <div class="stagger-text-line"><h4>{{ obj.mainwork }}</h4></div>
+                                        <div class="stagger-text-line"><p>{{ obj.mainintro }}</p></div>
                                         <ul class="list basic_info">
                                             <li><a href="#"><i
                                                     class="lnr lnr-calendar-full"></i> {{ obj.date_of_birth }}</a></li>
@@ -73,122 +74,127 @@
 
     <section class="featured-posts">
         <div class="container box_1620">
-            <div class="row justify-content-center">
-                <div class="post-heading-title">
-                    <h3 class="post-text-uppercase"> Latest From the blog </h3>
-                    <p class="post-half-txt"> Beautiful Description </p>
+
+            <div class="post-heading-title text-center">
+                <div class="section-heading text-center">
+                    <h1 class="latest-title">LATEST FROM THE BLOG</h1>
+                    <p class="latest-subtitle">Stay updated with fresh stories, insights, and inspiration curated just
+                        for you.</p>
                 </div>
             </div>
 
-            <div class="row justify-content-center">
-                {% for obj in latest %}
-                    <div class="post col-md-3 col-sm-6 card">
-                        {% if obj.image %}
-                            <div class="post-thumbnail">
-                                <a href="{% url 'singleblog' obj.id %}">
-                                    <img src="{{ obj.image.url }}" alt="{{ obj.title }}" class="img-fluid">
-                                </a>
-                            </div>
-                        {% endif %}
-                        <div class="post-details">
-                            <div class="post-meta d-flex justify-content-between">
-                                <div class="date meta-last">
-                                    <i class="lnr lnr-calendar-full"></i>
-                                    {{ obj.created_at|date:"d M Y" }}
-                                </div>
-                                <div class="comments meta-last">
-                                    <i class="lnr lnr-bubble"></i>
-                                    {{ obj.comments.count }} comments
-                                </div>
-                            </div>
+            <!-- Swiper Carousel -->
+            <div class="swiper blogSwiper">
+                <div class="swiper-wrapper">
 
-                            <a href="{% url 'singleblog' obj.id %}">
-                                <h3 class="h4">{{ obj.title }}</h3>
-                            </a>
+                    {% for obj in latest %}
+                        <div class="swiper-slide stagger">
+                            <div class="post card">
 
-                            <p class="text-muted">
-                                {{ obj.content|striptags|truncatechars:160 }}
-                            </p>
-
-                            <footer class="post-footer d-flex align-items-center">
-                                <a href="#" class="author d-flex align-items-center flex-wrap">
-                                    <div class="avatar">
-                                        {% if obj.author.profile.avatar %}
-                                            <img src="{{ obj.author.profile.avatar.url }}"
-                                                 alt="{{ obj.author.username }}"
-                                                 class="img-fluid rounded-circle">
-                                        {% endif %}
+                                {% if obj.image %}
+                                    <div class="post-thumbnail" data-category="BLOG">
+                                        <a href="{% url 'singleblog' obj.id %}">
+                                            <img src="{{ obj.image.url }}" alt="{{ obj.title }}">
+                                        </a>
                                     </div>
-                                    <div class="title">
-                                        <span>{{ obj.author.username }}</span>
+                                {% endif %}
+
+                                <div class="post-details">
+                                    <div class="post-meta d-flex justify-content-between">
+                                        <span><i
+                                                class="lnr lnr-calendar-full"></i> {{ obj.created_at|date:"d M Y" }}</span>
+                                        <span><i class="lnr lnr-bubble"></i> {{ obj.comments.count }} comments</span>
                                     </div>
-                                </a>
-                            </footer>
-                        </div>
-                    </div>
-                {% empty %}
-                    <p>No posts yet.</p>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
 
-    <section class="featured-posts no-padding-top">
-        <div class="container">
-            <div class="row">
-                <div class="post-heading-title">
-                    <h3 class="post-text-uppercase"> Featured Posts </h3>
-                    <p class="post-half-txt"></p>
-                </div>
-            </div>
-
-            {% for obj in object_list %}
-                <div class="row justify-content-center">
-                    <div class="image col-lg-5">
-                        {% if obj.image %}
-                            <a href="{% url 'singleblog' obj.id %}">
-                                <img src="{{ obj.image.url }}" alt="{{ obj.title }}" class="img-fluid">
-                            </a>
-                        {% endif %}
-                    </div>
-                    <div class="text col-lg-7">
-                        <div class="text-inner d-flex align-items-center">
-                            <div class="content">
-                                <header class="post-header">
                                     <a href="{% url 'singleblog' obj.id %}">
-                                        <h2 class="h4 text-uppercase">{{ obj.title }}</h2>
+                                        <h3 class="h4">{{ obj.title }}</h3>
                                     </a>
-                                </header>
-                                <p>{{ obj.content|striptags|truncatechars:260 }}</p>
-                                <footer class="post-footer d-flex align-items-center">
-                                    <a href="#" class="author d-flex align-items-center flex-wrap">
+
+                                    <p class="text-muted">
+                                        {{ obj.content|striptags|truncatechars:150 }}
+                                    </p>
+
+                                    <a href="{% url 'singleblog' obj.id %}" class="read-more-btn">Read More →</a>
+
+                                    <footer class="post-footer d-flex align-items-center mt-3">
                                         <div class="avatar">
                                             {% if obj.author.profile.avatar %}
                                                 <img src="{{ obj.author.profile.avatar.url }}"
-                                                     alt="{{ obj.author.username }}"
-                                                     class="img-fluid rounded-circle">
+                                                     alt="{{ obj.author.username }}" class="rounded-circle">
                                             {% endif %}
                                         </div>
+
                                         <div class="title">
                                             <span>{{ obj.author.username }}</span>
                                         </div>
-                                    </a>
-                                    <div class="date">
-                                        <i class="icon-clock"></i>
-                                        {{ obj.created_at|date:"d M Y" }}
-                                    </div>
-                                    <div class="comments meta-last">
-                                        <i class="icon-comment"></i>
-                                        {{ obj.comments.count }} comments
-                                    </div>
-                                </footer>
+                                    </footer>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    {% endfor %}
+
                 </div>
-            {% empty %}
-                <p class="text-center mb-5">No featured posts available.</p>
-            {% endfor %}
+
+                <!-- Navigation Arrows -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+
+                <!-- Pagination Bullets -->
+                <div class="swiper-pagination"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="featured-posts-carousel">
+        <div class="container">
+
+            <div class="featured-header">
+                <h3>FEATURED POSTS</h3>
+                <p class="subtitle">Editor's picks curated just for you</p>
+            </div>
+
+            <div class="carousel-card stagger">
+
+                <div class="carousel-track">
+                    {% for obj in object_list %}
+                        <div class="carousel-card">
+
+                            <!-- IMAGE -->
+                            <div class="carousel-img-wrap">
+                                <a href="{% url 'singleblog' obj.id %}">
+                                    {% if obj.image %}
+                                        <img src="{{ obj.image.url }}" alt="{{ obj.title }}">
+                                    {% endif %}
+                                </a>
+
+                                <!-- CATEGORY LABEL -->
+                                <span class="category-label">
+                            {{ obj.category.name|default:"General" }}
+                        </span>
+                            </div>
+
+                            <!-- TEXT -->
+                            <div class="carousel-content">
+                                <a href="{% url 'singleblog' obj.id %}" class="carousel-title">
+                                    {{ obj.title }}
+                                </a>
+
+                                <p class="carousel-excerpt">
+                                    {{ obj.content|striptags|truncatechars:120 }}
+                                </p>
+
+                                <div class="carousel-meta">
+                                    <img src="{{ obj.author.profile.avatar.url }}" class="meta-avatar">
+                                    <span class="meta-author">{{ obj.author.username }}</span>
+                                    <span class="meta-date">{{ obj.created_at|date:"d M Y" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
         </div>
     </section>
 
