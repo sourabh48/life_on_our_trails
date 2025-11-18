@@ -87,6 +87,9 @@ class Profile(models.Model):
             return self.avatar.url
         return "/static/defaults/avatar.png"
 
+    def get_absolute_url(self):
+        return reverse('resume', kwargs={'id': self.id})
+
 
 @receiver(post_save, sender=User)
 def create_profile_for_user(sender, instance, created, **kwargs):

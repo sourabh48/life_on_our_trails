@@ -83,7 +83,9 @@
                             <div class="team-img">
 
                                 <!-- SAFE PROFILE PICTURE -->
-                                {% if member.profile_picture %}
+                                {% if member.avatar and member.avatar.name %}
+                                    <img src="{{ member.avatar.url }}" alt="" class="img-fluid">
+                                {% elif member.profile_picture and member.profile_picture.name %}
                                     <img src="{{ member.profile_picture.url }}" alt="" class="img-fluid">
                                 {% else %}
                                     <img src="{% static 'img/core-img/user.png' %}" alt="" class="img-fluid">

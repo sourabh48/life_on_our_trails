@@ -3,8 +3,7 @@
 
 {% block content %}
 
-
-    <!--banner-->
+    <!-- Banner -->
     <section class="resumenody">
         <div id="home" class="banner">
             <div class="banner-info">
@@ -13,172 +12,216 @@
                     <h2>Resume</h2>
                     <div class="page_link">
                         <a href="/">Home</a>
-                        <a href="/ourteam">About Us</a>
+                        <a href="/ourteam">Our Team</a>
                         <a href="#">Resume</a>
                     </div>
                 </div>
 
                 <div class="container">
                     <div class="row">
+
+                        <!-- Profile Image -->
                         <div class="col-md-4 header-left">
-                            <img src="{{ member.profile_picture.url }}" alt=""/>
+                            {% if member.profile_picture %}
+                                <img src="{{ member.profile_picture.url }}" alt="">
+                            {% elif member.avatar %}
+                                <img src="{{ member.avatar.url }}" alt="">
+                            {% else %}
+                                <img src="{% static 'img/default-avatar.png' %}" alt="">
+                            {% endif %}
                         </div>
+
+                        <!-- Profile Info -->
                         <div class="col-md-8 header-right">
                             <h2>Hello</h2>
                             <h1>I'm {{ member.full_name }}</h1>
-                            <h6>{{ member.designation }}</h6>
+
+                            <h6>{{ member.designation|default:"Professional" }}</h6>
+
                             <ul class="address">
+
                                 <li>
                                     <ul class="address-text">
                                         <li><b>D.O.B</b></li>
-                                        <li>{{ member.date_of_birth }}</li>
+                                        <li>{{ member.date_of_birth|default:"Not provided" }}</li>
                                     </ul>
                                 </li>
+
                                 <li>
                                     <ul class="address-text">
-                                        <li><b>PHONE </b></li>
-                                        <li>{{ member.phoneno }}</li>
+                                        <li><b>PHONE</b></li>
+                                        <li>{{ member.phoneno|default:"Not provided" }}</li>
                                     </ul>
                                 </li>
+
                                 <li>
                                     <ul class="address-text">
-                                        <li><b>ADDRESS </b></li>
-                                        <li>{{ member.address }}</li>
+                                        <li><b>ADDRESS</b></li>
+                                        <li>{{ member.address|default:"Not provided" }}</li>
                                     </ul>
                                 </li>
+
                                 <li>
                                     <ul class="address-text">
-                                        <li><b>E-MAIL </b></li>
-                                        <li><a href="mailto:{{ member.email }}"> {{ member.email }} </a></li>
+                                        <li><b>E-MAIL</b></li>
+                                        <li>
+                                            {% if member.user.email %}
+                                                <a href="mailto:{{ member.user.email }}">{{ member.user.email }}</a>
+                                            {% else %}
+                                                Not provided
+                                            {% endif %}
+                                        </li>
                                     </ul>
                                 </li>
+
                                 <li>
                                     <ul class="address-text">
-                                        <li><b>WEBSITE </b></li>
-                                        <li><a href="{{ member.linkedin_url }}">{{ member.linkedin_url }} </a></li>
+                                        <li><b>LINKEDIN</b></li>
+                                        <li>
+                                            {% if member.linkedin_url %}
+                                                <a href="{{ member.linkedin_url }}">{{ member.linkedin_url }}</a>
+                                            {% else %}
+                                                Not provided
+                                            {% endif %}
+                                        </li>
                                     </ul>
                                 </li>
+
                             </ul>
+
                         </div>
+
                         <div class="clearfix"></div>
+
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <!--================Welcome Area =================-->
+
+    <!-- ABOUT ME -->
     <section class="welcome_area p_120">
         <div class="container">
             <div class="row welcome_inner">
                 <div class="col-lg-6">
                     <div class="welcome_text">
                         <h4>About Myself</h4>
-                        <p>{{ member.about_member }} </p>
+                        <p>{{ member.about_member|default:"No details added yet." }}</p>
                     </div>
                 </div>
+
+                <!-- Skills -->
                 <div class="col-lg-6">
-                    <div class="tools_expert  card">
+                    <div class="tools_expert card">
                         <div class="skill_main">
                             <h3>Skills</h3>
-                            {% for skills in skill %}
+
+                            {% for s in skill %}
                                 <div class="skill_item">
-                                    <h4>{{ skills.skilltopic }} <span
-                                            class="counter">{{ skills.skillpercentage }}</span>%</h4>
+                                    <h4>{{ s.skilltopic }} <span class="counter">{{ s.skillpercentage }}</span>%</h4>
                                     <div class="progress_br">
                                         <div class="progress">
-                                            <div class="progress-bar" role="progressbar"
-                                                 aria-valuenow="{{ skills.skillpercentage }}" aria-valuemin="0"
-                                                 aria-valuemax="100"></div>
+                                            <div class="progress-bar"
+                                                 role="progressbar"
+                                                 style="width: {{ s.skillpercentage }}%;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                            {% empty %}
+                                <p>No skills added yet.</p>
                             {% endfor %}
+
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
-    >
 
-    <!--================My Tabs Area =================-->
+
+    <!-- EXPERIENCE & EDUCATION -->
     <section class="mytabs_area p_120">
         <div class="container">
             <div class="row">
+
+                <!-- EXPERIENCE -->
                 <div class="col-lg-6">
                     <div class="tabs_inner">
-                        <div class="customrightborder">
-                            <li>
-                                <h2>My Experiences</h2>
-                            </li>
-                            <ul class="list">
-                                {% for experiences in experience %}
-                                    <li>
-                                        <span></span>
-                                        <div class="media">
-                                            <div class="d-flex">
-                                                <p>{{ experiences.from_year }} <br/> to <br/> {{ experiences.to_year }}
-                                                </p>
-                                            </div>
-                                            <div class="media-body">
-                                                <h4>{{ experiences.institution }}</h4>
-                                                <p>{{ experiences.position }} <br/> {{ experiences.location }}</p>
-                                            </div>
+                        <h2>My Experiences</h2>
+
+                        <ul class="list">
+                            {% for exp in experience %}
+                                <li>
+                                    <span></span>
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <p>{{ exp.from_year }} <br> to <br> {{ exp.to_year }}</p>
                                         </div>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
+                                        <div class="media-body">
+                                            <h4>{{ exp.institution }}</h4>
+                                            <p>{{ exp.position }} <br> {{ exp.location }}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% empty %}
+                                <p>No experience added yet.</p>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
 
+
+                <!-- EDUCATION -->
                 <div class="col-lg-6">
                     <div class="tabs_inner">
-                        <div class="customleftborder">
-                            <li class="nav-item">
-                                <h2>My Education</h2>
-                            </li>
-                            <ul class="list">
-                                {% for educations in education %}
-                                    <li>
-                                        <span></span>
-                                        <div class="media">
-                                            <div class="d-flex">
-                                                <p>{{ educations.from_year }} <br/> to <br/> {{ educations.to_year }}
-                                                </p>
-                                            </div>
-                                            <div class="media-body">
-                                                <h4>{{ educations.institution }}</h4>
-                                                <p>{{ educations.location }}</p>
-                                            </div>
+                        <h2>My Education</h2>
+
+                        <ul class="list">
+                            {% for edu in education %}
+                                <li>
+                                    <span></span>
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <p>{{ edu.from_year }} <br> to <br> {{ edu.to_year }}</p>
                                         </div>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
+                                        <div class="media-body">
+                                            <h4>{{ edu.institution }}</h4>
+                                            <p>{{ edu.location }}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% empty %}
+                                <p>No education added yet.</p>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <!--================Testimonials Area =================-->
+
+    <!-- GITHUB PROJECTS -->
     <section class="testimonials_area p_120">
         <div class="container">
             <div class="main_title">
                 <h2>Projects</h2>
-                <p>You can find my personal projects. Click on <i class="fa fa-github"></i> icon to go through my
-                    projects.</p>
+                <p>Click the <i class="fa fa-github"></i> icons to explore my repositories.</p>
             </div>
             <div class="testi_inner">
                 <div id="userRepos"></div>
             </div>
         </div>
     </section>
+
     <script src="{% static 'js/github.js' %}"></script>
-    <script type="text/javascript">
-        my_cool_js_function("{{ member.github_userid}}")
+    <script>
+        my_cool_js_function("{{ member.github_userid }}");
     </script>
-    <!--================End Testimonials Area =================-->
-{% endblock content %}
+
+{% endblock %}

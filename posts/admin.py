@@ -32,7 +32,7 @@ class ProfileAdmin(admin.ModelAdmin):
         "avatar_preview_small",
     )
 
-    list_editable = ("show_in_team",)
+    list_editable = ("show_in_team", "main",)
 
     search_fields = (
         "user__username",
@@ -75,7 +75,6 @@ class ProfileAdmin(admin.ModelAdmin):
 
         ("Main Section (Feature Card)", {
             "fields": (
-                "main",
                 "mainwork",
                 "mainintro",
                 "mainlocation",
