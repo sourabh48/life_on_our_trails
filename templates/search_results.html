@@ -1,10 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load hitcount_tags %}
 
 {% block content %}
-
-
 
     <!--================Home Banner Area =================-->
     <section class="banner_area">
@@ -24,90 +21,111 @@
         </div>
     </section>
 
-    <!--================End Home Banner Area =================-->
     <br/><br/>
+
     <!--================Blog Area =================-->
     <section class="blog_area">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8  d-flex">
+                <!-- LEFT -->
+                <div class="col-lg-8 d-flex">
                     <div class="blog_left_sidebar">
                         {% for post in queryset %}
                             <article class="blog_item card">
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="blog_info text-right">
-                                            <div class="post_tag">
-                                                {% for cat in post.categories.all %}
-                                                    <a class="active" href="#">{{ cat.title }},</a>
-                                                {% endfor %}
-                                            </div>
-
                                             <ul class="blog_meta list">
-                                                <li><a href="#">{{ post.author.user.username }} &nbsp <i
-                                                        class="lnr lnr-user"></i></a></li>
-                                                <li><a href="#">{{ post.timestamp }}&nbsp <i
-                                                        class="lnr lnr-calendar-full"></i></a></li>
-                                                <li><a href="#">{% get_hit_count for post %} Views &nbsp <i
-                                                        class="lnr lnr-eye"></i></a></li>
-                                                <li><a href="#"> {{ post.comments.count }} Comments &nbsp <i
-                                                        class="lnr lnr-bubble"></i></a></li>
+                                                <li>
+                                                    <a href="#">
+                                                        {{ post.author.username }}
+                                                        &nbsp;<i class="lnr lnr-user"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        {{ post.created_at|date:"d M Y" }}
+                                                        &nbsp;<i class="lnr lnr-calendar-full"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        {{ post.comments.count }} Comments
+                                                        &nbsp;<i class="lnr lnr-bubble"></i>
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
+
                                     <div class="col-md-9">
                                         <div class="blog_post">
-                                            <img src="{{ post.thumbnail.url }}" alt="">
+                                            {% if post.image %}
+                                                <a href="{% url 'singleblog' post.id %}">
+                                                    <img src="{{ post.image.url }}" alt="{{ post.title }}"
+                                                         class="img-fluid">
+                                                </a>
+                                            {% endif %}
                                             <div class="blog_details">
-                                                <a href="{{ post.get_absolute_url }}">
+                                                <a href="{% url 'singleblog' post.id %}">
                                                     <h2>{{ post.title }}</h2>
                                                 </a>
-                                                <p>{{ post.overview | safe }}</p>
-                                                <a href="{{ post.get_absolute_url }}" class="white_bg_btn">View More</a>
+                                                <p>{{ post.content|striptags|truncatechars:260 }}</p>
+                                                <a href="{% url 'singleblog' post.id %}" class="white_bg_btn">
+                                                    View More
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </article>
+                        {% empty %}
+                            <p>No posts matched your query.</p>
                         {% endfor %}
 
-                        <nav class="blog-pagination justify-content-center d-flex">
-                            <ul class="pagination">
-                                {% if paginated_queryset.has_previous %}
-                                    <li class="page-item">
-                                        <a href="?{{ page_request_var }}={{ paginated_queryset.previous_page_number }}"
-                                           class="page-link" aria-label="Previous">
-                                        <span aria-hidden="true">
-                                            <span class="lnr lnr-chevron-left"></span>
-                                        </span>
-                                        </a>
-                                    </li>
-                                {% endif %}
-
-                                {% for i in paginated_queryset.paginator.page_range %}
-                                    {% if paginated_queryset.number == i %}
-                                        <li class="page-item active"><a href="?{{ page_request_var }}={{ i }}"
-                                                                        class="page-link">{{ i }}</a></li>
-                                    {% else %}
-                                        <li class="page-item"><a href="?{{ page_request_var }}={{ i }}"
-                                                                 class="page-link">{{ i }}</a></li>
+                        {% if paginated_queryset.has_other_pages %}
+                            <nav class="blog-pagination justify-content-center d-flex">
+                                <ul class="pagination">
+                                    {% if paginated_queryset.has_previous %}
+                                        <li class="page-item">
+                                            <a href="?{{ page_request_var }}={{ paginated_queryset.previous_page_number }}"
+                                               class="page-link" aria-label="Previous">
+                                    <span aria-hidden="true">
+                                        <span class="lnr lnr-chevron-left"></span>
+                                    </span>
+                                            </a>
+                                        </li>
                                     {% endif %}
-                                {% endfor %}
 
-                                {% if paginated_queryset.has_next %}
-                                    <li class="page-item">
-                                        <a href="?{{ page_request_var }}={{ paginated_queryset.next_page_number }}"
-                                           class="page-link" aria-label="Next">
-                                        <span aria-hidden="true">
-                                            <span class="lnr lnr-chevron-right"></span>
-                                        </span>
-                                        </a>
-                                    </li>
-                                {% endif %}
-                            </ul>
-                        </nav>
+                                    {% for i in paginated_queryset.paginator.page_range %}
+                                        {% if paginated_queryset.number == i %}
+                                            <li class="page-item active">
+                                                <a href="?{{ page_request_var }}={{ i }}" class="page-link">{{ i }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item">
+                                                <a href="?{{ page_request_var }}={{ i }}" class="page-link">{{ i }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if paginated_queryset.has_next %}
+                                        <li class="page-item">
+                                            <a href="?{{ page_request_var }}={{ paginated_queryset.next_page_number }}"
+                                               class="page-link" aria-label="Next">
+                                    <span aria-hidden="true">
+                                        <span class="lnr lnr-chevron-right"></span>
+                                    </span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        {% endif %}
                     </div>
                 </div>
+
+                <!-- RIGHT: sidebar -->
                 <div class="col-lg-4">
                     <div class="blog_right_sidebar">
                         <aside class="single_sidebar_widget search_widget">
@@ -115,73 +133,13 @@
                                 <div class="input-group">
                                     <input type="text" name="q" class="form-control" placeholder="Search Posts">
                                     <span class="input-group-btn">
-                                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                    <button class="btn btn-default" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
                                 </span>
                                 </div>
                             </form>
-                            <!-- /input-group -->
                             <div class="br"></div>
-                        </aside>
-                        <aside class="single-sidebar-widget newsletter_widget">
-                            <h4 class="widget_title">Newsletter</h4>
-                            <p>
-                                Here, I focus on a range of items and features that we use in life without
-                                giving them a second thought.
-                            </p>
-                            <div class="form-group d-flex flex-row">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i>
-                                        </div>
-                                    </div>
-                                    <input type="text" class="form-control" id="inlineFormInputGroup"
-                                           placeholder="Enter email" onfocus="this.placeholder = ''"
-                                           onblur="this.placeholder = 'Enter email'">
-                                </div>
-                                <a href="#" class="bbtns">Subcribe</a>
-                            </div>
-                            <p class="text-bottom">You can unsubscribe at any time</p>
-                            <div class="br"></div>
-                        </aside>
-
-                        <aside class="single_sidebar_widget popular_post_widget">
-                            <h3 class="widget_title">Popular Posts</h3>
-                            {% for post in most_recent %}
-                                <a href="{{ post.get_absolute_url }}">
-                                    <div class="media post_item">
-                                        <div class="image"><img src="{{ post.thumbnail.url }}" alt="post"
-                                                                class="img-fluid"></div>
-                                        <div class="media-body">
-                                            <a href="{{ post.get_absolute_url }}"><h3>{{ post.title }}</h3></a>
-                                            <div class="d-flex align-items-center">
-                                                <div class="views"><i
-                                                        class="fa fa-eye"></i> {% get_hit_count for post %}  </div>
-                                                <div class="comments">&nbsp&nbsp<i
-                                                        class="fa fa-comment-o"></i> {{ post.comment_count }}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            {% endfor %}
-                            <div class="br"></div>
-                        </aside>
-                        <aside class="single_sidebar_widget post_category_widget">
-                            <h4 class="widget_title">Post Catgories</h4>
-                            <ul class="list cat-list">
-                                {% for cat in category_count %}
-                                    <li>
-                                        <a href="#" class="d-flex justify-content-between">
-                                            <p>{{ cat.categories__title }}</p>
-                                            <p>{{ cat.categories__title__count }}</p>
-                                        </a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                            <div class="br"></div>
-                        </aside>
-
-                        <aside class="single_sidebar_widget search_widget">
-                            <p>Ads</p>
                         </aside>
                     </div>
                 </div>
@@ -189,5 +147,4 @@
         </div>
     </section>
 
-
-{% endblock content %}
+{% endblock %}

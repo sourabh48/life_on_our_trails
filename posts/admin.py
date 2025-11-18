@@ -2,51 +2,86 @@ from django.contrib import admin
 from django.utils.html import format_html
 
 from .models import (
-    Comment, Category, Post, Team,
-    Experience, Education, Skill, Profile
+    Comment,
+    Category,
+    Post,
+    Profile,
+    ProfileSkill,
+    ProfileEducation,
+    ProfileExperience
 )
 
 
 # ----------------------------
-# Comment Admin
-# ----------------------------
-
-@admin.register(Comment)
-class CommentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'body', 'post', 'created_on', 'active')
-    list_filter = ('active', 'created_on')
-    search_fields = ('name', 'email', 'body')
-    actions = ['approve_comments']
-
-    def approve_comments(self, request, queryset):
-        queryset.update(active=True)
-
-
-# ----------------------------
-# Profile Admin (Unified Profile)
+# PROFILE ADMIN
 # ----------------------------
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
+
     readonly_fields = ("avatar_preview",)
 
+    list_display = (
+        "user",
+        "full_name",
+        "designation",
+        "team_position",
+        "phoneno",
+        "main",
+        "show_in_team",  # <-- ADD THIS
+        "avatar_preview_small",
+    )
+
+    list_editable = ("show_in_team",)
+
+    search_fields = (
+        "user__username",
+        "full_name",
+        "designation",
+        "team_position",
+        "phoneno",
+        "github_userid",
+    )
+
     fieldsets = (
-        ("User Information", {
+        ("User Account", {
             "fields": (
                 "user",
                 "avatar",
                 "avatar_preview",
-                "full_name",
-                "profile_picture",  # added here so it saves
+                "profile_picture",
             )
         }),
-        ("Professional Details", {
+
+        ("Basic Profile", {
             "fields": (
+                "full_name",
                 "designation",
                 "bio",
                 "about_author",
             )
         }),
+
+        ("Professional Info", {
+            "fields": (
+                "team_position",
+                "date_of_birth",
+                "phoneno",
+                "address",
+                "about_member",
+                "github_userid",
+            )
+        }),
+
+        ("Main Section (Feature Card)", {
+            "fields": (
+                "main",
+                "mainwork",
+                "mainintro",
+                "mainlocation",
+            )
+        }),
+
         ("Social Links", {
             "fields": (
                 "linkedin_url",
@@ -56,12 +91,14 @@ class ProfileAdmin(admin.ModelAdmin):
         }),
     )
 
-    list_display = ("user", "full_name", "designation", "avatar_preview_small")
+    # ----------------------------
+    # IMAGE PREVIEW HELPERS
+    # ----------------------------
 
     def avatar_preview(self, obj):
         if obj.avatar:
             return format_html(
-                '<img src="{}" width="120" style="border-radius:8px;" />',
+                '<img src="{}" width="120" style="border-radius: 8px;" />',
                 obj.avatar.url
             )
         return "No Avatar"
@@ -69,19 +106,46 @@ class ProfileAdmin(admin.ModelAdmin):
     def avatar_preview_small(self, obj):
         if obj.avatar:
             return format_html(
-                '<img src="{}" width="40" style="border-radius:4px;" />',
+                '<img src="{}" width="40" style="border-radius: 4px;" />',
                 obj.avatar.url
             )
         return "—"
 
 
 # ----------------------------
-# Simple Registrations
+# PROFILE SKILL ADMIN
+# ----------------------------
+
+@admin.register(ProfileSkill)
+class ProfileSkillAdmin(admin.ModelAdmin):
+    list_display = ("profile", "skilltopic", "skillpercentage")
+    search_fields = ("skilltopic", "profile__user__username")
+
+
+# ----------------------------
+# PROFILE EDUCATION ADMIN
+# ----------------------------
+
+@admin.register(ProfileEducation)
+class ProfileEducationAdmin(admin.ModelAdmin):
+    list_display = ("profile", "institution", "from_year", "to_year")
+    search_fields = ("institution", "profile__user__username")
+
+
+# ----------------------------
+# PROFILE EXPERIENCE ADMIN
+# ----------------------------
+
+@admin.register(ProfileExperience)
+class ProfileExperienceAdmin(admin.ModelAdmin):
+    list_display = ("profile", "institution", "position", "from_year", "to_year")
+    search_fields = ("position", "institution", "profile__user__username")
+
+
+# ----------------------------
+# BASIC MODELS
 # ----------------------------
 
 admin.site.register(Category)
 admin.site.register(Post)
-admin.site.register(Team)
-admin.site.register(Experience)
-admin.site.register(Education)
-admin.site.register(Skill)
+admin.site.register(Comment)

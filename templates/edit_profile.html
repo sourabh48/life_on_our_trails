@@ -5,10 +5,111 @@
 
     <link rel="stylesheet" href="{% static 'css/account.css' %}">
 
+    <style>
+        /* ---------------------------- */
+        /* Delete Button on Each Card   */
+        /* ---------------------------- */
+        .remove-entry-btn {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            background: rgba(255, 80, 80, 0.9);
+            color: white;
+            border: none;
+            font-size: 18px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.25s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .remove-entry-btn:hover {
+            background: rgb(255, 40, 40);
+            transform: scale(1.08);
+        }
+
+        /* ---------------------------- */
+        /* Smooth Animations            */
+        /* ---------------------------- */
+        .fade-in {
+            animation: fadeIn 0.35s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-out {
+            animation: fadeOut 0.35s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+                max-height: 500px;
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(20px);
+                max-height: 0;
+                padding: 0;
+                margin: 0;
+            }
+        }
+
+        /* ------------------------------------------------ */
+        /* FIX – Make ALL formset inputs full-width + styled */
+        /* ------------------------------------------------ */
+        .form-entry input[type="text"],
+        .form-entry input[type="number"],
+        .form-entry input[type="url"],
+        .form-entry textarea,
+        .form-entry select {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            display: block !important;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .form-entry input:focus,
+        .form-entry textarea:focus {
+            border-color: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.15);
+            outline: none;
+        }
+
+        /* Checkbox tidy */
+        .form-entry input[type="checkbox"] {
+            width: auto !important;
+            margin-top: 10px;
+        }
+    </style>
+
+
     <section class="profile_container">
         <div class="account-page page-offset">
 
-            {# Messages block #}
             {% if messages %}
                 <div class="account-messages">
                     {% for message in messages %}
@@ -17,78 +118,318 @@
                 </div>
             {% endif %}
 
-            <div class="glass-card" style="max-width: 480px; margin: auto; padding: 35px;">
+            <div class="glass-card" style="max-width: 750px; margin:auto; padding:35px;">
 
                 <h2 class="account-panel-title" style="text-align: center; margin-bottom: 20px;">
                     Edit Profile
                 </h2>
 
-                <!-- Avatar Preview -->
+                <!-- Avatar -->
                 <div style="text-align:center; margin-bottom:20px;">
                     {% if profile.avatar %}
-                        <img src="{{ profile.avatar.url }}" style="width:120px; height:120px; border-radius:50%;
-                                object-fit:cover; border:3px solid rgba(255,255,255,0.6);">
+                        <img src="{{ profile.avatar.url }}"
+                             style="width:120px; height:120px; border-radius:50%; object-fit:cover;">
                     {% else %}
-                        <img src="{% static 'img/default-avatar.png' %}" style="width:120px; height:120px; border-radius:50%;
-                                object-fit:cover; border:3px solid rgba(255,255,255,0.6);">
+                        <img src="{% static 'img/default-avatar.png' %}"
+                             style="width:120px; height:120px; border-radius:50%; object-fit:cover;">
                     {% endif %}
                 </div>
 
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
 
-                    <!-- Username -->
+                    <!-- BASIC PROFILE FIELDS -->
                     <label class="account-label">Username</label>
                     <input type="text" name="username" class="account-input" value="{{ user.username }}">
 
-                    <!-- Email -->
                     <label class="account-label">Email</label>
                     <input type="email" name="email" class="account-input" value="{{ user.email }}">
 
-                    <!-- Avatar -->
                     <label class="account-label">Avatar</label>
-                    <input type="file" name="avatar" class="account-input" accept="image/*">
+                    <input type="file" name="avatar" class="account-input">
 
-                    <!-- Full Name -->
                     <label class="account-label">Full Name</label>
                     <input type="text" name="full_name" class="account-input" value="{{ profile.full_name }}">
 
-                    <!-- Designation -->
                     <label class="account-label">Designation</label>
                     <input type="text" name="designation" class="account-input" value="{{ profile.designation }}">
 
-                    <!-- Bio -->
                     <label class="account-label">Bio</label>
                     <textarea name="bio" class="account-textarea">{{ profile.bio }}</textarea>
 
-                    <!-- LinkedIn -->
                     <label class="account-label">LinkedIn</label>
                     <input type="url" name="linkedin_url" class="account-input" value="{{ profile.linkedin_url }}">
 
-                    <!-- GitHub -->
                     <label class="account-label">GitHub</label>
                     <input type="url" name="git_url" class="account-input" value="{{ profile.git_url }}">
 
-                    <!-- Instagram -->
                     <label class="account-label">Instagram</label>
                     <input type="url" name="insta_url" class="account-input" value="{{ profile.insta_url }}">
 
-                    <!-- Buttons -->
-                    <div style="margin-top: 25px; display:flex; flex-direction:column; gap:12px;">
-                        <button type="submit" class="account-btn account-btn-primary">
-                            Save Changes
-                        </button>
+                    <label class="account-label">Team Position</label>
+                    <input type="text" name="team_position" class="account-input" value="{{ profile.team_position }}">
 
-                        <a href="{% url 'profile' user.username %}" class="account-btn account-btn-secondary">
-                            Cancel
-                        </a>
+                    <label class="account-label">Date of Birth</label>
+                    <input type="text" name="date_of_birth" class="account-input" value="{{ profile.date_of_birth }}">
+
+                    <label class="account-label">Phone Number</label>
+                    <input type="text" name="phoneno" class="account-input" value="{{ profile.phoneno }}">
+
+                    <label class="account-label">Address</label>
+                    <textarea name="address" class="account-textarea">{{ profile.address }}</textarea>
+
+                    <label class="account-label">About Member</label>
+                    <textarea name="about_member" class="account-textarea">{{ profile.about_member }}</textarea>
+
+                    <label class="account-label">GitHub User ID</label>
+                    <input type="text" name="github_userid" class="account-input" value="{{ profile.github_userid }}">
+
+                    <label class="account-label">Is Main Member?</label>
+                    <input type="checkbox" name="main" {% if profile.main %} checked {% endif %}>
+
+                    <label class="account-label">Main Work</label>
+                    <input type="text" name="mainwork" class="account-input" value="{{ profile.mainwork }}">
+
+                    <label class="account-label">Main Introduction</label>
+                    <textarea name="mainintro" class="account-textarea">{{ profile.mainintro }}</textarea>
+
+                    <label class="account-label">Main Location</label>
+                    <input type="text" name="mainlocation" class="account-input" value="{{ profile.mainlocation }}">
+
+
+                    <!-- ====================================================== -->
+                    <!-- ======================= EDUCATION ===================== -->
+                    <!-- ====================================================== -->
+
+                    <h3 class="account-section-title" style="margin-top:35px;">Education</h3>
+
+                    {{ edu_formset.management_form }}
+
+                    <div id="education-container">
+                        {% for form in edu_formset %}
+                            <div class="form-entry glass-card fade-in"
+                                 style="padding:20px; margin-bottom:15px; position:relative;">
+                                <button type="button" class="remove-entry-btn">&times;</button>
+
+                                {{ form.id }} <!-- REQUIRED -->
+                                {{ form.DELETE }} <!-- REQUIRED -->
+
+                                <label>Institution</label>
+                                {{ form.institution }}
+
+                                <label>Location</label>
+                                {{ form.location }}
+
+                                <label>From year</label>
+                                {{ form.from_year }}
+
+                                <label>To year</label>
+                                {{ form.to_year }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- EMPTY TEMPLATE -->
+                    <div id="education-empty-form" style="display:none;">
+                        <div class="form-entry glass-card" style="padding:20px; margin-bottom:15px; position:relative;">
+                            <button type="button" class="remove-entry-btn">&times;</button>
+
+                            {{ edu_formset.empty_form.id }}
+                            {{ edu_formset.empty_form.DELETE }}
+
+                            <label>Institution</label>
+                            {{ edu_formset.empty_form.institution }}
+
+                            <label>Location</label>
+                            {{ edu_formset.empty_form.location }}
+
+                            <label>From year</label>
+                            {{ edu_formset.empty_form.from_year }}
+
+                            <label>To year</label>
+                            {{ edu_formset.empty_form.to_year }}
+                        </div>
+                    </div>
+
+                    <button type="button" id="add-education-btn" class="account-btn account-btn-secondary">
+                        + Add Education
+                    </button>
+
+
+                    <!-- ====================================================== -->
+                    <!-- ===================== EXPERIENCE ===================== -->
+                    <!-- ====================================================== -->
+
+                    <h3 class="account-section-title" style="margin-top:35px;">Experience</h3>
+
+                    {{ exp_formset.management_form }}
+
+                    <div id="experience-container">
+                        {% for form in exp_formset %}
+                            <div class="form-entry glass-card fade-in"
+                                 style="padding:20px; margin-bottom:15px; position:relative;">
+                                <button type="button" class="remove-entry-btn">&times;</button>
+
+                                {{ form.id }}
+                                {{ form.DELETE }}
+
+                                <label>Institution</label>
+                                {{ form.institution }}
+
+                                <label>Position</label>
+                                {{ form.position }}
+
+                                <label>Location</label>
+                                {{ form.location }}
+
+                                <label>From year</label>
+                                {{ form.from_year }}
+
+                                <label>To year</label>
+                                {{ form.to_year }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- EMPTY TEMPLATE -->
+                    <div id="experience-empty-form" style="display:none;">
+                        <div class="form-entry glass-card" style="padding:20px; margin-bottom:15px; position:relative;">
+                            <button type="button" class="remove-entry-btn">&times;</button>
+
+                            {{ exp_formset.empty_form.id }}
+                            {{ exp_formset.empty_form.DELETE }}
+
+                            <label>Institution</label>
+                            {{ exp_formset.empty_form.institution }}
+
+                            <label>Position</label>
+                            {{ exp_formset.empty_form.position }}
+
+                            <label>Location</label>
+                            {{ exp_formset.empty_form.location }}
+
+                            <label>From year</label>
+                            {{ exp_formset.empty_form.from_year }}
+
+                            <label>To year</label>
+                            {{ exp_formset.empty_form.to_year }}
+                        </div>
+                    </div>
+
+                    <button type="button" id="add-experience-btn" class="account-btn account-btn-secondary">
+                        + Add Experience
+                    </button>
+
+
+                    <!-- ====================================================== -->
+                    <!-- ======================= SKILLS ======================== -->
+                    <!-- ====================================================== -->
+
+                    <h3 class="account-section-title" style="margin-top:35px;">Skills</h3>
+
+                    {{ skill_formset.management_form }}
+
+                    <div id="skills-container">
+                        {% for form in skill_formset %}
+                            <div class="form-entry glass-card fade-in"
+                                 style="padding:20px; margin-bottom:15px; position:relative;">
+                                <button type="button" class="remove-entry-btn">&times;</button>
+
+                                {{ form.id }}
+                                {{ form.DELETE }}
+
+                                <label>Skill</label>
+                                {{ form.skilltopic }}
+
+                                <label>Percentage</label>
+                                {{ form.skillpercentage }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- EMPTY TEMPLATE -->
+                    <div id="skill-empty-form" style="display:none;">
+                        <div class="form-entry glass-card" style="padding:20px; margin-bottom:15px; position:relative;">
+                            <button type="button" class="remove-entry-btn">&times;</button>
+
+                            {{ skill_formset.empty_form.id }}
+                            {{ skill_formset.empty_form.DELETE }}
+
+                            <label>Skill</label>
+                            {{ skill_formset.empty_form.skilltopic }}
+
+                            <label>Percentage</label>
+                            {{ skill_formset.empty_form.skillpercentage }}
+                        </div>
+                    </div>
+
+                    <button type="button" id="add-skill-btn" class="account-btn account-btn-secondary">
+                        + Add Skill
+                    </button>
+
+
+                    <div style="margin-top:25px; display:flex; flex-direction:column; gap:12px;">
+                        <button type="submit" class="account-btn account-btn-primary">Save Changes</button>
+                        <a href="{% url 'profile' user.username %}" class="account-btn account-btn-secondary">Cancel</a>
                     </div>
 
                 </form>
 
             </div>
-
         </div>
     </section>
+
+
+    <!-- ====================================================== -->
+    <!-- ============== JAVASCRIPT (ADD/REMOVE ROWS) ========== -->
+    <!-- ====================================================== -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            function setupDynamicAdd(btnId, containerId, prefix) {
+                const btn = document.getElementById(btnId);
+                const container = document.getElementById(containerId);
+
+                btn.addEventListener("click", () => {
+
+                    const totalForms = document.getElementById(`id_${prefix}-TOTAL_FORMS`);
+                    const index = parseInt(totalForms.value);
+
+                    const template = document.querySelector(`#${prefix}-empty-form .form-entry`);
+                    const newForm = template.cloneNode(true);
+
+                    newForm.innerHTML = newForm.innerHTML
+                        .replace(/__prefix__/g, index)
+                        .replace(new RegExp(`${prefix}-\\d+`, "g"), `${prefix}-${index}`);
+
+                    newForm.classList.add("fade-in");
+
+                    container.appendChild(newForm);
+                    totalForms.value = index + 1;
+
+                    attachRemove(newForm);
+                });
+            }
+
+            setupDynamicAdd("add-education-btn", "education-container", "education");
+            setupDynamicAdd("add-experience-btn", "experience-container", "experience");
+            setupDynamicAdd("add-skill-btn", "skills-container", "skill");
+
+
+            function attachRemove(entry) {
+                const btn = entry.querySelector(".remove-entry-btn");
+                btn.addEventListener("click", () => {
+
+                    const deleteInput = entry.querySelector("input[type='checkbox'][name*='DELETE']");
+                    if (deleteInput) deleteInput.checked = true;
+
+                    entry.classList.add("fade-out");
+                    setTimeout(() => entry.style.display = "none", 350);
+                });
+            }
+
+            document.querySelectorAll(".form-entry").forEach(attachRemove);
+        });
+    </script>
 
 {% endblock %}

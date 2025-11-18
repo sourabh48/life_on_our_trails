@@ -71,36 +71,55 @@
                     <p class="post-half-txt"> Beautiful Description </p>
                 </div>
             </div>
-            <div class="row justify-content-center ">
-                <!-- post -->
+
+            <div class="row justify-content-center">
                 {% for obj in latest %}
                     <div class="post col-md-3 col-sm-6 card">
-                        <div class="post-thumbnail"><a href="#"><img src="{{ obj.thumbnail.url }}" alt="..."
-                                                                     class="img-fluid"></a></div>
+                        {% if obj.image %}
+                            <div class="post-thumbnail">
+                                <a href="{% url 'singleblog' obj.id %}">
+                                    <img src="{{ obj.image.url }}" alt="{{ obj.title }}" class="img-fluid">
+                                </a>
+                            </div>
+                        {% endif %}
                         <div class="post-details">
                             <div class="post-meta d-flex justify-content-between">
-                                {% comment %} <div class="date meta-last">20 May | 2016</div> {% endcomment %}
-                                <div class="post_tag">
-                                    {% for cat in obj.categories.all %}
-                                        <a class="active" href="{{ obj.get_absolute_url }}">{{ cat.title }},</a>
-                                    {% endfor %}
+                                <div class="date meta-last">
+                                    <i class="lnr lnr-calendar-full"></i>
+                                    {{ obj.created_at|date:"d M Y" }}
+                                </div>
+                                <div class="comments meta-last">
+                                    <i class="lnr lnr-bubble"></i>
+                                    {{ obj.comments.count }} comments
                                 </div>
                             </div>
-                            <a href="{{ obj.get_absolute_url }}"><h3 class="h4">{{ obj.title }}</h3></a>
-                            <p class="text-muted">{{ obj.overview | safe | linebreaks | truncatechars:400 }}</p>
+
+                            <a href="{% url 'singleblog' obj.id %}">
+                                <h3 class="h4">{{ obj.title }}</h3>
+                            </a>
+
+                            <p class="text-muted">
+                                {{ obj.content|striptags|truncatechars:160 }}
+                            </p>
+
                             <footer class="post-footer d-flex align-items-center">
                                 <a href="#" class="author d-flex align-items-center flex-wrap">
-                                    <div class="avatar"><img src="{{ obj.author.profile_picture.url }}" alt="..."
-                                                             class="img-fluid"></div>
-                                    <div class="title"><span>{{ obj.author.user.username }}</span></div>
+                                    <div class="avatar">
+                                        {% if obj.author.profile.avatar %}
+                                            <img src="{{ obj.author.profile.avatar.url }}"
+                                                 alt="{{ obj.author.username }}"
+                                                 class="img-fluid rounded-circle">
+                                        {% endif %}
+                                    </div>
+                                    <div class="title">
+                                        <span>{{ obj.author.username }}</span>
+                                    </div>
                                 </a>
-                                <div class="date"><i class="icon-clock"></i>{{ obj.timestamp }} </div>
-                                <div class="comments meta-last"><i class="icon-comment"></i>{{ obj.comments.count }}
-                                    comments
-                                </div>
                             </footer>
                         </div>
                     </div>
+                {% empty %}
+                    <p>No posts yet.</p>
                 {% endfor %}
             </div>
         </div>
@@ -114,41 +133,57 @@
                     <p class="post-half-txt"></p>
                 </div>
             </div>
-            <!-- Post-->
+
             {% for obj in object_list %}
                 <div class="row justify-content-center">
+                    <div class="image col-lg-5">
+                        {% if obj.image %}
+                            <a href="{% url 'singleblog' obj.id %}">
+                                <img src="{{ obj.image.url }}" alt="{{ obj.title }}" class="img-fluid">
+                            </a>
+                        {% endif %}
+                    </div>
                     <div class="text col-lg-7">
                         <div class="text-inner d-flex align-items-center">
                             <div class="content">
                                 <header class="post-header">
-                                    <div class="category">
-                                        {% for cat in obj.categories.all %}
-                                            <a href="#">{{ cat }},</a>
-                                        {% endfor %}
-                                    </div>
-                                    <a href="{{ obj.get_absolute_url }}">
+                                    <a href="{% url 'singleblog' obj.id %}">
                                         <h2 class="h4 text-uppercase">{{ obj.title }}</h2>
                                     </a>
                                 </header>
-                                <p>{{ obj.overview|safe|linebreaks|truncatechars:300 }}</p>
-                                <footer class="post-footer d-flex align-items-center"><a href="#"
-                                                                                         class="author d-flex align-items-center flex-wrap">
-                                    <div class="avatar"><img src="{{ obj.author.profile_picture.url }}" alt="..."
-                                                             class="img-fluid"></div>
-                                    <div class="title"><span>{{ obj.author }}</span></div>
-                                </a>
-                                    <div class="date"><i class="icon-clock"></i> {{ obj.timestamp }}</div>
-                                    <div class="comments"><i class="icon-comment"></i>{{ obj.comments.count }} comments
+                                <p>{{ obj.content|striptags|truncatechars:260 }}</p>
+                                <footer class="post-footer d-flex align-items-center">
+                                    <a href="#" class="author d-flex align-items-center flex-wrap">
+                                        <div class="avatar">
+                                            {% if obj.author.profile.avatar %}
+                                                <img src="{{ obj.author.profile.avatar.url }}"
+                                                     alt="{{ obj.author.username }}"
+                                                     class="img-fluid rounded-circle">
+                                            {% endif %}
+                                        </div>
+                                        <div class="title">
+                                            <span>{{ obj.author.username }}</span>
+                                        </div>
+                                    </a>
+                                    <div class="date">
+                                        <i class="icon-clock"></i>
+                                        {{ obj.created_at|date:"d M Y" }}
+                                    </div>
+                                    <div class="comments meta-last">
+                                        <i class="icon-comment"></i>
+                                        {{ obj.comments.count }} comments
                                     </div>
                                 </footer>
                             </div>
                         </div>
                     </div>
-                    <div class="image col-lg-3"><img src="{{ obj.thumbnail.url }}" alt="..."></div>
                 </div>
+            {% empty %}
+                <p class="text-center mb-5">No featured posts available.</p>
             {% endfor %}
         </div>
     </section>
+
 
 {% endblock content %}
 

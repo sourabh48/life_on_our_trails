@@ -79,26 +79,61 @@
                 {% for member in team_list %}
                     <div class="col-md-3 col-sm-6 team-wrap">
                         <div class="team-member text-center">
+
                             <div class="team-img">
-                                <img src="{{ member.profile_picture.url }}" alt="">
+
+                                <!-- SAFE PROFILE PICTURE -->
+                                {% if member.profile_picture %}
+                                    <img src="{{ member.profile_picture.url }}" alt="" class="img-fluid">
+                                {% else %}
+                                    <img src="{% static 'img/core-img/user.png' %}" alt="" class="img-fluid">
+                                {% endif %}
+
+                                <!-- Hover Overlay -->
                                 <div class="overlay">
                                     <div class="team-details text-center">
                                         <p>
-                                            Our web design team will spend time with our digital marketing team.
+                                            Our team collaborates to build a future-ready ecosystem.
                                         </p>
 
                                         <div class="socials mt-20">
-                                            <a href="{{ member.get_absolute_url }}"><i class="fa fa-file-pdf-o"></i></a>
-                                            <a href="{{ member.git_url }}"><i class="fa fa-github"></i></a>
-                                            <a href="{{ member.facebook_url }}"><i class="fa fa-facebook"></i></a>
-                                            <a href="{{ member.twiter_url }}"><i class="fa fa-twitter"></i></a>
-                                            <a href="mailto:{{ member.email }}"> <i class="fa fa-envelope"></i></a>
+
+                                            {% if member.get_absolute_url %}
+                                                <a href="{{ member.get_absolute_url }}">
+                                                    <i class="fa fa-file-pdf-o"></i>
+                                                </a>
+                                            {% endif %}
+
+                                            {% if member.git_url %}
+                                                <a href="{{ member.git_url }}">
+                                                    <i class="fa fa-github"></i>
+                                                </a>
+                                            {% endif %}
+
+                                            {% if member.linkedin_url %}
+                                                <a href="{{ member.linkedin_url }}">
+                                                    <i class="fa fa-linkedin"></i>
+                                                </a>
+                                            {% endif %}
+
+                                            {% if member.insta_url %}
+                                                <a href="{{ member.insta_url }}">
+                                                    <i class="fa fa-instagram"></i>
+                                                </a>
+                                            {% endif %}
+
                                         </div>
                                     </div>
                                 </div>
-                                <h6 class="team-title">{{ member.full_name }}</h6>
-                                <span>{{ member.team_position }} </span>
+
                             </div>
+
+                            <!-- NAME + DESIGNATION -->
+                            <div class="team-title">
+                                <h5 class="mb-0">{{ member.full_name }}</h5>
+                                <span>{{ member.designation }}</span>
+                            </div>
+
                         </div>
                     </div>
                 {% endfor %}
