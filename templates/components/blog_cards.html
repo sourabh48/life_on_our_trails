@@ -1,0 +1,61 @@
+{% for post in queryset %}
+    <article class="blog_item card fade-item">
+        <div class="row">
+
+            <!-- LEFT META -->
+            <div class="col-md-3">
+                <div class="blog_info text-right">
+                    <ul class="blog_meta list">
+                        <li>
+                            <a>
+                                {{ post.author.username }}
+                                <i class="lnr lnr-user"></i>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a>
+                                {{ post.created_at|date:"d M Y" }}
+                                <i class="lnr lnr-calendar-full"></i>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a>
+                                {{ post.comments.count }} Comments
+                                <i class="lnr lnr-bubble"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- RIGHT CONTENT -->
+            <div class="col-md-9">
+                <div class="blog_post">
+
+                    {% if post.image %}
+                        <a href="{% url 'singleblog' post.id %}">
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid">
+                        </a>
+                    {% endif %}
+
+                    <div class="blog_details">
+
+                        <a href="{% url 'singleblog' post.id %}">
+                            <h2>{{ post.title }}</h2>
+                        </a>
+
+                        <p>{{ post.content|striptags|truncatechars:260 }}</p>
+
+                        <a href="{% url 'singleblog' post.id %}" class="white_bg_btn">
+                            View More
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </article>
+{% endfor %}

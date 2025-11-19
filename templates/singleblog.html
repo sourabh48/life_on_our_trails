@@ -4,19 +4,32 @@
 {% block content %}
 
     <!--================Home Banner Area =================-->
-    <section class="banner_area">
-        <div class="box_1620">
-            <div class="banner_inner d-flex align-items-center">
-                <div class="container">
-                    <div class="banner_content text-center">
-                        <h2>Blog Details</h2>
-                        <div class="page_link">
-                            <a href="/">Home</a>
-                            <a href="/allblogs">Blog</a>
-                            <a href="#">Blog Details</a>
-                        </div>
-                    </div>
-                </div>
+    <section class="allblogs-hero">
+        <div class="allblogs-hero-overlay"></div>
+
+        <div class="container text-center">
+            <h2 class="allblogs-hero-title">Search Results</h2>
+
+            <p class="allblogs-hero-subtitle">
+                {% if query %} Showing results for: <strong>{{ query }}</strong>
+                {% else %} Showing all results {% endif %}
+            </p>
+
+            <div class="breadcrumb-bar">
+                <a href="/" class="crumb">Home</a>
+                <span class="crumb-sep">›</span>
+
+                <a href="/allblogs" class="crumb">Blogs</a>
+
+                {% if breadcrumb_category %}
+                    <span class="crumb-sep">›</span>
+                    <a href="/allblogs?category={{ breadcrumb_category|lower }}" class="crumb">
+                        {{ breadcrumb_category }}
+                    </a>
+                {% endif %}
+
+                <span class="crumb-sep">›</span>
+                <span class="crumb-current">{{ breadcrumb_title }}</span>
             </div>
         </div>
     </section>
@@ -41,13 +54,13 @@
                                     <i class="lnr lnr-user"></i>&nbsp;
                                     <a href="#" class="meta d-flex align-items-center flex-wrap">
                                         <span>{{ post.author.username }}</span>
-                                </a>
+                                    </a>
                                     <div class="d-flex align-items-center flex-wrap">
                                         <div class="meta">
                                             &nbsp;||&nbsp;
                                             <i class="lnr lnr-calendar-full"></i>
                                             &nbsp;{{ post.created_at|date:"d M Y" }}
-                                    </div>
+                                        </div>
                                         <div class="meta">
                                             &nbsp;||&nbsp;
                                             <i class="lnr lnr-bubble"></i>
@@ -71,15 +84,34 @@
 
                             <hr/>
 
-                            <div class="navigation-area">
-                                <div class="row">
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <a href="{% url 'allblogs' %}" class="white_bg_btn">
-                                            ← Back to all posts
-                                        </a>
-                                    </div>
-                                </div>
+                            <div class="post-nav-wrapper">
+
+                                {% if previous_post %}
+                                    <a href="{% url 'singleblog' previous_post.id %}" class="post-nav-card prev-card">
+                                        <div class="thumb">
+                                            <img src="{{ previous_post.image.url }}" alt="">
+                                        </div>
+                                        <div class="nav-info">
+                                            <span class="nav-label">← Previous</span>
+                                            <h4>{{ previous_post.title|truncatechars:40 }}</h4>
+                                        </div>
+                                    </a>
+                                {% endif %}
+
+                                {% if next_post %}
+                                    <a href="{% url 'singleblog' next_post.id %}" class="post-nav-card next-card">
+                                        <div class="nav-info">
+                                            <span class="nav-label">Next →</span>
+                                            <h4>{{ next_post.title|truncatechars:40 }}</h4>
+                                        </div>
+                                        <div class="thumb">
+                                            <img src="{{ next_post.image.url }}" alt="">
+                                        </div>
+                                    </a>
+                                {% endif %}
+
                             </div>
+
 
                         </div>
                     </div>

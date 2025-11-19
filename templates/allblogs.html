@@ -3,176 +3,176 @@
 
 {% block content %}
 
-    <section class="home_banner_area blog_banner">
-        <div class="banner_inner d-flex align-items-center">
-            <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0"
-                 data-background="">
-            </div>
-            <div class="container">
-                <div class="blog_b_text text-center">
-                    <h2>All Stories</h2>
-                    <p>Latest posts from Life on Our Trails</p>
-                    <div class="caption">
-                        <span class="border">Scroll For More</span>
-                    </div>
-                    <p><br/><br/><i class="fa fa-angle-double-down fa-2x bounce"></i></p>
-                </div>
+    <!-- ============================= -->
+    <!-- HERO BANNER                   -->
+    <!-- ============================= -->
+    <section class="allblogs-hero">
+        <div class="allblogs-hero-overlay"></div>
+
+        <div class="container text-center">
+            <h2 class="allblogs-hero-title">All Stories</h2>
+            <p class="allblogs-hero-subtitle">Latest posts from Life on Our Trails</p>
+
+            <div class="allblogs-hero-scroll">
+                <span>Scroll For More</span>
+                <br>
+                <i class="fa fa-angle-double-down fa-2x bounce"></i>
             </div>
         </div>
     </section>
 
-    <!--================Blog Area =================-->
-    <section class="blog_area">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="post_section-heading style-2">
-                        <h2>What's going on</h2>
-                        <p>See what’s new</p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
+    <!-- ============================= -->
+    <!-- BLOG LIST SECTION             -->
+    <!-- ============================= -->
+    <section class="allblogs-section">
         <div class="container">
-            <div class="row">
-                <!-- LEFT: POSTS -->
-                <div class="col-lg-8 d-flex">
-                    <div class="blog_left_sidebar">
 
+            <div class="row">
+
+                <!-- LEFT COLUMN: POSTS -->
+                <div class="col-lg-8">
+                    <div class="allblogs-list">
+
+                        <!-- FILTER CHIPS -->
+                        <div class="allblogs-filter">
+                            <button class="chip active" data-filter="all">All</button>
+
+                            {% for cat in categories %}
+                                <button class="chip" data-filter="{{ cat.name|lower }}">
+                                    {{ cat.name }}
+                                </button>
+                            {% endfor %}
+                        </div>
+
+                        <!-- POSTS LOOP -->
                         {% for post in queryset %}
-                            <article class="blog_item card">
-                                <div class="row">
+                            <article class="allblogs-card reveal-stagger"
+                                     data-category="{{ post.category.name|lower }}">
+
+                                <div class="row g-0 align-items-start">
+
+                                    <!-- META -->
                                     <div class="col-md-3">
-                                        <div class="blog_info text-right">
-                                            <ul class="blog_meta list">
+                                        <div class="allblogs-meta">
+                                            <ul>
                                                 <li>
-                                                    <a href="#">
-                                                        {{ post.author.username }}
-                                                        &nbsp;<i class="lnr lnr-user"></i>
-                                                    </a>
+                                                    <i class="lnr lnr-user"></i> {{ post.author.username }}
                                                 </li>
                                                 <li>
-                                                    <a href="#">
-                                                        {{ post.created_at|date:"d M Y" }}
-                                                        &nbsp;<i class="lnr lnr-calendar-full"></i>
-                                                    </a>
+                                                    <i class="lnr lnr-calendar-full"></i>
+                                                    {{ post.created_at|date:"d M Y" }}
                                                 </li>
                                                 <li>
-                                                    <a href="#">
-                                                        {{ post.comments.count }} Comments
-                                                        &nbsp;<i class="lnr lnr-bubble"></i>
-                                                    </a>
+                                                    <i class="lnr lnr-bubble"></i>
+                                                    {{ post.comments.count }} comments
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
 
+                                    <!-- CONTENT -->
                                     <div class="col-md-9">
-                                        <div class="blog_post">
+                                        <div class="allblogs-content">
+
                                             {% if post.image %}
                                                 <a href="{% url 'singleblog' post.id %}">
-                                                    <img src="{{ post.image.url }}" alt="{{ post.title }}"
-                                                         class="img-fluid">
+                                                    <img src="{{ post.image.url }}" class="allblogs-img"
+                                                         alt="{{ post.title }}">
                                                 </a>
                                             {% endif %}
-                                            <div class="blog_details">
+
+                                            <h2 class="allblogs-title">
                                                 <a href="{% url 'singleblog' post.id %}">
-                                                    <h2>{{ post.title }}</h2>
+                                                    {{ post.title }}
                                                 </a>
-                                                <p>{{ post.content|striptags|truncatechars:260 }}</p>
-                                                <a href="{% url 'singleblog' post.id %}" class="white_bg_btn">
-                                                    View More
-                                                </a>
-                                            </div>
+                                            </h2>
+
+                                            <p class="allblogs-excerpt">
+                                                {{ post.content|striptags|truncatechars:260 }}
+                                            </p>
+
+                                            <a href="{% url 'singleblog' post.id %}" class="allblogs-btn">
+                                                View More →
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
+
                             </article>
                         {% empty %}
                             <p>No posts available yet.</p>
                         {% endfor %}
 
-                        <!-- Pagination -->
+
+                        <!-- PAGINATION -->
                         {% if queryset.has_other_pages %}
-                            <nav class="blog-pagination justify-content-center d-flex">
-                                <ul class="pagination">
+                            <nav class="allblogs-pagination">
+                                <ul>
+
                                     {% if queryset.has_previous %}
-                                        <li class="page-item">
-                                            <a href="?{{ page_request_var }}={{ queryset.previous_page_number }}"
-                                               class="page-link"
-                                               aria-label="Previous">
-                                    <span aria-hidden="true">
-                                        <span class="lnr lnr-chevron-left"></span>
-                                    </span>
+                                        <li>
+                                            <a href="?{{ page_request_var }}={{ queryset.previous_page_number }}">
+                                                <i class="lnr lnr-chevron-left"></i>
                                             </a>
                                         </li>
                                     {% endif %}
 
                                     {% for i in queryset.paginator.page_range %}
-                                        {% if queryset.number == i %}
-                                            <li class="page-item active">
-                                                <a href="?{{ page_request_var }}={{ i }}" class="page-link">{{ i }}</a>
-                                            </li>
-                                        {% else %}
-                                            <li class="page-item">
-                                                <a href="?{{ page_request_var }}={{ i }}" class="page-link">{{ i }}</a>
-                                            </li>
-                                        {% endif %}
+                                        <li class="{% if queryset.number == i %}active{% endif %}">
+                                            <a href="?{{ page_request_var }}={{ i }}">{{ i }}</a>
+                                        </li>
                                     {% endfor %}
 
                                     {% if queryset.has_next %}
-                                        <li class="page-item">
-                                            <a href="?{{ page_request_var }}={{ queryset.next_page_number }}"
-                                               class="page-link"
-                                               aria-label="Next">
-                                    <span aria-hidden="true">
-                                        <span class="lnr lnr-chevron-right"></span>
-                                    </span>
+                                        <li>
+                                            <a href="?{{ page_request_var }}={{ queryset.next_page_number }}">
+                                                <i class="lnr lnr-chevron-right"></i>
                                             </a>
                                         </li>
                                     {% endif %}
+
                                 </ul>
                             </nav>
                         {% endif %}
                     </div>
                 </div>
 
-                <!-- RIGHT: SIDEBAR -->
+
+                <!-- RIGHT COLUMN: SIDEBAR -->
                 <div class="col-lg-4">
-                    <div class="blog_right_sidebar">
-                        <aside class="single_sidebar_widget search_widget">
+                    <aside class="allblogs-sidebar">
+
+                        <!-- SEARCH -->
+                        <div class="allblogs-widget">
+                            <h4 class="allblogs-widget-title">Search</h4>
+
                             <form action="{% url 'search' %}">
-                                <div class="input-group">
-                                    <input type="text" name="q" class="form-control" placeholder="Search Posts">
-                                    <span class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">
-                                        <i class="lnr lnr-magnifier"></i>
-                                    </button>
-                                </span>
+                                <div class="allblogs-search-box">
+                                    <input type="text" name="q" placeholder="Search Posts...">
+                                    <button type="submit"><i class="lnr lnr-magnifier"></i></button>
                                 </div>
                             </form>
-                            <div class="br"></div>
-                        </aside>
+                        </div>
 
-                        <aside class="single-sidebar-widget newsletter_widget">
-                            <h4 class="widget_title">Newsletter</h4>
-                            <p>Stay updated with our latest trails and stories.</p>
-                            <div class="form-group d-flex flex-row">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Enter email">
-                                    <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">
-                                        <i class="lnr lnr-arrow-right"></i>
-                                    </button>
-                                </span>
-                                </div>
+                        <!-- NEWSLETTER -->
+                        <div class="allblogs-widget">
+                            <h4 class="allblogs-widget-title">Newsletter</h4>
+                            <p>Stay updated with our latest stories.</p>
+
+                            <div class="allblogs-newsletter-box">
+                                <input type="text" placeholder="Enter your email">
+                                <button><i class="lnr lnr-arrow-right"></i></button>
                             </div>
-                            <p class="text-bottom">We respect your inbox. No spam.</p>
-                            <div class="br"></div>
-                        </aside>
-                    </div>
+
+                            <small class="allblogs-newsletter-note">
+                                No spam. We promise.
+                            </small>
+                        </div>
+
+                    </aside>
                 </div>
+
             </div>
         </div>
     </section>
