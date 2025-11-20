@@ -26,6 +26,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
 # Application definition
 
 INSTALLED_APPS = [
