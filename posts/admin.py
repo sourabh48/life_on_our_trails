@@ -4,7 +4,6 @@ from django.utils.html import format_html
 from .models import (
     Comment,
     Category,
-    Post,
     Profile,
     ProfileSkill,
     ProfileEducation,
@@ -141,10 +140,30 @@ class ProfileExperienceAdmin(admin.ModelAdmin):
     search_fields = ("position", "institution", "profile__user__username")
 
 
+from django.contrib import admin
+from django import forms
+from .models import Post
+
+
+class PostAdminForm(forms.ModelForm):
+    content = forms.CharField(
+        widget=forms.Textarea(attrs={"rows": 20, "style": "font-family: monospace;"})
+    )
+
+    class Meta:
+        model = Post
+        fields = "__all__"
+
+
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    form = PostAdminForm
+    list_display = ("title", "status", "created_at")
+    search_fields = ("title", "content")
+
 # ----------------------------
 # BASIC MODELS
 # ----------------------------
 
 admin.site.register(Category)
-admin.site.register(Post)
 admin.site.register(Comment)

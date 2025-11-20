@@ -1,10 +1,11 @@
-import math
 import re
 import uuid
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.text import slugify
@@ -98,48 +99,69 @@ def create_profile_for_user(sender, instance, created, **kwargs):
 
 
 # ==========================
-# CATEGORY + TAG MODELS
+# CATEGORY + TAG MODELS + post
 # ==========================
 
 class Category(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=120, unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.name)
+            slug = base
+            counter = 1
+            while Category.objects.filter(slug=slug).exclude(id=self.id).exists():
+                slug = f"{base}-{counter}"
+                counter += 1
+            self.slug = slug
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=30, unique=True)
+    name = models.CharField(max_length=80, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)[:100]
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
 
-# ==========================
-# POST MODEL (UPGRADED)
-# ==========================
-
 class Post(models.Model):
     STATUS_CHOICES = (
         ("draft", "Draft"),
         ("published", "Published"),
+        ("scheduled", "Scheduled"),
     )
 
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=260, unique=True, blank=True)
 
-    content = models.TextField()  # Quill HTML
-    image = models.ImageField(upload_to='posts/', blank=True, null=True)
+    content = models.TextField(blank=True)  # Quill HTML
+    image = models.ImageField(upload_to="posts/", blank=True, null=True)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    # New fields
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
 
-    read_time = models.IntegerField(default=1)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="published")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    publish_at = models.DateTimeField(null=True, blank=True)
+
+    read_time = models.PositiveIntegerField(default=1)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="draft")
+
+    # SEO
+    meta_title = models.CharField(max_length=70, blank=True, default="")
+    meta_description = models.CharField(max_length=180, blank=True, default="")
 
     def __str__(self):
         return self.title
@@ -151,29 +173,39 @@ class Post(models.Model):
     def estimated_read_time(self):
         return f"{self.read_time} min read"
 
+    def _plain_text(self):
+        """Strip HTML to estimate words & SEO snippets."""
+        return re.sub(r"<[^>]+>", " ", self.content or "").strip()
 
-# ==========================
-# AUTO SLUG + READ-TIME GENERATOR
-# ==========================
+    def _word_count(self):
+        if not self.content:
+            return 0
+        return len(re.findall(r"\w+", self._plain_text()))
 
-@receiver(pre_save, sender=Post)
-def auto_generate_post_meta(sender, instance, *args, **kwargs):
-    # Slug generation
-    if not instance.slug:
-        base = slugify(instance.title)
-        slug = base
-        counter = 1
+    def save(self, *args, **kwargs):
+        # Slug
+        if not self.slug:
+            base_slug = slugify(self.title)[:240]
+            slug = base_slug
+            counter = 1
+            while Post.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
 
-        while Post.objects.filter(slug=slug).exists():
-            slug = f"{base}-{counter}"
-            counter += 1
+        # Read time
+        words = self._word_count()
+        self.read_time = max(1, round(words / 200)) if words else 1
 
-        instance.slug = slug
+        # SEO fallbacks
+        if not self.meta_title:
+            self.meta_title = (self.title or "")[:70]
 
-    # Calculate read time: remove HTML -> count words -> divide 200 wpm
-    text_only = re.sub("<[^<]+?>", "", instance.content)
-    words = len(text_only.split())
-    instance.read_time = max(1, math.ceil(words / 200))
+        if not self.meta_description:
+            pt = self._plain_text()
+            self.meta_description = pt[:175]
+
+        super().save(*args, **kwargs)
 
 
 # ==========================

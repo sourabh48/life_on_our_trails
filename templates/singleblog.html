@@ -88,31 +88,46 @@
 
                                 {% if previous_post %}
                                     <a href="{% url 'singleblog' previous_post.id %}" class="post-nav-card prev-card">
+
                                         <div class="thumb">
-                                            <img src="{{ previous_post.image.url }}" alt="">
+                                            {% if previous_post.image %}
+                                                <img src="{{ previous_post.image.url }}"
+                                                     alt="{{ previous_post.title }}">
+                                            {% else %}
+                                                <img src="{% static 'img/default-thumb.jpg' %}"
+                                                     alt="No image available">
+                                            {% endif %}
                                         </div>
+
                                         <div class="nav-info">
                                             <span class="nav-label">← Previous</span>
-                                            <h4>{{ previous_post.title|truncatechars:40 }}</h4>
+                                            <h4 class="nav-title">{{ previous_post.title|truncatechars:55 }}</h4>
                                         </div>
+
                                     </a>
                                 {% endif %}
 
+
                                 {% if next_post %}
                                     <a href="{% url 'singleblog' next_post.id %}" class="post-nav-card next-card">
+
                                         <div class="nav-info">
                                             <span class="nav-label">Next →</span>
-                                            <h4>{{ next_post.title|truncatechars:40 }}</h4>
+                                            <h4 class="nav-title">{{ next_post.title|truncatechars:55 }}</h4>
                                         </div>
+
                                         <div class="thumb">
-                                            <img src="{{ next_post.image.url }}" alt="">
+                                            {% if next_post.image %}
+                                                <img src="{{ next_post.image.url }}" alt="{{ next_post.title }}">
+                                            {% else %}
+                                                <img src="{{ default_image }}" alt="No image">
+                                            {% endif %}
                                         </div>
+
                                     </a>
                                 {% endif %}
 
                             </div>
-
-
                         </div>
                     </div>
 

@@ -161,5 +161,75 @@
             loadMorePosts();
         }
     });
+    document.addEventListener("scroll", function () {
+        document.querySelectorAll(".reveal").forEach(el => {
+            let rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight - 80) {
+                el.classList.add("active");
+            }
+        });
+    });
+
+// postimage limitter
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".post-body img").forEach(img => {
+            img.onload = function () {
+                const ratio = img.naturalWidth / img.naturalHeight;
+
+                if (ratio > 1.3) {
+                    img.classList.add("landscape");      // WIDE
+                } else if (ratio < 0.8) {
+                    img.classList.add("portrait");       // TALL
+                } else {
+                    img.classList.add("square");         // SQUARE-LIKE
+                }
+
+                if (img.naturalHeight > img.naturalWidth * 2) {
+                    img.classList.add("tall");           // EXTREME PORTRAIT
+                }
+            };
+        });
+    });
+
+// code display
+    document.addEventListener("DOMContentLoaded", async () => {
+
+        const highlighter = await shiki.getHighlighter({
+            theme: "github-dark",   // You can switch to: "nord", "dracula", "material-theme-darker"
+        });
+
+        document.querySelectorAll("pre code").forEach((block) => {
+
+            const lang = block.className || "text";
+            const code = block.innerText;
+
+            // Highlight using Shiki
+            const html = highlighter.codeToHtml(code, {lang});
+
+            // Replace content
+            const wrapper = document.createElement("div");
+            wrapper.className = "code-wrapper";
+            wrapper.innerHTML = html;
+
+            // Add copy button
+            const copyBtn = document.createElement("button");
+            copyBtn.className = "code-copy-btn";
+            copyBtn.innerHTML = `<i class="lnr lnr-copy"></i>`;
+            copyBtn.addEventListener("click", () => {
+                navigator.clipboard.writeText(code);
+                copyBtn.classList.add("copied");
+                copyBtn.innerHTML = "✓ Copied";
+                setTimeout(() => {
+                    copyBtn.classList.remove("copied");
+                    copyBtn.innerHTML = `<i class="lnr lnr-copy"></i>`;
+                }, 1500);
+            });
+
+            wrapper.appendChild(copyBtn);
+
+            block.parentElement.replaceWith(wrapper);
+        });
+    });
+
 
 })(jQuery)

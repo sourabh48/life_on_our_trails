@@ -1,5 +1,8 @@
+import re
+
 from django import forms
 from django.forms import inlineformset_factory
+from django.utils import timezone
 from tinymce.widgets import TinyMCE
 
 from .models import (
@@ -18,21 +21,140 @@ from .models import (
 class TinyMCEWidget(TinyMCE):
     def use_required_attribute(self, *args):
         return False
-
-
 # =====================================================
 # Post Form
 # =====================================================
-class PostForm(forms.ModelForm):
+class PostCreateForm(forms.ModelForm):
     content = forms.CharField(
-        widget=TinyMCEWidget(attrs={'cols': 30, 'rows': 10})
+        widget=forms.HiddenInput(),
+        required=False,
+    )
+
+    new_category = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Add new category",
+            }
+        ),
+    )
+
+    new_tags = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+    )
+
+    tags = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+    )
+
+    publish_at = forms.DateTimeField(
+        required=False,
+        widget=forms.DateTimeInput(
+            attrs={
+                "type": "datetime-local",
+                "class": "form-control",
+            }
+        ),
     )
 
     class Meta:
         model = Post
-        fields = ['title', 'content', 'image']
-        labels = {'image': 'Upload Image'}
+        fields = [
+            "title",
+            "content",
+            "category",
+            "tags",
+            "image",
+            "status",
+            "publish_at",
+            "meta_title",
+            "meta_description",
+        ]
+        widgets = {
+            "title": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Catchy post title…",
+                }
+            ),
+            "category": forms.Select(attrs={"class": "form-control"}),
+            "image": forms.ClearableFileInput(attrs={"class": "form-control", "id": "id_image"}),
+            "status": forms.Select(attrs={"class": "form-control"}),
+            "meta_title": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Meta title (optional)",
+                    "maxlength": "70",
+                }
+            ),
+            "meta_description": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "rows": 2,
+                    "placeholder": "Short SEO description for search results…",
+                    "maxlength": "160",
+                }
+            ),
+        }
 
+    # helpers
+    def _plain_text(self, html):
+        return re.sub(r"<[^>]+>", " ", html or "").strip()
+
+    def _word_count(self, html):
+        if not html:
+            return 0
+        return len(re.findall(r"\w+", self._plain_text(html)))
+
+    def clean_publish_at(self):
+        publish_at = self.cleaned_data.get("publish_at")
+        status = self.cleaned_data.get("status")
+
+        if status == "scheduled":
+            if not publish_at:
+                raise forms.ValidationError("Please pick a publish date & time for scheduled posts.")
+            if publish_at <= timezone.now():
+                raise forms.ValidationError("Scheduled time must be in the future.")
+        return publish_at
+
+    def clean(self):
+        cleaned = super().clean()
+        title = (cleaned.get("title") or "").strip()
+        content_html = cleaned.get("content") or ""
+        image = cleaned.get("image")
+        status = cleaned.get("status")
+        category = cleaned.get("category")
+        new_category = (cleaned.get("new_category") or "").strip()
+        tags_raw = (cleaned.get("tags") or "").strip()
+        new_tags = (cleaned.get("new_tags") or "").strip()
+
+        words = self._word_count(content_html)
+
+        if words == 0:
+            self.add_error("content", "Please write some content before saving.")
+
+        existing_tag_ids = [t.strip() for t in tags_raw.split(",") if t.strip()]
+        has_existing = bool(existing_tag_ids)
+        has_new = bool(new_tags)
+
+        strict = status in ("published", "scheduled")
+        if strict:
+            if not title or len(title) < 10:
+                self.add_error("title", "Title must be at least 10 characters to publish.")
+            if not image:
+                self.add_error("image", "Featured image is required to publish.")
+            if not category and not new_category:
+                self.add_error("category", "Pick a category or create a new one to publish.")
+            if not has_existing and not has_new:
+                self.add_error("tags", "Select at least one tag or add new tags to publish.")
+            if words < 500:
+                self.add_error("content", "To publish, please write at least 500 words.")
+
+        return cleaned
 
 # =====================================================
 # Comment Form
