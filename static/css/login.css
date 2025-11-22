@@ -1,3 +1,7 @@
+/* =========================================
+   LOGIN / SIGNUP PAGE
+   ========================================= */
+
 :root {
     --primary-color: #4EA685;
     --secondary-color: #57B894;
@@ -10,6 +14,8 @@
     --google-color: #DB4437;
     --twitter-color: #1DA1F2;
     --insta-color: #E1306C;
+
+    --nav-height: 80px;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
@@ -21,41 +27,49 @@
     box-sizing: border-box;
 }
 
-html, body {
-    height: auto;
-    overflow-x: hidden;
+html,
+body {
+    min-height: 100vh;
     background: #fff;
 }
 
-.auth-container > * {
+/* =========================================
+   AUTH CONTAINER LAYOUT (UNDER NAV, ABOVE FOOTER)
+   ========================================= */
+
+.auth-container {
     position: relative;
+    width: 100%;
+    overflow: hidden;
+
+    /* Space from header & footer (nav-height has safe default) */
+    margin-top: calc(var(--nav-height, 80px) + 40px);
+
+    /* vertical sizing follows content */
     z-index: 2;
 }
 
-header {
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.18));
-    position: relative;
-    z-index: 10;
-}
-
-/* MAIN FIX: replaced .container with .auth-container */
-.auth-container {
-    position: relative;
-    min-height: 100vh; /* IMPORTANT: full screen */
-    overflow: hidden;
-    z-index: 0;
-}
-
-.row {
+/* First row = forms; vertically center inside the available space  */
+.auth-container > .row:first-of-type {
+    min-height: 60vh; /* grow with forms */
     display: flex;
     flex-wrap: wrap;
+    align-items: center; /* vertical centering */
 }
 
-/* apply height only inside login container */
-.auth-container .row {
-    height: 100vh;
+/* Second row = right/left copy + image */
+.auth-container .content-row {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    pointer-events: none;
+    z-index: 6;
+    width: 100%;
+    display: flex;
 }
 
+/* Basic grid columns */
 .col {
     width: 50%;
 }
@@ -67,26 +81,42 @@ header {
     text-align: center;
 }
 
+/* Wrap forms so we can control max-width & centering */
 .form-wrapper {
     width: 100%;
     max-width: 28rem;
+    z-index: 4; /* Above bubble */
+    display: flex;
+    justify-content: center;
 }
 
+/* =========================================
+   FORM CARD
+   ========================================= */
+
 .form {
-    padding: 1rem;
+    width: 100%;
+    padding: 1.5rem 1.75rem 1.75rem;
     background-color: var(--white);
     border-radius: 1.5rem;
-    width: 100%;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    transform: scale(0);
-    transition: .5s ease-in-out;
-    transition-delay: 1s;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+
+    transform: scale(0.95);
+    opacity: 0;
+    transition: opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.auth-container.sign-in .form.sign-in,
+.auth-container.sign-up .form.sign-up {
+    opacity: 1;
+    transform: scale(1);
 }
 
 .input-group {
     position: relative;
     width: 100%;
-    margin: 1rem 0;
+    margin: 0.9rem 0;
 }
 
 .input-group i {
@@ -94,102 +124,104 @@ header {
     top: 50%;
     left: 1rem;
     transform: translateY(-50%);
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     color: var(--gray-2);
 }
 
 .input-group input {
     width: 100%;
-    padding: 1rem 3rem;
-    font-size: 1rem;
+    padding: 0.9rem 3rem;
+    font-size: 0.95rem;
     background-color: var(--gray);
-    border-radius: .5rem;
-    border: 0.125rem solid var(--white);
+    border-radius: 0.55rem;
+    border: 2px solid var(--white);
     outline: none;
+    transition: border 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
 }
 
 .input-group input:focus {
-    border: 0.125rem solid var(--primary-color);
+    border-color: var(--primary-color);
+    background-color: #f9fffc;
+    box-shadow: 0 0 0 2px rgba(78, 166, 133, 0.2);
 }
 
 .form button {
     cursor: pointer;
     width: 100%;
-    padding: .6rem 0;
-    border-radius: .5rem;
+    padding: 0.8rem 0;
+    border-radius: 0.55rem;
     border: none;
     background-color: var(--primary-color);
     color: var(--white);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    font-weight: 500;
     outline: none;
+    margin-top: 0.5rem;
+    transition: background-color 0.25s ease, transform 0.1s ease;
+}
+
+.form button:hover {
+    background-color: var(--secondary-color);
+}
+
+.form button:active {
+    transform: translateY(1px);
 }
 
 .form p {
-    margin: 1rem 0;
-    font-size: .7rem;
-}
-
-.flex-col {
-    flex-direction: column;
+    margin: 1rem 0 0.2rem;
+    font-size: 0.8rem;
 }
 
 .pointer {
     cursor: pointer;
+    color: #ff9933;
 }
 
-/* ANIMATION FIX (updated selectors) */
-
-.auth-container.sign-in .form.sign-in,
-.auth-container.sign-up .form.sign-up {
-    transform: scale(1);
-}
-
-.auth-container .content-row {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%; /* REQUIRED — keeps animation contained */
-    pointer-events: none;
-    z-index: 6;
-    width: 100%;
-}
+/* =========================================
+   TEXT + SIDE ILLUSTRATIONS
+   ========================================= */
 
 .text {
     margin: 4rem;
     color: var(--white);
+    max-width: 430px;
 }
 
 .text h2 {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: 800;
-    margin: 2rem 0;
+    margin: 1.5rem 0;
     transition: 1s ease-in-out;
 }
 
 .text p {
     font-weight: 600;
     transition: 1s ease-in-out;
-    transition-delay: .2s;
+    transition-delay: 0.2s;
 }
 
 .img img {
-    width: 30vw;
+    width: 32vw;
+    max-width: 480px;
     transition: 1s ease-in-out;
-    transition-delay: .4s;
+    transition-delay: 0.3s;
 }
 
+/* Off-screen initial states */
 .text.sign-in h2,
 .text.sign-in p,
 .img.sign-in img {
-    transform: translateX(-250%);
+    transform: translateX(-220%);
 }
 
 .text.sign-up h2,
 .text.sign-up p,
 .img.sign-up img {
-    transform: translateX(250%);
+    transform: translateX(220%);
 }
 
+/* Bring them in when active */
 .auth-container.sign-in .text.sign-in h2,
 .auth-container.sign-in .text.sign-in p,
 .auth-container.sign-in .img.sign-in img,
@@ -199,90 +231,184 @@ header {
     transform: translateX(0);
 }
 
-/* BACKGROUND FIXED */
-.container::before {
+/* =========================================
+   BACKGROUND BUBBLE
+   (follows container height)
+   ========================================= */
 
-    transform: translate(35%, 0);
-    background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    transition: 1s ease-in-out;
-    z-index: 6;
-
-}
-
+/* =========================================
+   FIXED BUBBLE BACKGROUND SHAPE
+========================================= */
 
 .auth-container::before {
     content: "";
     position: absolute;
+
+    /* Position bubble properly */
     top: 0;
     right: 0;
 
-    height: 100vh;
-    width: 300vw; /* Needed for bubble arc + sliding */
-    z-index: 3;
+    /* REDUCED HEIGHT – was 180vh */
+    height: 120vh; /* stops before footer */
+
+    /* REDUCED WIDTH – was 420vw */
+    width: 140vw; /* still curved, not oversized */
+
+    z-index: 1;
 
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 
-    /* Default bubble image (SIGN-IN) */
     background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
     url('../img/core-img/loginpage1.jpg');
 
-    border-bottom-right-radius: max(50vw, 50vh);
-    border-top-left-radius: max(50vw, 50vh);
-    box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.35);
-    transform: translate(35%, 0);
-    transition: transform 1s ease-in-out, background-image 1s ease-in-out;
+    /* Rounder shape but not huge */
+    border-bottom-right-radius: 50vw;
+    border-top-left-radius: 50vw;
+
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.4);
+
+    /* Bring bubble slightly into view */
+    transform: translate(30%, 0);
+
+    transition: transform .8s ease-in-out, background-image .8s ease-in-out;
 }
 
+/* SIGN-IN bubble position */
 .auth-container.sign-in::before {
-    transform: translate(0, 0);
+    transform: translate(0%, 0);
     right: 50%;
     background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-    url('../img/core-img/loginpage1.jpg'); /* Image for sign-in */
+    url('../img/core-img/loginpage1.jpg');
 }
 
+/* SIGN-UP bubble position */
 .auth-container.sign-up::before {
     transform: translate(100%, 0);
     right: 50%;
     background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-    url('../img/core-img/loginpage2.jpg'); /* New image for sign-up */
+    url('../img/core-img/loginpage2.jpg');
 }
 
-@media only screen and (max-width: 425px) {
+/* MOBILE FIX – remove bubble and go clean */
+@media (max-width: 992px) {
     .auth-container::before,
     .auth-container.sign-in::before,
     .auth-container.sign-up::before {
-        height: 100vh;
-        border-bottom-right-radius: 0;
-        border-top-left-radius: 0;
+        width: 100%;
+        height: 60vh;
+        border-radius: 0;
         transform: none;
         right: 0;
     }
-
-    .col {
-        width: 100%;
-        position: absolute;
-        padding: 2rem;
-        background-color: var(--white);
-        border-top-left-radius: 2rem;
-        border-top-right-radius: 2rem;
-        transform: translateY(100%);
-        transition: 1s ease-in-out;
-    }
 }
 
-.auth-container.sign-in .form.sign-up {
-    opacity: 0;
-    pointer-events: none;
-}
 
+/* Hide the inactive form visually + for clicks */
+.auth-container.sign-in .form.sign-up,
 .auth-container.sign-up .form.sign-in {
     opacity: 0;
     pointer-events: none;
 }
 
-.form {
-    transition: opacity 0.6s ease, transform 0.6s ease;
+/* =========================================
+   AVATAR UPLOAD
+   ========================================= */
+
+.avatar-upload {
+    width: 130px;
+    margin: 0 auto 25px;
+    text-align: center;
 }
 
+.avatar-preview {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e6e6e6;
+    display: block;
+    margin: 0 auto 12px;
+    background-color: #f5f5f5;
+}
+
+.avatar-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #4EA685;
+    color: white;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.25s ease;
+    border: none;
+}
+
+.avatar-btn:hover {
+    opacity: 0.9;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 1150px) {
+    .text {
+        margin: 2.5rem 2rem;
+    }
+
+    .img img {
+        width: 38vw;
+    }
+}
+
+@media (max-width: 992px) {
+    .auth-container > .row:first-of-type {
+        min-height: auto;
+    }
+
+    .auth-container .content-row {
+        display: none; /* hide side copy on tablets/phones */
+    }
+
+    .col {
+        width: 100%;
+    }
+
+    .form-wrapper {
+        max-width: 90%;
+    }
+
+    .auth-container {
+        margin-top: calc(var(--nav-height, 70px) + 20px);
+        margin-bottom: 60px;
+    }
+}
+
+@media (max-width: 600px) {
+    .form-wrapper {
+        max-width: 100%;
+        padding: 0 1rem;
+    }
+
+    .form {
+        padding: 1.25rem 1.25rem 1.5rem;
+        border-radius: 1.2rem;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .avatar-upload {
+        width: 100px;
+    }
+
+    .avatar-preview {
+        width: 100px;
+        height: 100px;
+    }
+
+    .auth-container {
+        margin-top: calc(var(--nav-height, 64px) + 16px);
+        margin-bottom: 40px;
+    }
+}

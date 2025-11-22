@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/marketplace.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+    <div class="container py-4">
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="market-detail-header">
+                    <h1>{{ business.name }}</h1>
+                    {% if business.tagline %}
+                        <p class="text-muted mb-1">{{ business.tagline }}</p>
+                    {% endif %}
+                    <span class="badge bg-info">{{ business.category.name }}</span>
+                </div>
+
+                {% if business.cover_image %}
+                    <img src="{{ business.cover_image.url }}" class="img-fluid rounded mb-3" alt="{{ business.name }}">
+                {% endif %}
+
+                {% if business.description %}
+                    <h5>About</h5>
+                    <p>{{ business.description|linebreaks }}</p>
+                {% endif %}
+
+                {% if photos %}
+                    <h5 class="mt-4">Work Gallery</h5>
+                    <div class="row g-2">
+                        {% for photo in photos %}
+                            <div class="col-6 col-md-4">
+                                <img src="{{ photo.image.url }}" class="img-fluid rounded" alt="{{ photo.caption }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5>Contact</h5>
+                        {% if business.contact_phone %}
+                            <p class="mb-1"><strong>Phone:</strong> {{ business.contact_phone }}</p>
+                        {% endif %}
+                        {% if business.contact_email %}
+                            <p class="mb-1"><strong>Email:</strong> {{ business.contact_email }}</p>
+                        {% endif %}
+                        {% if business.website_url %}
+                            <p class="mb-1"><a href="{{ business.website_url }}" target="_blank">Website</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if locations %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5>Locations</h5>
+                            <ul class="list-unstyled mb-0">
+                                {% for loc in locations %}
+                                    <li class="mb-2">
+                                        <div><strong>{{ loc.label|default:loc.city }}</strong></div>
+                                        <div class="small text-muted">{{ loc.address_line1 }}</div>
+                                        {% if loc.google_maps_url %}
+                                            <a href="{{ loc.google_maps_url }}" target="_blank" class="small">
+                                                Open in Google Maps
+                                            </a>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Request a Quote</h5>
+                        {% if services %}
+                            <p class="small text-muted">
+                                Add services to your quote list and then request a quotation.
+                            </p>
+                            {% for service in services %}
+                                <form method="post"
+                                      action="{% url 'marketplace:add_to_cart' business.id service.id %}"
+                                      class="mb-2 d-flex align-items-center">
+                                    {% csrf_token %}
+                                    <div class="flex-grow-1">
+                                        <strong>{{ service.name }}</strong><br>
+                                        {% if service.base_price %}
+                                            <span class="small text-muted">
+                                            From ₹{{ service.base_price }} {{ service.unit_label }}
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                    <input type="number" name="quantity" value="1" min="1"
+                                           class="form-control form-control-sm me-2"
+                                           style="width:70px;">
+                                    <button class="btn btn-sm btn-market-primary">Add</button>
+                                </form>
+                            {% endfor %}
+                        {% else %}
+                            <p class="small text-muted mb-0">
+                                This business has not listed any services yet.
+                            </p>
+                        {% endif %}
+
+                        {% if cart_items %}
+                            <hr>
+                            <h6>Quote list</h6>
+                            <ul class="list-unstyled small">
+                                {% for item in cart_items %}
+                                    <li class="d-flex justify-content-between align-items-center mb-1">
+                                        <span>{{ item.name }} × {{ item.quantity }}</span>
+                                        <a href="{% url 'marketplace:remove_from_cart' business.id item.service_id %}"
+                                           class="text-danger small">remove</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <a href="{% url 'marketplace:request_quote' business.id %}"
+                               class="btn btn-sm btn-success mt-2 w-100">
+                                Submit Quote Request
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}

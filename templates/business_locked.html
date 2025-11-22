@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container py-5 text-center">
+        <h2>{{ business.name }}</h2>
+        <p class="lead">This business is currently not available.</p>
+        <p class="text-muted">
+            It may be under review, inactive, or temporarily locked.
+        </p>
+        <a href="{% url 'marketplace:business_list' %}" class="btn btn-primary mt-3">
+            Back to Marketplace
+        </a>
+    </div>
+{% endblock content %}

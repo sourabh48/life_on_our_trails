@@ -118,10 +118,7 @@
 
                                     <footer class="post-footer d-flex align-items-center mt-3">
                                         <div class="avatar">
-                                            {% if obj.author.profile.avatar %}
-                                                <img src="{{ obj.author.profile.avatar.url }}"
-                                                     alt="{{ obj.author.username }}" class="rounded-circle">
-                                            {% endif %}
+                                            <img src="{{ obj.author.profile.avatar_url }}" class="rounded-circle">
                                         </div>
 
                                         <div class="title">

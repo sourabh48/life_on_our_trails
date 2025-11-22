@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/marketplace.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+    <div class="marketplace-page">
+
+        <section class="market-hero">
+            <div class="market-hero-overlay"></div>
+            <div class="container market-hero-inner">
+                <div class="market-hero-text">
+                    <h1>Find Trusted Local Services</h1>
+                    <p>You can hire carpenters, painters, mechanics and more – all in one place.</p>
+                </div>
+
+                <form method="get" class="market-search-bar">
+                    <div class="search-field">
+                        <input type="text"
+                               name="q"
+                               value="{{ q }}"
+                               placeholder="What are you looking for? (e.g. carpenter)">
+                    </div>
+
+                    <div class="search-field">
+                        <input type="text"
+                               name="city"
+                               value="{{ city }}"
+                               placeholder="Location (e.g. Bangalore)">
+                        <span class="search-icon">
+                        <i class="fa fa-map-marker-alt"></i>
+                    </span>
+                </div>
+
+                    <div class="search-field">
+                        <select name="category">
+                            <option value="">All Categories</option>
+                            {% for cat in categories %}
+                                <option value="{{ cat.slug }}"
+                                        {% if active_category == cat.slug %}selected{% endif %}>
+                                    {{ cat.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-market-primary">
+                        Search
+                    </button>
+                </form>
+            </div>
+    </section>
+
+        <section class="market-category-strip">
+        <div class="container">
+            <div class="category-strip-card">
+                {% for cat in categories %}
+                    <a href="{% url 'marketplace:business_list' %}?category={{ cat.slug }}"
+                       class="category-pill {% if active_category == cat.slug %}active{% endif %}">
+                        <div class="category-icon">
+                            <i class="fa fa-briefcase"></i>
+                        </div>
+                        <div class="category-meta">
+                            <span class="category-name">{{ cat.name }}</span>
+                            <span class="category-count">
+                                {{ cat.businesses.count }} listing{{ cat.businesses.count|pluralize }}
+                            </span>
+                        </div>
+                    </a>
+                {% empty %}
+                    <p class="text-muted mb-0">No categories yet – create some in admin.</p>
+                {% endfor %}
+            </div>
+        </div>
+        </section>
+
+        <section class="market-section">
+            <div class="container">
+                <div class="market-section-header">
+                    <h2>Featured Services</h2>
+                    <p>Highlighted listings handpicked for visibility.</p>
+                </div>
+
+                <div class="market-card-row">
+                    {% for biz in businesses|slice:":4" %}
+                        <a href="{% url 'marketplace:business_detail' category_slug=biz.category.slug slug=biz.slug %}"
+                           class="market-card">
+                            <div class="market-card-thumb">
+                                {% if biz.cover_image %}
+                                    <img src="{{ biz.cover_image.url }}" alt="{{ biz.name }}">
+                                {% else %}
+                                    <img src="{% static 'img/core-img/default.png' %}" alt="{{ biz.name }}">
+                                {% endif %}
+                                <span class="market-card-tag">
+                                {{ biz.category.name }}
+                            </span>
+                            </div>
+                            <div class="market-card-body">
+                                <h3 class="market-card-title">{{ biz.name }}</h3>
+                                {% if biz.primary_city %}
+                                    <p class="market-card-location">
+                                        <i class="fa fa-map-marker-alt"></i>
+                                        {{ biz.primary_city }}
+                                    </p>
+                                {% endif %}
+                                {% if biz.tagline %}
+                                    <p class="market-card-desc">
+                                        {{ biz.tagline|truncatechars:80 }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </a>
+                    {% empty %}
+                        <p class="text-muted">No businesses yet. Register one from the business dashboard.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <section class="market-section market-section-alt">
+            <div class="container">
+                <div class="market-section-header">
+                    <h2>Popular Businesses</h2>
+                    <p>Browse high-engagement profiles based on recent activity.</p>
+                </div>
+
+                <div class="market-grid">
+                    {% for biz in businesses %}
+                        <a href="{% url 'marketplace:business_detail' category_slug=biz.category.slug slug=biz.slug %}"
+                           class="market-grid-item">
+                            <div class="grid-thumb">
+                                {% if biz.cover_image %}
+                                    <img src="{{ biz.cover_image.url }}" alt="{{ biz.name }}">
+                                {% else %}
+                                    <img src="{% static 'img/core-img/default.png' %}" alt="{{ biz.name }}">
+                                {% endif %}
+                                <span class="grid-pill">{{ biz.category.name }}</span>
+                            </div>
+                            <div class="grid-body">
+                                <h3>{{ biz.name }}</h3>
+                                {% if biz.primary_city %}
+                                    <p class="grid-location">
+                                        <i class="fa fa-map-marker-alt"></i> {{ biz.primary_city }}
+                                    </p>
+                                {% endif %}
+                                {% if biz.tagline %}
+                                    <p class="grid-desc">{{ biz.tagline|truncatechars:70 }}</p>
+                                {% endif %}
+                        </div>
+                        </a>
+                    {% empty %}
+                        <p class="text-muted">No businesses found for this filter.</p>
+                    {% endfor %}
+                </div>
+            </div>
+    </section>
+
+        <section class="market-cta-strip">
+            <div class="container market-cta-inner">
+                <div>
+                    <h3>Are you a service provider?</h3>
+                    <p>Create a profile and start receiving quote requests from customers.</p>
+                </div>
+                <div class="cta-buttons">
+                    <a href="{% url 'marketplace:business_signup' %}" class="btn btn-market-primary">
+                        Register as Business
+                    </a>
+                    <a href="{% url 'marketplace:owner_dashboard' %}" class="btn btn-market-secondary">
+                        Go to Business Dashboard
+                    </a>
+            </div>
+        </div>
+    </section>
+
+    </div>
+
+{% endblock content %}

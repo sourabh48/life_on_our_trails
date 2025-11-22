@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container py-4">
+        <h2>Register Your Business</h2>
+
+        <div class="row">
+            <div class="col-md-7">
+                <h5 class="mb-2">Business details</h5>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ b_form.non_field_errors }}
+                    <div class="mb-2">
+                        <label class="form-label">Category</label>
+                        {{ b_form.category }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Business name</label>
+                        {{ b_form.name }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Tagline</label>
+                        {{ b_form.tagline }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Description</label>
+                        {{ b_form.description }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Cover image</label>
+                        {{ b_form.cover_image }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Contact email</label>
+                        {{ b_form.contact_email }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Contact phone</label>
+                        {{ b_form.contact_phone }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Website URL</label>
+                        {{ b_form.website_url }}
+                    </div>
+
+                    <hr class="my-3">
+
+                    <h5 class="mb-2">Primary location</h5>
+                    <div class="mb-2">
+                        <label class="form-label">Label</label>
+                        {{ l_form.label }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Address line 1</label>
+                        {{ l_form.address_line1 }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Address line 2</label>
+                        {{ l_form.address_line2 }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">City</label>
+                        {{ l_form.city }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">State</label>
+                        {{ l_form.state }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Pincode</label>
+                        {{ l_form.pincode }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Country</label>
+                        {{ l_form.country }}
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Google Maps URL</label>
+                        {{ l_form.google_maps_url }}
+                    </div>
+
+                    <button class="btn btn-success mt-3">Submit for approval</button>
+                </form>
+            </div>
+
+            <div class="col-md-5">
+                <div class="alert alert-info mt-3 mt-md-0">
+                    <h5>How it works</h5>
+                    <ul class="mb-0 small">
+                        <li>You submit your business details.</li>
+                        <li>Admin reviews and approves your listing.</li>
+                        <li>Once approved, customers can find you and send quote requests.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

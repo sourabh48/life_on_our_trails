@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container py-4">
+        <h2>Quote #{{ quote.id }}</h2>
+        <p class="text-muted">Business: {{ quote.business.name }}</p>
+
+        <div class="row">
+            <div class="col-md-7">
+                <h5>Customer details</h5>
+                <p><strong>Name:</strong> {{ quote.full_name }}</p>
+                <p><strong>Email:</strong> {{ quote.email }}</p>
+                {% if quote.phone %}
+                    <p><strong>Phone:</strong> {{ quote.phone }}</p>
+                {% endif %}
+                {% if quote.location %}
+                    <p><strong>Location:</strong> {{ quote.location.city }} – {{ quote.location.label }}</p>
+                {% endif %}
+
+                {% if quote.additional_details %}
+                    <p><strong>Details:</strong><br>{{ quote.additional_details|linebreaks }}</p>
+                {% endif %}
+
+                <h5 class="mt-3">Requested items</h5>
+                <ul class="list-group mb-3">
+                    {% for item in quote.items.all %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>{{ item.display_name }}</span>
+                            <span>× {{ item.quantity }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-md-5">
+                <h5>Update status</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-2">
+                        <label class="form-label">Status</label>
+                        <select name="status" class="form-select">
+                            {% for key, label in quote.Status.choices %}
+                                <option value="{{ key }}" {% if quote.status == key %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Quoted amount (optional)</label>
+                        <input type="text" name="quoted_amount" class="form-control"
+                               value="{{ quote.quoted_amount }}">
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Notes to keep</label>
+                        <textarea name="owner_notes" rows="4" class="form-control">{{ quote.owner_notes }}</textarea>
+                    </div>
+                    <button class="btn btn-primary mt-2">Save changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

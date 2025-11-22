@@ -78,7 +78,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('avatar',
-                 models.ImageField(blank=True, default='avatars/default.png', upload_to=posts.models.avatar_path)),
+                 models.ImageField(blank=True, default='img/core-img/default.png', upload_to=posts.models.avatar_path)),
                 ('full_name', models.CharField(blank=True, max_length=70, null=True)),
                 ('designation', models.CharField(blank=True, max_length=50, null=True)),
                 ('bio', models.TextField(blank=True, null=True)),

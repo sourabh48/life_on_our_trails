@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'users',
     'hitcount',
     'django_social_share',
-    'tinymce'
+    'tinymce',
+    'business',
 ]
 
 MIDDLEWARE = [

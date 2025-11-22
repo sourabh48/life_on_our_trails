@@ -1,13 +1,16 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from posts import views as post_views
+from users import views as userviews
 
 urlpatterns = [
+
     path('editor/upload/', post_views.editor_image_upload, name='editor_image_upload'),
 
+    path("check-username/", userviews.check_username, name="check_username"),
     # AUTH
     path('login/', post_views.custom_login, name='login'),
     path('signup/', post_views.signup, name='signup'),
@@ -54,6 +57,8 @@ urlpatterns = [
 
     # Editor image upload
     path("editor/upload/", post_views.editor_image_upload, name="editor_image_upload"),
+
+    path("business/", include(("business.urls", "marketplace"), namespace="marketplace")),
 
     path("search/", post_views.search, name="search"),
 ]

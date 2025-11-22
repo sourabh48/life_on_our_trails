@@ -1,0 +1,439 @@
+/* ===========================
+   MARKETPLACE LANDING
+=========================== */
+
+.marketplace-page {
+    background: #f5f7fb;
+    padding-bottom: 60px;
+}
+
+/* HERO */
+
+.market-hero {
+    position: relative;
+    min-height: 320px;
+    background: url("static/img/core-img/hero-bg.jpg") center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    color: #fff;
+}
+
+.market-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.35));
+}
+
+.market-hero-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 60px 15px 40px;
+}
+
+.market-hero-text h1 {
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.market-hero-text p {
+    font-size: 15px;
+    opacity: 0.9;
+    margin-bottom: 22px;
+}
+
+/* SEARCH BAR */
+
+.market-search-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: #ffffff;
+    border-radius: 999px;
+    padding: 10px 10px 10px 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.30);
+    max-width: 900px;
+}
+
+.market-search-bar .search-field {
+    flex: 1;
+    position: relative;
+    min-width: 160px;
+}
+
+.market-search-bar input,
+.market-search-bar select {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: #f5f7fb;
+    color: #222;
+}
+
+.market-search-bar select {
+    cursor: pointer;
+}
+
+.market-search-bar .search-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    color: #666;
+}
+
+.btn-market-primary {
+    border: none;
+    border-radius: 999px;
+    padding: 0 28px;
+    font-size: 14px;
+    font-weight: 600;
+    background: #00c9a7;
+    color: #fff;
+    white-space: nowrap;
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.1s;
+}
+
+.btn-market-primary:hover {
+    background: #00b194;
+    box-shadow: 0 8px 20px rgba(0, 201, 167, 0.35);
+    transform: translateY(-1px);
+}
+
+/* CATEGORY STRIP */
+
+.market-category-strip {
+    margin-top: -40px;
+    margin-bottom: 40px;
+}
+
+.category-strip-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 18px 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+}
+
+.category-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    padding: 8px 10px;
+    border-radius: 999px;
+    background: #f5f7fb;
+    transition: background 0.2s ease, transform 0.1s, box-shadow 0.2s;
+}
+
+.category-pill:hover {
+    background: #e7fbf6;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.category-pill.active {
+    background: #00c9a7;
+    color: #fff;
+}
+
+.category-pill.active .category-name,
+.category-pill.active .category-count {
+    color: #fff;
+}
+
+.category-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    color: #00c9a7;
+    font-size: 16px;
+}
+
+.category-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.category-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+}
+
+.category-count {
+    font-size: 12px;
+    color: #777;
+}
+
+/* SECTIONS */
+
+.market-section {
+    padding: 30px 0 10px;
+}
+
+.market-section-alt {
+    background: #f0f3fa;
+    padding-bottom: 40px;
+}
+
+.market-section-header {
+    margin-bottom: 18px;
+}
+
+.market-section-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.market-section-header p {
+    font-size: 13px;
+    color: #747a8e;
+}
+
+/* FEATURED ROW */
+
+.market-card-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.market-card {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.market-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10);
+}
+
+.market-card-thumb {
+    position: relative;
+    height: 160px;
+    overflow: hidden;
+}
+
+.market-card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+.market-card:hover .market-card-thumb img {
+    transform: scale(1.05);
+}
+
+.market-card-tag {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.70);
+    font-size: 11px;
+    color: #fff;
+}
+
+.market-card-body {
+    padding: 12px 14px 14px;
+}
+
+.market-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.market-card-location {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 6px;
+}
+
+.market-card-location i {
+    margin-right: 4px;
+}
+
+.market-card-desc {
+    font-size: 13px;
+    color: #555;
+}
+
+/* GRID SECTION */
+
+.market-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.market-grid-item {
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.market-grid-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10);
+}
+
+.grid-thumb {
+    position: relative;
+    height: 190px;
+    overflow: hidden;
+}
+
+.grid-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+.market-grid-item:hover .grid-thumb img {
+    transform: scale(1.05);
+}
+
+.grid-pill {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    padding: 4px 11px;
+    border-radius: 999px;
+    background: #00c9a7;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.grid-body {
+    padding: 14px 16px 16px;
+}
+
+.grid-body h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.grid-location {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 6px;
+}
+
+.grid-location i {
+    margin-right: 4px;
+}
+
+.grid-desc {
+    font-size: 13px;
+    color: #555;
+}
+
+/* CTA STRIP */
+
+.market-cta-strip {
+    padding: 30px 0 10px;
+}
+
+.market-cta-inner {
+    background: linear-gradient(135deg, #00c9a7, #00e1ba);
+    border-radius: 18px;
+    padding: 18px 22px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+}
+
+.market-cta-inner h3 {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.market-cta-inner p {
+    font-size: 13px;
+    opacity: 0.96;
+    margin-bottom: 0;
+}
+
+.btn-market-secondary {
+    border-radius: 999px;
+    padding: 8px 20px;
+    border: 1px solid #ffffff;
+    background: transparent;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-market-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* LAYOUT HELPER (if not using Bootstrap container) */
+
+.container {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+    .market-hero-text h1 {
+        font-size: 24px;
+    }
+
+    .market-hero-inner {
+        padding-top: 40px;
+    }
+
+    .market-search-bar {
+        border-radius: 16px;
+        padding: 12px;
+    }
+
+    .market-cta-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .market-cta-inner h3 {
+        font-size: 18px;
+    }
+}

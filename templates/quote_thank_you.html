@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container py-5 text-center">
+        <h2>Thanks, your quote request has been sent!</h2>
+        <p class="lead">Reference ID: #{{ quote.id }}</p>
+        <p class="text-muted">
+            {{ quote.business.name }} will review your request and respond soon.
+        </p>
+        <a href="{% url 'marketplace:business_detail' category_slug=quote.business.category.slug slug=quote.business.slug %}"
+           class="btn btn-outline-primary me-2">
+            Back to Business
+        </a>
+        <a href="{% url 'marketplace:business_list' %}" class="btn btn-primary">
+            Browse more services
+        </a>
+    </div>
+{% endblock content %}

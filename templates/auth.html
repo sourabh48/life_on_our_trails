@@ -15,39 +15,74 @@
         </div>
     {% endif %}
 
-    <div id="container" class="auth-container sign-in">
+    <div class="auth-page-wrapper">
+
+        <section id="container" class="auth-container sign-in">
 
         <div class="row">
 
             <!-- SIGN UP -->
-            <div class="col align-items-center flex-col sign-up">
+            <div class="signupfield col align-items-center flex-col sign-up">
                 <div class="form-wrapper align-items-center">
                     <form class="form sign-up" method="POST" action="{% url 'signup' %}">
                         {% csrf_token %}
 
-                        <div class="input-group">
-                            <i class='bx bxs-user'></i>
-                            <input type="text" name="username" placeholder="Username" required>
+                        <div class="avatar-upload">
+                            <img id="avatarPreview" src="{% static 'img/core-img/default.png' %}"
+                                 class="avatar-preview">
+                            <label for="avatarInput" class="avatar-btn">Upload profile photo</label>
+                            <input type="file" id="avatarInput" name="avatar" accept="image/*" hidden>
                         </div>
 
                         <div class="input-group">
-                            <i class='bx bx-mail-send'></i>
+                            <i class="bx bxs-user"></i>
+                            <input type="text"
+                                   id="signupUsername"
+                                   name="username"
+                                   placeholder="Username"
+                                   required
+                                   data-check-url="{% url 'check_username' %}">
+                            <span id="usernameStatus"></span>
+                        </div>
+
+                        <div class="input-group">
+                            <i class="bx bxs-id-card"></i>
+                            <input type="text" name="full_name" placeholder="Full name" required>
+                        </div>
+
+                        <div class="input-group">
+                            <i class="bx bx-mail-send"></i>
                             <input type="email" name="email" placeholder="Email" required>
                         </div>
 
                         <div class="input-group">
-                            <i class='bx bxs-lock-alt'></i>
+                            <i class="bx bx-pencil"></i>
+                            <input type="text" name="bio" placeholder="Short bio (optional)">
+                        </div>
+
+                        <div class="input-group">
+                            <i class="bx bxs-map"></i>
+                            <input type="text" name="location" placeholder="City, Country (optional)">
+                        </div>
+
+                        <div class="input-group">
+                            <i class="bx bxl-linkedin"></i>
+                            <input type="url" name="linkedin" placeholder="LinkedIn (optional)">
+                        </div>
+
+                        <div class="input-group">
+                            <i class="bx bxs-lock-alt"></i>
                             <input type="password" name="password" placeholder="Password" required>
                         </div>
 
                         <div class="input-group">
-                            <i class='bx bxs-lock-alt'></i>
+                            <i class="bx bxs-lock-alt"></i>
                             <input type="password" name="confirm_password" placeholder="Confirm password" required>
                         </div>
 
-                        <button type="submit">Sign up</button>
+                        <button type="submit" class="auth-btn">Sign up</button>
 
-                        <p>
+                        <p class="switch-text">
                             <span>Already have an account?</span>
                             <b onclick="toggle()" class="pointer">Sign in here</b>
                         </p>
@@ -110,6 +145,7 @@
 
         </div>
 
+        </section>
     </div>
 
 {% endblock %}

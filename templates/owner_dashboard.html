@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container py-4">
+        <h2 class="mb-3">Business Dashboard</h2>
+
+        <div class="row">
+            <div class="col-md-5">
+                <h5>Your Businesses</h5>
+                {% if businesses %}
+                    <ul class="list-group mb-3">
+                        {% for biz in businesses %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ biz.name }}</strong><br>
+                                    <span class="small text-muted">{{ biz.category.name }}</span>
+                                </div>
+                                <span class="badge {% if biz.is_visible_public %}bg-success{% else %}bg-secondary{% endif %}">
+                                {% if biz.is_visible_public %}Live{% else %}Not live{% endif %}
+                            </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">You have not registered any business yet.</p>
+                    <a href="{% url 'marketplace:partner_register' %}" class="btn btn-primary btn-sm">
+                        Register a business
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="col-md-7">
+                <h5>Recent Quotes</h5>
+                {% if quotes %}
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Customer</th>
+                                <th>Business</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for q in quotes %}
+                                <tr>
+                                    <td>#{{ q.id }}</td>
+                                    <td>{{ q.full_name }}</td>
+                                    <td>{{ q.business.name }}</td>
+                                    <td>{{ q.get_status_display }}</td>
+                                    <td>{{ q.created_at|date:"d M Y" }}</td>
+                                    <td>
+                                        <a href="{% url 'marketplace:owner_quote_detail' q.id %}"
+                                           class="btn btn-outline-secondary btn-sm">
+                                            View
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No quote requests yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
